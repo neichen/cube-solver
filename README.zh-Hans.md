@@ -19,7 +19,7 @@
 ## 隐私
 
 - 摄像头画面和上传的照片只在你的浏览器中处理，不会上传，也不会保存在服务器上。
-- 本站不使用 Cookie、统计分析，也不加载任何第三方脚本、字体或跟踪器。语言、声音、最好成绩等设置只保存在浏览器的本地存储中。
+- 线上站点使用 Cloudflare Web Analytics 统计访问量：它不使用 Cookie，也不收集个人数据，对所有访客加载。Google Analytics 4 只有在你于同意提示栏中点击“接受”后才会加载（Consent Mode v2，广告存储、广告用户数据、广告个性化和 Google 信号全部关闭）；如果你拒绝，它永远不会加载，你也可以随时通过页脚的“统计设置”链接更改选择。语言、声音、最好成绩以及你的统计选择等设置只保存在浏览器的本地存储中。统计只计算页面浏览量，魔方状态和摄像头图像永远不会被发送。
 - 本站是托管在 Cloudflare 上的一组静态文件；和所有网站托管商一样，Cloudflare 会处理普通的网页请求。
 
 ## 本地运行
@@ -40,7 +40,7 @@ npm start                         # http://localhost:8765/
 npm test               # 先生成 SEO 页面，再运行单元、求解器和 SEO 测试（不需要浏览器）
 npm run test:nxn       # 4×4–15×15 求解器检查（较慢）
 npm start &            # 浏览器测试需要本地服务器
-npm run test:e2e       # 另有: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # 另有: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## 构建与部署
@@ -54,14 +54,21 @@ npm run build          # 在 dist/ 中生成可部署的站点
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<你的账户 ID>
 export CLOUDFLARE_API_TOKEN=<可编辑 Workers 的 API 令牌>   # 或运行: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # 可选：Cloudflare Web Analytics 令牌
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # 可选：GA4 衡量 ID，只在用户同意后加载
 npm run deploy
 ```
 
 - `deploy/_headers` 设置 `Cross-Origin-Opener-Policy` 和 `Cross-Origin-Embedder-Policy`，多线程 WebAssembly 求解器需要它们。
 - `deploy/worker.js` 只负责重定向：把 `www` 和 `*.workers.dev` 跳转到主域名，把旧的 `/?puzzle=…` 链接跳转到新路径。静态文件（`/js`、`/css`、`/img`、`/puzzles`、`/vendor` 等）直接返回，不运行 Worker，所以每次页面访问只消耗一次 Worker 请求。
+- 统计 ID 不在仓库里。`npm run build` 从环境变量（或被 git 忽略、按 `KEY=value` 逐行书写的 `.env` 文件）读取 `CF_BEACON_TOKEN` 和 `GA_MEASUREMENT_ID`，只写入 `dist/`。不设置时，构建结果不含任何统计、同意提示栏或跟踪；统计也只会在正式域名上运行。
 - 如果部署自己的副本，请修改 `deploy/wrangler.toml` 中的 `name` 和 `routes`，以及 `seo/site.config.json` 中的 `baseUrl`。
 
 开发说明（中文）：[docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md)。
+
+## 致谢
+
+把魔方画成一组圆环的图形视图，灵感来自じゃがりきん（[@jagarikin](https://x.com/jagarikin)）的动画：[原作（2022-05）](https://x.com/jagarikin/status/1524175137633095681)、[带 3D 魔方的版本（2022-11）](https://x.com/jagarikin/status/1593771091738374144)。我们最早是通过 [@UnicornBitcoin 的这条帖子](https://x.com/UnicornBitcoin/status/2107652690113339684) 看到这个创意的，感谢两位。
 
 ## 许可与致谢
 

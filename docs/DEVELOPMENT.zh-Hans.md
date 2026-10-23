@@ -45,7 +45,7 @@ gullicube（Node，4 线程，与浏览器同一份构建；SSTM）：
 | 质量模式（--time 16，≈10–15 s，首次下载 ≈30 MB 表） | 119 | 169 | 257 | 329 | 448 | 563 | 678 | 833 | 981 | 1131 | 1408 |
 | 快速模式（--fast，≈2–4 s，≈0.5 MB 表） | 168 | 281 | 402 | 571 | 695 | 972 | 1130 | 1495 | 1635 | 1950 | 2231 |
 
-低内存设备（`navigator.deviceMemory` < 4 GB）和手机 / 平板在 n ≥ 5 时默认快速模式；求解器下拉随时切换质量 / 速度。多线程 WASM 需要跨源隔离：`deploy/_headers` 设置 COOP / COEP / CORP。
+低内存设备（`navigator.deviceMemory` < 4 GB）和手机 / 平板在 n ≥ 5 时默认快速模式；求解器下拉随时切换质量 / 速度。多线程 WASM 需要跨源隔离：`deploy/_headers` 设置 COOP / COEP / CORP。统计脚本（`js/analytics.js`，只在 cube-solver.org 上运行）：Cloudflare Web Analytics 无 Cookie、对所有人加载；GA4 只在用户点“接受”后才注入 gtag.js（Consent Mode v2，只授予 analytics_storage）。两者都返回 `Cross-Origin-Resource-Policy: cross-origin` + CORS 头，因此保留 `require-corp` 也不会破坏跨源隔离。SPA 路由切换（`history.replaceState`）由 CF 的 spa 模式和 GA4 增强型衡量的“基于浏览器历史记录事件的网页变化”自动计数，不要再手动发 page_view（会重复计数）。测试：`npm run test:analytics`（本地，拦截上报）/ `npm run test:analytics:live`。统计 ID 不进仓库：`tools/build-dist.js` 从环境变量 `CF_BEACON_TOKEN`、`GA_MEASUREMENT_ID`（或被 git 忽略的 `.env`）读取，只写进 `dist/js/analytics.js`；不设置就没有任何统计、同意提示栏或跟踪。
 
 **4×4 降阶求解器**（`puzzles/nxn/cube4.worker.js`，自写代码；分阶段思路参考公开的 Tsai / TPR 类方法，没有复制任何代码）：
 1. P1（36 种转动）：R/L 两色中心块到 R/L 面，精确距离表 C(24,8)。

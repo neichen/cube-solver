@@ -19,7 +19,7 @@
 ## 隱私
 
 - 攝影機畫面與上傳的照片只在你的瀏覽器中處理，不會上傳，也不會儲存在伺服器上。
-- 本站不使用 Cookie、流量分析，也不載入任何第三方指令碼、字型或追蹤器。語言、聲音、最佳成績等設定只儲存在瀏覽器的本機儲存空間。
+- 線上網站使用 Cloudflare Web Analytics 統計造訪量：它不使用 Cookie，也不收集個人資料，對所有訪客載入。Google Analytics 4 只有在你於同意提示列中點選「接受」後才會載入（Consent Mode v2，廣告儲存、廣告使用者資料、廣告個人化和 Google 信號全部關閉）；如果你拒絕，它永遠不會載入，你也可以隨時透過頁尾的「統計設定」連結變更選擇。語言、聲音、最佳成績以及你的統計選擇等設定只儲存在瀏覽器的本機儲存空間。統計只計算頁面瀏覽量，魔術方塊狀態和相機影像永遠不會被傳送。
 - 本站是託管在 Cloudflare 上的一組靜態檔案；和所有網站託管商一樣，Cloudflare 會處理一般的網頁請求。
 
 ## 本機執行
@@ -40,7 +40,7 @@ npm start                         # http://localhost:8765/
 npm test               # 先產生 SEO 頁面，再執行單元、解題器與 SEO 測試（不需要瀏覽器）
 npm run test:nxn       # 4×4–15×15 解題器檢查（較慢）
 npm start &            # 瀏覽器測試需要本機伺服器
-npm run test:e2e       # 另有: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # 另有: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## 建置與部署
@@ -54,14 +54,21 @@ npm run build          # 在 dist/ 中產生可部署的網站
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<你的帳戶 ID>
 export CLOUDFLARE_API_TOKEN=<可編輯 Workers 的 API 權杖>   # 或執行: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # 選用：Cloudflare Web Analytics 權杖
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # 選用：GA4 評估 ID，只在使用者同意後載入
 npm run deploy
 ```
 
 - `deploy/_headers` 設定 `Cross-Origin-Opener-Policy` 與 `Cross-Origin-Embedder-Policy`，多執行緒 WebAssembly 解題器需要它們。
 - `deploy/worker.js` 只負責重新導向：把 `www` 和 `*.workers.dev` 導向主網域，把舊的 `/?puzzle=…` 連結導向新路徑。靜態檔案（`/js`、`/css`、`/img`、`/puzzles`、`/vendor` 等）直接回應，不執行 Worker，所以每次瀏覽頁面只用掉一次 Worker 請求。
+- 統計 ID 不在儲存庫裡。`npm run build` 從環境變數（或被 git 忽略、以 `KEY=value` 逐行書寫的 `.env` 檔）讀取 `CF_BEACON_TOKEN` 和 `GA_MEASUREMENT_ID`，只寫入 `dist/`。未設定時，建置結果不含任何統計、同意提示列或追蹤；統計也只會在正式網域上執行。
 - 如果要部署自己的副本，請修改 `deploy/wrangler.toml` 的 `name` 與 `routes`，以及 `seo/site.config.json` 的 `baseUrl`。
 
 開發說明（簡體中文）：[docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md)。
+
+## 致謝
+
+把魔術方塊畫成一組圓環的圖形視圖，靈感來自じゃがりきん（[@jagarikin](https://x.com/jagarikin)）的動畫：[原作（2022-05）](https://x.com/jagarikin/status/1524175137633095681)、[附 3D 方塊的版本（2022-11）](https://x.com/jagarikin/status/1593771091738374144)。我們最早是透過 [@UnicornBitcoin 的這則貼文](https://x.com/UnicornBitcoin/status/2107652690113339684) 看到這個創意的，感謝兩位。
 
 ## 授權與致謝
 

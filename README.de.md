@@ -19,7 +19,7 @@ Ein Puzzle-Löser, der komplett im Browser läuft: Würfel von 2×2 bis 15×15, 
 ## Datenschutz
 
 - Kamerabilder und hochgeladene Fotos werden ausschließlich in deinem Browser verarbeitet. Sie werden nie hochgeladen oder auf einem Server gespeichert.
-- Die Website verwendet keine Cookies, keine Analyse-Tools und keine Skripte, Schriften oder Tracker von Dritten. Einstellungen wie Sprache, Ton und Bestzeiten werden nur im lokalen Speicher deines Browsers abgelegt.
+- Die Live-Website zählt Besuche mit Cloudflare Web Analytics, das keine Cookies verwendet und keine personenbezogenen Daten erhebt; es wird für alle Besucher geladen. Google Analytics 4 wird erst geladen, nachdem du im Einwilligungshinweis auf „Akzeptieren“ geklickt hast (Consent Mode v2; Werbespeicher, Werbe-Nutzerdaten, Anzeigenpersonalisierung und Google Signals sind aus). Lehnst du ab, wird es nie geladen, und du kannst deine Wahl jederzeit über den Link „Analyse-Einstellungen“ in der Fußzeile ändern. Einstellungen wie Sprache, Ton, Bestzeiten und deine Analyse-Wahl werden nur im lokalen Speicher deines Browsers abgelegt. Gezählt werden nur Seitenaufrufe: Puzzle-Zustände und Kamerabilder werden nie gesendet.
 - Die Website besteht aus statischen Dateien, die bei Cloudflare gehostet werden; Cloudflare verarbeitet dabei, wie jeder Webhoster, gewöhnliche Web-Anfragen.
 
 ## Lokal starten
@@ -40,7 +40,7 @@ Die Kamera benötigt einen sicheren Kontext (`https://` oder `http://localhost`)
 npm test               # erzeugt die SEO-Seiten und führt dann Unit-, Löser- und SEO-Tests aus (ohne Browser)
 npm run test:nxn       # Prüfung der 4×4–15×15-Löser (langsamer)
 npm start &            # die Browser-Tests brauchen den lokalen Server
-npm run test:e2e       # außerdem: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # außerdem: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## Build und Deployment
@@ -54,14 +54,21 @@ Die Website wird als statische Assets von Cloudflare Workers ausgeliefert (siehe
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<deine Account-ID>
 export CLOUDFLARE_API_TOKEN=<ein API-Token, das Workers bearbeiten darf>   # oder: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # optional: Token für Cloudflare Web Analytics
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # optional: GA4-Mess-ID, wird erst nach Einwilligung geladen
 npm run deploy
 ```
 
 - `deploy/_headers` setzt `Cross-Origin-Opener-Policy` und `Cross-Origin-Embedder-Policy`, die der Multithread-WebAssembly-Löser benötigt.
 - `deploy/worker.js` leitet nur weiter: `www` und `*.workers.dev` auf die Hauptdomain und alte `/?puzzle=…`-Links auf die neuen Pfade. Statische Dateien (`/js`, `/css`, `/img`, `/puzzles`, `/vendor` usw.) werden direkt ausgeliefert, ohne den Worker auszuführen – ein Seitenaufruf kostet also eine Worker-Anfrage.
+- Die Analyse-IDs stehen nicht im Repository. `npm run build` liest `CF_BEACON_TOKEN` und `GA_MEASUREMENT_ID` aus der Umgebung (oder aus einer von git ignorierten `.env`-Datei mit Zeilen `KEY=Wert`) und schreibt sie nur nach `dist/`. Sind sie nicht gesetzt, enthält der Build keine Analyse, keinen Einwilligungshinweis und kein Tracking; die Analyse läuft außerdem nur auf der Produktionsdomain.
 - Wer eine eigene Kopie betreibt, ändert `name` und `routes` in `deploy/wrangler.toml` sowie `baseUrl` in `seo/site.config.json`.
 
 Hinweise für Entwickler (auf Chinesisch): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+
+## Danksagung
+
+Die Graphansicht, die den Würfel als Kreise darstellt, ist von den Animationen von じゃがりきん ([@jagarikin](https://x.com/jagarikin)) inspiriert: [Original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [mit 3D-Würfel (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Auf die Idee gestoßen sind wir durch [diesen Beitrag von @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). Danke an beide.
 
 ## Lizenz und Danksagung
 

@@ -19,7 +19,7 @@ Un solveur de casse-tête qui fonctionne entièrement dans votre navigateur : cu
 ## Confidentialité
 
 - Les images de la caméra et les photos envoyées sont traitées uniquement dans votre navigateur. Elles ne sont jamais envoyées ni stockées sur un serveur.
-- Le site n'utilise ni cookies, ni outil de mesure d'audience, ni scripts, polices ou traceurs tiers. Les réglages (langue, son, meilleurs temps…) sont enregistrés uniquement dans le stockage local de votre navigateur.
+- Le site en ligne compte les visites avec Cloudflare Web Analytics, qui n'utilise aucun cookie et ne collecte aucune donnée personnelle ; il est chargé pour tous les visiteurs. Google Analytics 4 n'est chargé qu'après un clic sur Accepter dans le bandeau de consentement (Consent Mode v2, avec stockage publicitaire, données utilisateur publicitaires, personnalisation des annonces et Google Signals désactivés) ; si vous refusez, il n'est jamais chargé, et vous pouvez changer votre choix à tout moment avec le lien « Paramètres de mesure d’audience » en bas de page. Les réglages (langue, son, meilleurs temps, choix de mesure d'audience…) sont enregistrés uniquement dans le stockage local de votre navigateur. La mesure d'audience ne compte que les pages vues : l'état des puzzles et les images de la caméra ne sont jamais envoyés.
 - Le site est un ensemble de fichiers statiques hébergés chez Cloudflare, qui traite les requêtes web ordinaires comme tout hébergeur.
 
 ## Lancer en local
@@ -40,7 +40,7 @@ La caméra exige un contexte sécurisé (`https://` ou `http://localhost`). Le s
 npm test               # génère les pages SEO puis lance les tests unitaires, des solveurs et SEO (sans navigateur)
 npm run test:nxn       # vérifications des solveurs 4×4 à 15×15 (plus lentes)
 npm start &            # les tests navigateur ont besoin du serveur local
-npm run test:e2e       # aussi: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # aussi: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## Build et déploiement
@@ -54,14 +54,21 @@ Le site est déployé en tant que ressources statiques Cloudflare Workers (voir 
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<l'ID de votre compte>
 export CLOUDFLARE_API_TOKEN=<un jeton d'API autorisé à modifier les Workers>   # ou lancez: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # facultatif : jeton Cloudflare Web Analytics
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # facultatif : ID de mesure GA4, chargé seulement après consentement
 npm run deploy
 ```
 
 - `deploy/_headers` définit `Cross-Origin-Opener-Policy` et `Cross-Origin-Embedder-Policy`, nécessaires au solveur WebAssembly multithread.
 - `deploy/worker.js` ne fait que rediriger : `www` et `*.workers.dev` vers le domaine principal, et les anciens liens `/?puzzle=…` vers les nouveaux chemins. Les fichiers statiques (`/js`, `/css`, `/img`, `/puzzles`, `/vendor`, etc.) sont servis directement sans exécuter le Worker : une page vue coûte donc une seule requête Worker.
+- Les identifiants de mesure d'audience ne sont pas dans le dépôt. `npm run build` lit `CF_BEACON_TOKEN` et `GA_MEASUREMENT_ID` dans l'environnement (ou dans un fichier `.env` ignoré par git, lignes `CLÉ=valeur`) et ne les écrit que dans `dist/`. S'ils ne sont pas définis, le build ne contient ni mesure d'audience, ni bandeau de consentement, ni pistage ; la mesure ne fonctionne de toute façon que sur le domaine de production.
 - Pour déployer votre propre copie, modifiez `name` et `routes` dans `deploy/wrangler.toml` ainsi que `baseUrl` dans `seo/site.config.json`.
 
 Notes pour les développeurs (en chinois) : [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+
+## Remerciements
+
+La vue en graphe qui représente le cube sous forme de cercles s’inspire des animations de じゃがりきん ([@jagarikin](https://x.com/jagarikin)) : [original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [avec cube 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Nous avons découvert l’idée grâce à [cette publication de @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). Merci à tous les deux.
 
 ## Licence et crédits
 

@@ -19,7 +19,7 @@ A puzzle solver that runs entirely in your browser: 2×2 to 15×15 cubes, Pyrami
 ## Privacy
 
 - Camera images and uploaded photos are processed only in your browser. They are never uploaded or stored on a server.
-- The site uses no cookies, no analytics and no third-party scripts, fonts or trackers. Settings such as language, sound and best times are saved only in your browser's local storage.
+- The live site counts visits with Cloudflare Web Analytics, which is cookieless and does not collect personal data; it loads for every visitor. Google Analytics 4 is loaded only after you press Accept in the consent banner (Consent Mode v2, with ad storage, ad user data, ad personalization and Google signals all off); if you decline, it is never loaded, and you can change your choice at any time with the “Analytics settings” link in the footer. Settings such as language, sound, best times and your analytics choice are saved only in your browser's local storage. Analytics only counts page views: puzzle states and camera images are never sent.
 - The site is a set of static files hosted on Cloudflare, which handles ordinary web requests as any web host does.
 
 ## Run locally
@@ -40,7 +40,7 @@ The camera needs a secure context (`https://` or `http://localhost`). The local 
 npm test               # builds the SEO pages, then runs the unit, solver and SEO tests (no browser needed)
 npm run test:nxn       # 4×4–15×15 solver checks (slower)
 npm start &            # the browser tests need the local server
-npm run test:e2e       # also: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # also: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## Build and deploy
@@ -54,14 +54,21 @@ The site is deployed as Cloudflare Workers static assets (see `deploy/`):
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<your account id>
 export CLOUDFLARE_API_TOKEN=<an API token that can edit Workers>   # or run: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # optional: Cloudflare Web Analytics token
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # optional: GA4 measurement ID, loaded only after consent
 npm run deploy
 ```
 
 - `deploy/_headers` sets `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy`, which the multithreaded WebAssembly solver needs.
 - `deploy/worker.js` only redirects: `www` and `*.workers.dev` to the main domain, and old `/?puzzle=…` links to the new paths. Static files (`/js`, `/css`, `/img`, `/puzzles`, `/vendor` and so on) are served directly without running the Worker, so a page view costs one Worker request.
+- The analytics IDs are not in the repository. `npm run build` reads `CF_BEACON_TOKEN` and `GA_MEASUREMENT_ID` from the environment (or from a gitignored `.env` file with `KEY=value` lines) and writes them only into `dist/`. If they are unset, the build has no analytics, no consent banner and no tracking; analytics also only runs on the production host.
 - If you deploy your own copy, change `name` and `routes` in `deploy/wrangler.toml` and `baseUrl` in `seo/site.config.json`.
 
 Developer notes (in Chinese): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+
+## Acknowledgements
+
+The cube-as-circles graph view is inspired by the animations of じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [with 3D cube (2022-11)](https://x.com/jagarikin/status/1593771091738374144). We first came across the idea through [this post by @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684) — thanks to both.
 
 ## License and credits
 

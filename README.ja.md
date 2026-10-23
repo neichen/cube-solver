@@ -19,7 +19,7 @@
 ## プライバシー
 
 - カメラの映像とアップロードした写真はブラウザ内だけで処理されます。サーバーへ送信・保存されることはありません。
-- Cookie、アクセス解析、サードパーティのスクリプト・フォント・トラッカーは一切使っていません。言語、サウンド、ベストタイムなどの設定はブラウザのローカルストレージにだけ保存されます。
+- 公開サイトでは Cloudflare Web Analytics でアクセス数を計測しています。Cookie を使わず個人データも収集しないため、すべての訪問者に読み込まれます。Google Analytics 4 は同意バナーで「同意する」を押した後にだけ読み込まれます（Consent Mode v2。広告ストレージ、広告用ユーザーデータ、広告のパーソナライズ、Google シグナルはすべてオフ）。拒否した場合は一切読み込まれず、選択はページ下部の「アクセス解析の設定」リンクからいつでも変更できます。言語、サウンド、ベストタイム、アクセス解析の選択などの設定はブラウザのローカルストレージにだけ保存されます。計測するのはページビューだけで、パズルの状態やカメラの画像が送信されることはありません。
 - サイトは Cloudflare でホストされた静的ファイルの集まりです。一般的なホスティングと同様に、Cloudflare が通常の Web リクエストを処理します。
 
 ## ローカルで動かす
@@ -40,7 +40,7 @@ npm start                         # http://localhost:8765/
 npm test               # SEO ページを生成してから、ユニット・ソルバー・SEO テストを実行（ブラウザ不要）
 npm run test:nxn       # 4×4〜15×15 ソルバーの検証（時間がかかります）
 npm start &            # ブラウザテストにはローカルサーバーが必要
-npm run test:e2e       # ほかに: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # ほかに: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## ビルドとデプロイ
@@ -54,14 +54,21 @@ npm run build          # デプロイ用のサイトを dist/ に生成
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<アカウント ID>
 export CLOUDFLARE_API_TOKEN=<Workers を編集できる API トークン>   # または: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # 任意：Cloudflare Web Analytics のトークン
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # 任意：GA4 の測定 ID（同意後にのみ読み込み）
 npm run deploy
 ```
 
 - `deploy/_headers` で `Cross-Origin-Opener-Policy` と `Cross-Origin-Embedder-Policy` を設定しています。マルチスレッド WebAssembly のソルバーに必要です。
 - `deploy/worker.js` はリダイレクトだけを行います。`www` と `*.workers.dev` はメインドメインへ、古い `/?puzzle=…` のリンクは新しいパスへ転送します。静的ファイル（`/js`、`/css`、`/img`、`/puzzles`、`/vendor` など）は Worker を通さずに直接配信されるので、1 ページの表示で使う Worker リクエストは 1 回です。
+- アクセス解析の ID はリポジトリに含まれていません。`npm run build` が環境変数（または git 管理外の `.env` ファイル、`KEY=value` 形式）から `CF_BEACON_TOKEN` と `GA_MEASUREMENT_ID` を読み、`dist/` にだけ書き込みます。未設定ならアクセス解析・同意バナー・トラッキングは一切入りません。また、解析は本番ドメインでのみ動作します。
 - 自分のコピーをデプロイする場合は、`deploy/wrangler.toml` の `name` と `routes`、`seo/site.config.json` の `baseUrl` を変更してください。
 
 開発者向けメモ（中国語）：[docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md)
+
+## 謝辞
+
+キューブを円の集まりとして描くグラフ表示は、じゃがりきんさん（[@jagarikin](https://x.com/jagarikin)）のアニメーションに着想を得ています：[オリジナル（2022-05）](https://x.com/jagarikin/status/1524175137633095681)、[3D キューブ付き（2022-11）](https://x.com/jagarikin/status/1593771091738374144)。このアイデアを最初に知ったのは [@UnicornBitcoin さんのこの投稿](https://x.com/UnicornBitcoin/status/2107652690113339684) でした。おふたりに感謝します。
 
 ## ライセンスとクレジット
 

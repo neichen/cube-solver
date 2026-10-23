@@ -19,7 +19,7 @@ Um resolvedor de quebra-cabeças que roda inteiramente no navegador: cubos de 2�
 ## Privacidade
 
 - As imagens da câmera e as fotos enviadas são processadas apenas no seu navegador. Elas nunca são enviadas nem armazenadas em um servidor.
-- O site não usa cookies, nem análise de tráfego, nem scripts, fontes ou rastreadores de terceiros. Configurações como idioma, som e melhores tempos ficam salvas apenas no armazenamento local do seu navegador.
+- O site publicado conta as visitas com o Cloudflare Web Analytics, que não usa cookies nem coleta dados pessoais; ele é carregado para todos os visitantes. O Google Analytics 4 só é carregado depois que você clica em Aceitar no aviso de consentimento (Consent Mode v2, com armazenamento de anúncios, dados de usuário para anúncios, personalização de anúncios e Google Signals desativados); se você recusar, ele nunca é carregado, e você pode mudar sua escolha a qualquer momento pelo link “Configurações de análise” no rodapé. Configurações como idioma, som, melhores tempos e sua escolha de análise ficam salvas apenas no armazenamento local do seu navegador. A análise só conta visualizações de página: estados do quebra-cabeça e imagens da câmera nunca são enviados.
 - O site é um conjunto de arquivos estáticos hospedados na Cloudflare, que processa as requisições web comuns como qualquer serviço de hospedagem.
 
 ## Executar localmente
@@ -40,7 +40,7 @@ A câmera precisa de um contexto seguro (`https://` ou `http://localhost`). O se
 npm test               # gera as páginas de SEO e roda os testes unitários, de resolvedores e de SEO (sem navegador)
 npm run test:nxn       # verificações dos resolvedores 4×4–15×15 (mais lentas)
 npm start &            # os testes no navegador precisam do servidor local
-npm run test:e2e       # também: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # também: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## Build e deploy
@@ -54,14 +54,21 @@ O site é publicado como assets estáticos do Cloudflare Workers (veja `deploy/`
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<o ID da sua conta>
 export CLOUDFLARE_API_TOKEN=<um token de API que possa editar Workers>   # ou rode: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # opcional: token do Cloudflare Web Analytics
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # opcional: ID de medição do GA4, carregado só após o consentimento
 npm run deploy
 ```
 
 - `deploy/_headers` define `Cross-Origin-Opener-Policy` e `Cross-Origin-Embedder-Policy`, necessários para o resolvedor WebAssembly multithread.
 - `deploy/worker.js` só faz redirecionamentos: `www` e `*.workers.dev` para o domínio principal, e links antigos `/?puzzle=…` para os novos caminhos. Arquivos estáticos (`/js`, `/css`, `/img`, `/puzzles`, `/vendor` etc.) são servidos diretamente, sem executar o Worker, então cada visualização de página custa uma requisição ao Worker.
+- Os IDs de análise não estão no repositório. `npm run build` lê `CF_BEACON_TOKEN` e `GA_MEASUREMENT_ID` do ambiente (ou de um arquivo `.env` ignorado pelo git, com linhas `CHAVE=valor`) e os grava apenas em `dist/`. Sem eles, o build não tem análise, aviso de consentimento nem rastreamento; além disso, a análise só roda no domínio de produção.
 - Se você publicar sua própria cópia, altere `name` e `routes` em `deploy/wrangler.toml` e `baseUrl` em `seo/site.config.json`.
 
 Notas para desenvolvedores (em chinês): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+
+## Agradecimentos
+
+A visualização em grafo que desenha o cubo como círculos foi inspirada nas animações de じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [com cubo 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Conhecemos a ideia por meio [desta publicação de @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). Obrigado a ambos.
 
 ## Licença e créditos
 

@@ -55,7 +55,7 @@
  "graph.root": "Jeder Sticker ist ein Knoten und jeder Zug eine Permutation der Sticker. Die Permutation zerfällt in Zyklen, die als Kreise gezeichnet werden; so zeigt der Graph die Struktur des Puzzles: welche Sticker welche Plätze erreichen können. Eine Lösung ist ein Weg im Zustandsgraphen von deiner Verdrehung zum gelösten Zustand, und der Graph animiert diesen Weg Zug für Zug.",
  "faq.title": "Häufige Fragen",
  "faq.free.q": "Ist der Löser kostenlos, und werden meine Fotos hochgeladen?",
- "faq.free.a": "Er ist kostenlos und läuft vollständig in deinem Browser. Kamerabilder und Fotos werden auf deinem Gerät verarbeitet und nie hochgeladen.",
+ "faq.free.a": "Er ist kostenlos und läuft vollständig in deinem Browser. Kamerabilder und Fotos werden auf deinem Gerät verarbeitet und nie hochgeladen. Besuche werden mit Cloudflare Web Analytics gezählt, das keine Cookies verwendet; Google Analytics wird nur geladen, wenn du im Hinweis zustimmst, und du kannst die Wahl in der Fußzeile ändern.",
  "faq.optimal.q": "Ist die Lösung die kürzestmögliche?",
  "faq.optimal.yes": "Ja. Der Löser nutzt eine vollständige Tabelle aller Stellungen, daher hat jede Lösung die kleinstmögliche Zahl an Zügen.",
  "faq.optimal.cube3": "Stellungen bis 8 Züge werden optimal gelöst; sonst liefert der Zwei-Phasen-Algorithmus eine nahezu optimale Lösung mit meist {range} Zügen.",

@@ -19,7 +19,7 @@ Penyelesai teka-teki yang berjalan sepenuhnya dalam pelayar anda: kiub 2×2 hing
 ## Privasi
 
 - Imej kamera dan foto yang dimuat naik hanya diproses dalam pelayar anda. Ia tidak sekali-kali dimuat naik atau disimpan pada pelayan.
-- Laman ini tidak menggunakan kuki, analitik atau sebarang skrip, fon atau penjejak pihak ketiga. Tetapan seperti bahasa, bunyi dan masa terbaik hanya disimpan dalam storan setempat pelayar anda.
+- Laman langsung mengira lawatan dengan Cloudflare Web Analytics, yang tidak menggunakan kuki dan tidak mengumpul data peribadi; ia dimuatkan untuk semua pelawat. Google Analytics 4 hanya dimuatkan selepas anda menekan Terima pada sepanduk persetujuan (Consent Mode v2, dengan storan iklan, data pengguna iklan, pemperibadian iklan dan Google Signals dimatikan); jika anda menolak, ia tidak akan dimuatkan, dan anda boleh menukar pilihan pada bila-bila masa melalui pautan “Tetapan analitik” di pengaki. Tetapan seperti bahasa, bunyi, masa terbaik dan pilihan analitik anda hanya disimpan dalam storan setempat pelayar anda. Analitik hanya mengira paparan halaman: keadaan teka-teki dan imej kamera tidak pernah dihantar.
 - Laman ini ialah satu set fail statik yang dihoskan di Cloudflare, yang mengendalikan permintaan web biasa seperti mana-mana hos web.
 
 ## Jalankan secara setempat
@@ -40,7 +40,7 @@ Kamera memerlukan konteks selamat (`https://` atau `http://localhost`). Pelayan 
 npm test               # membina halaman SEO, kemudian menjalankan ujian unit, penyelesai dan SEO (tanpa pelayar)
 npm run test:nxn       # semakan penyelesai 4×4–15×15 (lebih perlahan)
 npm start &            # ujian pelayar memerlukan pelayan setempat
-npm run test:e2e       # juga: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # juga: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## Bina dan lancar
@@ -54,14 +54,21 @@ Laman ini dilancarkan sebagai aset statik Cloudflare Workers (lihat `deploy/`):
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<ID akaun anda>
 export CLOUDFLARE_API_TOKEN=<token API yang boleh mengubah Workers>   # atau jalankan: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # pilihan: token Cloudflare Web Analytics
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # pilihan: ID pengukuran GA4, hanya dimuatkan selepas persetujuan
 npm run deploy
 ```
 
 - `deploy/_headers` menetapkan `Cross-Origin-Opener-Policy` dan `Cross-Origin-Embedder-Policy`, yang diperlukan oleh penyelesai WebAssembly berbilang bebenang.
 - `deploy/worker.js` hanya membuat ubah hala: `www` dan `*.workers.dev` ke domain utama, dan pautan lama `/?puzzle=…` ke laluan baharu. Fail statik (`/js`, `/css`, `/img`, `/puzzles`, `/vendor` dan sebagainya) dihantar terus tanpa menjalankan Worker, jadi setiap paparan halaman menggunakan satu permintaan Worker.
+- ID analitik tiada dalam repositori. `npm run build` membaca `CF_BEACON_TOKEN` dan `GA_MEASUREMENT_ID` daripada persekitaran (atau fail `.env` yang diabaikan git, dengan baris `KEY=value`) dan hanya menulisnya ke `dist/`. Jika tidak ditetapkan, binaan tidak mengandungi analitik, sepanduk persetujuan atau penjejakan; analitik juga hanya berjalan pada domain pengeluaran.
 - Jika anda melancarkan salinan sendiri, tukar `name` dan `routes` dalam `deploy/wrangler.toml` serta `baseUrl` dalam `seo/site.config.json`.
 
 Nota pembangun (dalam bahasa Cina): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+
+## Penghargaan
+
+Paparan graf yang melukis kiub sebagai bulatan-bulatan diilhamkan oleh animasi じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [asal (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [dengan kiub 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Kami mula-mula mengetahui idea ini melalui [hantaran @UnicornBitcoin ini](https://x.com/UnicornBitcoin/status/2107652690113339684). Terima kasih kepada kedua-duanya.
 
 ## Lesen dan penghargaan
 

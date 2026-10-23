@@ -35,6 +35,20 @@ License text: [`vendor/three-LICENSE`](vendor/three-LICENSE).
 No audio files are included. All sounds are synthesized at runtime by `js/core/audio.js` (this project's code).
 See [`vendor/sounds/LICENSE.txt`](vendor/sounds/LICENSE.txt).
 
+## Design inspiration
+
+The cube-as-circles graph view (`js/core/graph-view.js`) is inspired by the animations of じゃがりきん
+([@jagarikin](https://x.com/jagarikin)): [original (2022-05)](https://x.com/jagarikin/status/1524175137633095681),
+[with 3D cube (2022-11)](https://x.com/jagarikin/status/1593771091738374144). We first came across the idea through
+[this post by @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). No videos, frames or other
+material from these posts are included in this repository; the graph view is this project's own code (MIT).
+
+## Analytics (live site only)
+
+`js/analytics.js` loads Cloudflare Web Analytics (`static.cloudflareinsights.com/beacon.min.js`, cookieless) and, only after
+the visitor accepts, Google Analytics 4 (`www.googletagmanager.com/gtag/js`). These scripts are loaded from their providers at
+run time on https://cube-solver.org; they are not part of this repository and are governed by the providers' terms.
+
 ## Trademark
 
 Rubik's Cube is a registered trademark of Spin Master Ltd. This project is not affiliated with, sponsored by

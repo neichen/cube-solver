@@ -325,3 +325,13 @@ body.mode-play .mv{cursor:default}
 .seo-links a:hover{border-color:var(--ink)}
 .seo-links a[aria-current="page"]{background:var(--ink);color:#fff;border-color:var(--ink)}
 .noscript{max-width:1440px;margin:12px auto;padding:12px 16px;border:2px solid var(--bad);border-radius:12px;color:var(--bad);font-weight:650}
+/* analytics consent banner (js/analytics.js): small card at the bottom, page gets extra bottom padding so nothing stays hidden */
+.consent{position:fixed;z-index:50;left:50%;bottom:10px;transform:translateX(-50%);width:min(560px,calc(100% - 20px));box-sizing:border-box;display:flex;align-items:center;gap:10px 14px;padding:10px 12px;background:var(--paper);color:var(--ink);border:1.5px solid var(--ink);border-radius:12px;box-shadow:3px 3px 0 var(--ink);font-size:13px;line-height:1.35}
+.consent[hidden]{display:none}
+.consent p{margin:0;flex:1 1 auto}
+.consent-btns{display:flex;gap:8px;flex:0 0 auto}
+.consent button{font:inherit;font-weight:600;padding:6px 12px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer;white-space:nowrap}
+.consent button.primary{background:var(--ink);color:#fff}
+@media (max-width:520px){.consent{flex-direction:column;align-items:stretch;font-size:12px;padding:8px 10px;bottom:6px;gap:6px}.consent-btns{justify-content:flex-end}.consent button{padding:5px 12px}}
+body.has-consent{padding-bottom:110px}
+.linkbtn{font:inherit;color:inherit;background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}

@@ -19,7 +19,7 @@ Pemecah teka-teki yang berjalan sepenuhnya di browser: kubus 2×2 sampai 15×15,
 ## Privasi
 
 - Gambar kamera dan foto yang diunggah hanya diproses di browser Anda. Semuanya tidak pernah diunggah atau disimpan di server.
-- Situs ini tidak memakai cookie, analitik, maupun skrip, font, atau pelacak pihak ketiga. Pengaturan seperti bahasa, suara, dan waktu terbaik hanya disimpan di penyimpanan lokal browser Anda.
+- Situs langsung menghitung kunjungan dengan Cloudflare Web Analytics, yang tidak memakai cookie dan tidak mengumpulkan data pribadi; skrip ini dimuat untuk semua pengunjung. Google Analytics 4 hanya dimuat setelah Anda menekan Terima di spanduk persetujuan (Consent Mode v2, dengan penyimpanan iklan, data pengguna iklan, personalisasi iklan, dan Google Signals dimatikan); jika Anda menolak, skrip itu tidak pernah dimuat, dan pilihan dapat diubah kapan saja lewat tautan “Pengaturan analitik” di footer. Pengaturan seperti bahasa, suara, waktu terbaik, dan pilihan analitik Anda hanya disimpan di penyimpanan lokal browser Anda. Analitik hanya menghitung tampilan halaman: status puzzle dan gambar kamera tidak pernah dikirim.
 - Situs ini berupa kumpulan file statis yang di-hosting di Cloudflare, yang menangani permintaan web biasa seperti layanan hosting pada umumnya.
 
 ## Menjalankan secara lokal
@@ -40,7 +40,7 @@ Kamera memerlukan konteks aman (`https://` atau `http://localhost`). Server loka
 npm test               # membangun halaman SEO, lalu menjalankan uji unit, pemecah, dan SEO (tanpa browser)
 npm run test:nxn       # pemeriksaan pemecah 4×4–15×15 (lebih lama)
 npm start &            # pengujian browser memerlukan server lokal
-npm run test:e2e       # juga: test:i18n, test:play, test:twisty, test:naming
+npm run test:e2e       # juga: test:i18n, test:play, test:twisty, test:naming, test:analytics
 ```
 
 ## Build dan deploy
@@ -54,14 +54,21 @@ Situs ini di-deploy sebagai aset statis Cloudflare Workers (lihat `deploy/`):
 ```bash
 export CLOUDFLARE_ACCOUNT_ID=<ID akun Anda>
 export CLOUDFLARE_API_TOKEN=<token API yang dapat mengubah Workers>   # atau jalankan: npx wrangler login
+export CF_BEACON_TOKEN=<token>               # opsional: token Cloudflare Web Analytics
+export GA_MEASUREMENT_ID=G-XXXXXXXXXX        # opsional: ID pengukuran GA4, hanya dimuat setelah persetujuan
 npm run deploy
 ```
 
 - `deploy/_headers` mengatur `Cross-Origin-Opener-Policy` dan `Cross-Origin-Embedder-Policy`, yang dibutuhkan pemecah WebAssembly multithread.
 - `deploy/worker.js` hanya melakukan pengalihan: `www` dan `*.workers.dev` ke domain utama, serta tautan lama `/?puzzle=…` ke jalur baru. File statis (`/js`, `/css`, `/img`, `/puzzles`, `/vendor`, dan seterusnya) dikirim langsung tanpa menjalankan Worker, jadi satu kali membuka halaman memakai satu permintaan Worker.
+- ID analitik tidak ada di repositori. `npm run build` membaca `CF_BEACON_TOKEN` dan `GA_MEASUREMENT_ID` dari environment (atau dari file `.env` yang diabaikan git, berisi baris `KEY=value`) dan hanya menuliskannya ke `dist/`. Jika tidak diatur, hasil build tidak memuat analitik, spanduk persetujuan, maupun pelacakan; analitik juga hanya berjalan di domain produksi.
 - Jika Anda men-deploy salinan sendiri, ubah `name` dan `routes` di `deploy/wrangler.toml` serta `baseUrl` di `seo/site.config.json`.
 
 Catatan pengembang (dalam bahasa Mandarin): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+
+## Ucapan terima kasih
+
+Tampilan graf yang menggambar kubus sebagai lingkaran-lingkaran terinspirasi dari animasi じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [versi asli (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [dengan kubus 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Kami pertama kali mengenal ide ini lewat [unggahan @UnicornBitcoin ini](https://x.com/UnicornBitcoin/status/2107652690113339684). Terima kasih untuk keduanya.
 
 ## Lisensi dan kredit
 
