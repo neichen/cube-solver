@@ -7,7 +7,7 @@
 // Everything else is served from the static assets as is.
 const CANONICAL_HOST = 'cube-solver.org';
 const LANGS = ['en', 'zh-Hans', 'zh-Hant', 'es', 'ar', 'pt', 'id', 'ms', 'fr', 'ja', 'ru', 'de'];
-const PUZZLES = new Set(['pyraminx', 'skewb'].concat(Array.from({ length: 14 }, (_, i) => 'cube' + (i + 2))));
+const PUZZLES = new Set(['pyraminx', 'skewb', 'megaminx'].concat(Array.from({ length: 14 }, (_, i) => 'cube' + (i + 2))));
 function matchLang(q) {
   if (!q) return null;
   const l = q.toLowerCase(), exact = LANGS.find(x => x.toLowerCase() === l);

@@ -2,17 +2,17 @@
 
 # Cube Solver Lab
 
-A puzzle solver that runs entirely in your browser: 2×2 to 15×15 cubes, Pyraminx and Skewb. Next to the 3D cube, a permutation graph shows every sticker as a node, so you can watch each turn move the stickers along circles.
+A puzzle solver that runs entirely in your browser: 2×2 to 15×15 cubes, Pyraminx, Skewb and Megaminx. Next to the 3D puzzle, a permutation graph shows every sticker as a node, so you can watch each turn move the stickers along circles.
 
 **Live site: https://cube-solver.org**
 
 ## Features
 
-- **Solve** 2×2 to 15×15 cubes, Pyraminx and Skewb. The 2×2, Pyraminx and Skewb get optimal solutions. The 3×3 uses the Kociemba two-phase algorithm (usually 19–21 moves). 5×5 and larger use gullicube compiled to multithreaded WebAssembly.
+- **Solve** 2×2 to 15×15 cubes, Pyraminx, Skewb and Megaminx. The 2×2, Pyraminx and Skewb get optimal solutions. The 3×3 uses the Kociemba two-phase algorithm (usually 19–21 moves). 5×5 and larger use gullicube compiled to multithreaded WebAssembly. The Megaminx uses a fast multi-phase method (about 120 moves HTM on average, not optimal).
 - **Enter a position** by painting a cube net, typing a scramble (`R U R' U2 …`, wide and slice moves included), scanning with your camera or uploading photos.
 - **Validation** that explains what is wrong: missing colors, a twisted corner, a flipped edge, parity and more.
 - **Step-by-step player** with a timeline, speed control and keyboard shortcuts, synchronized between the 3D view and the graph.
-- **Free play** on 2×2 to 15×15: turn layers by dragging or with the keyboard, with a timer, optional WCA inspection, undo/redo and best times.
+- **Free play** on every puzzle: turn layers by dragging or with the keyboard, with a timer, optional WCA inspection, undo/redo and best times. The Megaminx scramble follows the WCA (Pochmann) style.
 - **12 languages**, including full right-to-left layout for Arabic, plus one static, search-friendly page for each puzzle in each language.
 - **Synthesized sound**: every sound is generated live with the Web Audio API, and no audio files are shipped.
 
@@ -64,7 +64,7 @@ npm run deploy
 - The analytics IDs are not in the repository. `npm run build` reads `CF_BEACON_TOKEN` and `GA_MEASUREMENT_ID` from the environment (or from a gitignored `.env` file with `KEY=value` lines) and writes them only into `dist/`. If they are unset, the build has no analytics, no consent banner and no tracking; analytics also only runs on the production host.
 - If you deploy your own copy, change `name` and `routes` in `deploy/wrangler.toml` and `baseUrl` in `seo/site.config.json`.
 
-Developer notes (in Chinese): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+Developer notes: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Acknowledgements
 

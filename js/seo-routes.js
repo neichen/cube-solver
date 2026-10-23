@@ -5,12 +5,12 @@
   var LANGS = ['en', 'zh-Hans', 'zh-Hant', 'es', 'ar', 'pt', 'id', 'ms', 'fr', 'ja', 'ru', 'de'];
   var PUZZLES = [];
   for (var n = 2; n <= 15; n++) PUZZLES.push('cube' + n);
-  PUZZLES.push('pyraminx', 'skewb');
+  PUZZLES.push('pyraminx', 'skewb', 'megaminx');
   function slug(puzzle) {
     if (!puzzle) return '';
     var m = /^cube(\d+)$/.exec(puzzle);
     if (m) return m[1] + 'x' + m[1] + '-cube-solver';
-    if (puzzle === 'pyraminx' || puzzle === 'skewb') return puzzle + '-solver';
+    if (puzzle === 'pyraminx' || puzzle === 'skewb' || puzzle === 'megaminx') return puzzle + '-solver';
     return null;
   }
   function langDir(lang) { return lang === 'en' ? '' : lang.toLowerCase(); }

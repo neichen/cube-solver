@@ -112,6 +112,8 @@
     renderSolution(); lastTl = null; if (player.listeners.length) player._emit();
   }
   hs.addEventListener('change', function () { setHold(hs.value); });
+  // 计数说明：谜题可覆盖（五魔方的 HTM = 72° / 144° 面转都计 1）
+  function metricKey(m) { return (P.metricTitle && P.metricTitle[m]) || 'metric.' + m; }
   function metricLabel() { return solMeta && solMeta.metric ? solMeta.metric : null; }
   function renderSolution() {
     if (!solution) return;
@@ -119,7 +121,7 @@
     bind($('solHold'), function () { return t('solve.holdNote', { grip: hold.name }); });
     var m = metricLabel(), me = $('solMetric');
     me.hidden = !m || !solution.length;
-    if (m) { me.textContent = m; bind(me, 'metric.' + m, null, 'title'); }
+    if (m) { me.textContent = m; bind(me, metricKey(m), null, 'title'); }
   }
 
   // ---------------------------------------------------------------- 编辑器
@@ -220,7 +222,7 @@
       if (!P.isSolved(P.apply(start, solution))) { var ie = new Error('internal'); ie.i18n = { k: 'solve.internal', p: {} }; throw ie; }
       $('solutionBox').hidden = false;
       var n = solution.length;
-      bind($('solCount'), function () { return n ? t('solve.count', { n: n }) + t(r.optimal ? 'solve.optimal' : 'solve.nearOptimal') : t('solve.alreadySolved'); });
+      bind($('solCount'), function () { return n ? t('solve.count', { n: n }) + t(r.label || (r.optimal ? 'solve.optimal' : 'solve.nearOptimal')) : t('solve.alreadySolved'); });
       renderSolution();
       bind($('solverStatus'), function () {
         return t('solve.done', { ms: r.ms }) + (r.firstLength && r.firstLength > n ? t('solve.doneShortened', { first: r.firstLength, n: n }) : '') + (r.optimal && P.id === 'cube3' ? t('solve.doneOptimal') : '') + (r.note ? t(r.note.k, r.note.p) : '');
@@ -485,7 +487,7 @@
     var n = PL.countMoves(P, player.tl.moves), met = PL.metricFor(P), me = $('playMetric');
     $('playMoves').textContent = nf(n);
     bind($('playMoves'), function () { return nf(n); });
-    me.textContent = met; bind(me, 'metric.' + met, null, 'title');
+    me.textContent = met; bind(me, metricKey(met), null, 'title');
     var best = PL.getBest(P.id);
     bind($('playBest'), function () { return best != null ? t('play.best', { t: PL.formatTime(best) }) : t('play.bestNone'); });
     bind($('playStatus'), function () {
@@ -535,7 +537,7 @@
     } catch (er) { m.className = 'play-msg bad'; bind(m, 'play.badKey', { tok: r.tok }); }
   }
   function showPrefix() {
-    var p = (prefix.depth || '') + (prefix.wide ? '·w' : '') + (prefix.tip ? 'tip' : ''), m = $('playMsg');
+    var p = (prefix.depth || '') + (prefix.wide ? '·w' : '') + (prefix.tip ? 'tip' : '') + (prefix.dbl ? '2' : ''), m = $('playMsg');
     m.className = 'play-msg'; if (p) bind(m, 'play.keyBuf', { p: p }); else m.textContent = '';
   }
   $('btnPlayScramble').addEventListener('click', playScramble);

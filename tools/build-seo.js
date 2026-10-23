@@ -19,7 +19,7 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 const abs = p => BASE + p;
 function kind(pz) {
   if (!pz) return 'root';
-  if (pz === 'pyraminx' || pz === 'skewb') return pz;
+  if (pz === 'pyraminx' || pz === 'skewb' || pz === 'megaminx') return pz;
   const n = +pz.slice(4); return n <= 4 ? pz : 'big';
 }
 function params(lang, pz) {
@@ -32,6 +32,7 @@ function params(lang, pz) {
   if (k === 'cube4') Object.assign(p, { avg: nf(M.cube4.avg, 1), samples: String(M.cube4.samples), sec: String(M.cube4.sec) });
   if (k === 'pyraminx') p.avg = nf(M.pyraminx.avg, 1);
   if (k === 'skewb') Object.assign(p, { avg: nf(M.skewb.avg, 1), max: String(M.skewb.max) });
+  if (k === 'megaminx') Object.assign(p, { avg: nf(M.megaminx.avg, 1), max: String(M.megaminx.max), samples: String(M.megaminx.samples), ms: nf(M.megaminx.ms) });
   p.name = pz ? puzzleName(lang, pz) : '';
   return p;
 }
@@ -47,12 +48,12 @@ function tr(lang, key, p) {
   return s.replace(/\{(\w+)\}/g, (m, k) => { if (p[k] == null) throw new Error(`no param {${k}} for ${lang}:${key}`); return p[k]; });
 }
 // page-level key: cube2/3/4 have their own title/desc/h1, cube5–15 use the generic {n} templates
-const pageKey = pz => !pz ? 'root' : (/^cube[234]$/.test(pz) || pz === 'pyraminx' || pz === 'skewb') ? pz : 'cube';
+const pageKey = pz => !pz ? 'root' : (/^cube[234]$/.test(pz) || pz === 'pyraminx' || pz === 'skewb' || pz === 'megaminx') ? pz : 'cube';
 function ogImage(pz) { return CFG.ogImageDir + (pz ? R.slug(pz) : 'root') + '.png'; }
 
 function page(lang, pz) {
   const p = params(lang, pz), k = kind(pz), pk = pageKey(pz), t = key => tr(lang, key, p);
-  const twisty = k === 'pyraminx' || k === 'skewb', n = pz && pz.startsWith('cube') ? +pz.slice(4) : 0;
+  const twisty = k === 'pyraminx' || k === 'skewb' || k === 'megaminx', n = pz && pz.startsWith('cube') ? +pz.slice(4) : 0;
   const title = t('title.' + pk), desc = t('desc.' + pk), h1 = t('h1.' + pk), url = abs(R.path(lang, pz));
   // ---------- visible content ----------
   const steps = [pz ? t('howto.s1') : t('howto.s1Root'), twisty ? t('howto.s2twisty') : t('howto.s2cube'), t('howto.s3'), t('howto.s4')];
@@ -60,12 +61,12 @@ function page(lang, pz) {
   if (pz) {
     solverP = t('solver.' + (k === 'big' ? 'big' : k));
     notation = twisty ? t('notation.' + k) : [t('notation.cube'), n % 2 ? t('notation.mid') : null, n >= 4 ? t('notation.big') : null].filter(Boolean).join(' ');
-    graphP = twisty ? t('graph.twisty') : t('graph.cube');
+    graphP = k === 'megaminx' ? t('graph.megaminx') : twisty ? t('graph.twisty') : t('graph.cube');
   } else graphP = t('graph.root');
   const faq = [];
   if (!pz) faq.push([t('faq.puzzles.q'), t('faq.puzzles.a')]);
   faq.push([t('faq.free.q'), t('faq.free.a')]);
-  faq.push([t('faq.optimal.q'), !pz ? t('faq.optimal.root') : (k === 'cube2' || twisty) ? t('faq.optimal.yes') : t('faq.optimal.' + k)]);
+  faq.push([t('faq.optimal.q'), !pz ? t('faq.optimal.root') : (k === 'cube2' || (twisty && k !== 'megaminx')) ? t('faq.optimal.yes') : t('faq.optimal.' + k)]);
   faq.push([pz ? t('faq.scan.q') : t('faq.scan.qRoot'), !pz ? t('faq.scan.root') : twisty ? t('faq.scan.twisty') : t('faq.scan.cube')]);
   const links = R.PUZZLES.map(q => [R.path(lang, q), tr(lang, 'h1.' + pageKey(q), params(lang, q)), q]);
   const linkList = `<ul class="seo-links">${(pz ? [[R.path(lang, null), t('links.home'), null]] : []).concat(links).map(([h, txt, q]) =>

@@ -2,7 +2,7 @@
   "name": "cube-solver",
   "version": "1.0.0",
   "private": true,
-  "description": "Browser-only puzzle solver for 2×2–15×15 cubes, Pyraminx and Skewb, with a permutation-graph visualization",
+  "description": "Browser-only puzzle solver for 2×2–15×15 cubes, Pyraminx, Skewb and Megaminx, with a permutation-graph visualization",
   "scripts": {
     "start": "node tests/serve.js 8765",
     "build": "node tools/build-dist.js",
@@ -10,7 +10,7 @@
     "build:seo-images": "node tools/build-seo-images.js http://localhost:8765",
     "build:tables": "node tools/build-tables.js",
     "pretest": "node tools/build-seo.js",
-    "test": "node tests/model.test.js && node tests/plugin.test.js && node tests/worker.test.js && node tests/audio.test.js && node tests/i18n.unit.test.js && node tests/tables.test.js && node tests/play.unit.test.js && node tests/twisty.test.js 200 && node tests/scan-synth.test.js 10 2,3,4,5 && node tests/analytics.unit.test.js && node tests/seo.test.js",
+    "test": "node tests/model.test.js && node tests/plugin.test.js && node tests/worker.test.js && node tests/audio.test.js && node tests/i18n.unit.test.js && node tests/tables.test.js && node tests/play.unit.test.js && node tests/twisty.test.js 200 && node tests/megaminx.test.js && node tests/scan-synth.test.js 10 2,3,4,5 && node tests/analytics.unit.test.js && node tests/seo.test.js",
     "test:nxn": "node tests/nxn.test.js 12 && node tests/gullicube.test.js 5,7,10,15 both",
     "test:scan": "node tests/scan-synth.test.js 40 2,3,4,5,6,7,9,11,15",
     "test:e2e": "node tests/e2e.test.js http://localhost:8765/",

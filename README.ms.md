@@ -2,17 +2,17 @@
 
 # Cube Solver Lab
 
-Penyelesai teka-teki yang berjalan sepenuhnya dalam pelayar anda: kiub 2×2 hingga 15×15, Pyraminx dan Skewb. Di sebelah kiub 3D, graf pilih atur memaparkan setiap pelekat sebagai nod, jadi anda dapat melihat setiap pusingan menggerakkan pelekat di sepanjang bulatan.
+Penyelesai teka-teki yang berjalan sepenuhnya dalam pelayar anda: kiub 2×2 hingga 15×15, Pyraminx, Skewb dan Megaminx. Di sebelah model 3D, graf pilih atur memaparkan setiap pelekat sebagai nod, jadi anda dapat melihat setiap pusingan menggerakkan pelekat di sepanjang bulatan.
 
 **Laman web: https://cube-solver.org**
 
 ## Ciri-ciri
 
-- **Selesaikan** kiub 2×2 hingga 15×15, Pyraminx dan Skewb. 2×2, Pyraminx dan Skewb mendapat penyelesaian optimum. 3×3 menggunakan algoritma dua fasa Kociemba (biasanya 19–21 gerakan). 5×5 ke atas menggunakan gullicube yang dikompil kepada WebAssembly berbilang bebenang.
+- **Selesaikan** kiub 2×2 hingga 15×15, Pyraminx, Skewb dan Megaminx. 2×2, Pyraminx dan Skewb mendapat penyelesaian optimum. 3×3 menggunakan algoritma dua fasa Kociemba (biasanya 19–21 gerakan). 5×5 ke atas menggunakan gullicube yang dikompil kepada WebAssembly berbilang bebenang. Megaminx menggunakan kaedah pelbagai fasa yang pantas (purata kira-kira 120 gerakan HTM, bukan optimum).
 - **Masukkan kedudukan** dengan mewarnakan bentangan kiub, menaip kocakan (`R U R' U2 …`, termasuk gerakan lebar dan lapisan tengah), mengimbas dengan kamera atau memuat naik foto.
 - **Semakan** yang menerangkan kesilapannya: warna tidak cukup, bucu terpulas, sisi terbalik, pariti dan lain-lain.
 - **Pemain langkah demi langkah** dengan garis masa, kawalan kelajuan dan pintasan papan kekunci, diselaraskan antara paparan 3D dan graf.
-- **Main bebas** 2×2 hingga 15×15: pusingkan lapisan dengan menyeret atau papan kekunci, dengan pemasa, pemeriksaan WCA pilihan, buat asal/buat semula dan masa terbaik.
+- **Main bebas** pada semua teka-teki: pusingkan lapisan dengan menyeret atau papan kekunci, dengan pemasa, pemeriksaan WCA pilihan, buat asal/buat semula dan masa terbaik. Kacauan Megaminx mengikut gaya WCA (Pochmann).
 - **12 bahasa**, termasuk susun atur kanan-ke-kiri sepenuhnya untuk bahasa Arab, serta satu halaman statik mesra enjin carian bagi setiap teka-teki dalam setiap bahasa.
 - **Bunyi sintesis**: semua bunyi dijana secara langsung dengan Web Audio API, tanpa sebarang fail audio.
 
@@ -64,7 +64,7 @@ npm run deploy
 - ID analitik tiada dalam repositori. `npm run build` membaca `CF_BEACON_TOKEN` dan `GA_MEASUREMENT_ID` daripada persekitaran (atau fail `.env` yang diabaikan git, dengan baris `KEY=value`) dan hanya menulisnya ke `dist/`. Jika tidak ditetapkan, binaan tidak mengandungi analitik, sepanduk persetujuan atau penjejakan; analitik juga hanya berjalan pada domain pengeluaran.
 - Jika anda melancarkan salinan sendiri, tukar `name` dan `routes` dalam `deploy/wrangler.toml` serta `baseUrl` dalam `seo/site.config.json`.
 
-Nota pembangun (dalam bahasa Cina): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+Nota pembangun: [docs/DEVELOPMENT.ms.md](docs/DEVELOPMENT.ms.md).
 
 ## Penghargaan
 

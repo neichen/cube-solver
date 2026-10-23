@@ -2,17 +2,17 @@
 
 # Cube Solver Lab
 
-Un solveur de casse-tête qui fonctionne entièrement dans votre navigateur : cubes du 2×2 au 15×15, Pyraminx et Skewb. À côté du cube en 3D, un graphe de permutations représente chaque facette par un nœud : vous voyez chaque mouvement déplacer les facettes le long de cercles.
+Un solveur de casse-tête qui fonctionne entièrement dans votre navigateur : cubes du 2×2 au 15×15, Pyraminx, Skewb et Megaminx. À côté du modèle en 3D, un graphe de permutations représente chaque facette par un nœud : vous voyez chaque mouvement déplacer les facettes le long de cercles.
 
 **Site en ligne: https://cube-solver.org**
 
 ## Fonctionnalités
 
-- **Résolution** des cubes du 2×2 au 15×15, du Pyraminx et du Skewb. Le 2×2, le Pyraminx et le Skewb obtiennent des solutions optimales. Le 3×3 utilise l'algorithme en deux phases de Kociemba (généralement 19 à 21 mouvements). À partir du 5×5, c'est gullicube, compilé en WebAssembly multithread.
+- **Résolution** des cubes du 2×2 au 15×15, du Pyraminx, du Skewb et du Megaminx. Le 2×2, le Pyraminx et le Skewb obtiennent des solutions optimales. Le 3×3 utilise l'algorithme en deux phases de Kociemba (généralement 19 à 21 mouvements). À partir du 5×5, c'est gullicube, compilé en WebAssembly multithread. Le Megaminx utilise une méthode rapide en plusieurs phases (environ 120 mouvements HTM en moyenne ; non optimale).
 - **Saisie d'une position** en coloriant le patron du cube, en tapant un mélange (`R U R' U2 …`, mouvements larges et de tranche compris), en scannant avec la caméra ou en envoyant des photos.
 - **Vérification** qui explique ce qui ne va pas : couleurs manquantes, coin tourné, arête retournée, parité, etc.
 - **Lecteur pas à pas** avec frise chronologique, réglage de la vitesse et raccourcis clavier, synchronisé entre la vue 3D et le graphe.
-- **Jeu libre** du 2×2 au 15×15 : tournez les couches à la souris, au doigt ou au clavier, avec chronomètre, inspection WCA facultative, annuler/rétablir et meilleurs temps.
+- **Jeu libre** sur tous les casse-tête : tournez les couches à la souris, au doigt ou au clavier, avec chronomètre, inspection WCA facultative, annuler/rétablir et meilleurs temps. Le mélange du Megaminx suit le style WCA (Pochmann).
 - **12 langues**, dont une mise en page entièrement de droite à gauche pour l'arabe, et une page statique adaptée aux moteurs de recherche pour chaque casse-tête dans chaque langue.
 - **Son synthétisé** : tous les sons sont générés en direct avec la Web Audio API, aucun fichier audio n'est fourni.
 
@@ -64,7 +64,7 @@ npm run deploy
 - Les identifiants de mesure d'audience ne sont pas dans le dépôt. `npm run build` lit `CF_BEACON_TOKEN` et `GA_MEASUREMENT_ID` dans l'environnement (ou dans un fichier `.env` ignoré par git, lignes `CLÉ=valeur`) et ne les écrit que dans `dist/`. S'ils ne sont pas définis, le build ne contient ni mesure d'audience, ni bandeau de consentement, ni pistage ; la mesure ne fonctionne de toute façon que sur le domaine de production.
 - Pour déployer votre propre copie, modifiez `name` et `routes` dans `deploy/wrangler.toml` ainsi que `baseUrl` dans `seo/site.config.json`.
 
-Notes pour les développeurs (en chinois) : [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+Notes pour les développeurs : [docs/DEVELOPMENT.fr.md](docs/DEVELOPMENT.fr.md).
 
 ## Remerciements
 

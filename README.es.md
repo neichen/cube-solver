@@ -2,17 +2,17 @@
 
 # Cube Solver Lab
 
-Un resolvedor de rompecabezas que funciona por completo en el navegador: cubos de 2×2 a 15×15, Pyraminx y Skewb. Junto al cubo en 3D, un grafo de permutaciones muestra cada pegatina como un nodo, para que veas cómo cada giro mueve las pegatinas a lo largo de círculos.
+Un resolvedor de rompecabezas que funciona por completo en el navegador: cubos de 2×2 a 15×15, Pyraminx, Skewb y Megaminx. Junto al modelo en 3D, un grafo de permutaciones muestra cada pegatina como un nodo, para que veas cómo cada giro mueve las pegatinas a lo largo de círculos.
 
 **Sitio web: https://cube-solver.org**
 
 ## Funciones
 
-- **Resuelve** cubos de 2×2 a 15×15, Pyraminx y Skewb. El 2×2, el Pyraminx y el Skewb obtienen soluciones óptimas. El 3×3 usa el algoritmo de dos fases de Kociemba (normalmente 19–21 movimientos). Del 5×5 en adelante se usa gullicube compilado a WebAssembly multihilo.
+- **Resuelve** cubos de 2×2 a 15×15, Pyraminx, Skewb y Megaminx. El 2×2, el Pyraminx y el Skewb obtienen soluciones óptimas. El 3×3 usa el algoritmo de dos fases de Kociemba (normalmente 19–21 movimientos). Del 5×5 en adelante se usa gullicube compilado a WebAssembly multihilo. El Megaminx usa un método rápido por fases (unos 120 movimientos HTM de media; no es óptimo).
 - **Introduce una posición** pintando el desarrollo del cubo, escribiendo una mezcla (`R U R' U2 …`, con movimientos anchos y de capa central), escaneando con la cámara o subiendo fotos.
 - **Validación** que explica qué falla: colores que faltan, una esquina girada, una arista volteada, paridad y más.
 - **Reproductor paso a paso** con línea de tiempo, control de velocidad y atajos de teclado, sincronizado entre la vista 3D y el grafo.
-- **Juego libre** del 2×2 al 15×15: gira capas arrastrando o con el teclado, con cronómetro, inspección WCA opcional, deshacer/rehacer y mejores tiempos.
+- **Juego libre** en todos los rompecabezas: gira capas arrastrando o con el teclado, con cronómetro, inspección WCA opcional, deshacer/rehacer y mejores tiempos. La mezcla del Megaminx sigue el estilo WCA (Pochmann).
 - **12 idiomas**, con diseño completo de derecha a izquierda para el árabe, y una página estática optimizada para buscadores para cada rompecabezas en cada idioma.
 - **Sonido sintetizado**: todos los sonidos se generan en directo con la Web Audio API; no se incluye ningún archivo de audio.
 
@@ -64,7 +64,7 @@ npm run deploy
 - Los ID de analítica no están en el repositorio. `npm run build` lee `CF_BEACON_TOKEN` y `GA_MEASUREMENT_ID` del entorno (o de un archivo `.env` ignorado por git, con líneas `CLAVE=valor`) y los escribe solo en `dist/`. Si no están definidos, la compilación no lleva analítica, ni aviso de consentimiento, ni rastreo; además, la analítica solo funciona en el dominio de producción.
 - Si despliegas tu propia copia, cambia `name` y `routes` en `deploy/wrangler.toml` y `baseUrl` en `seo/site.config.json`.
 
-Notas para desarrolladores (en chino): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+Notas para desarrolladores: [docs/DEVELOPMENT.es.md](docs/DEVELOPMENT.es.md).
 
 ## Agradecimientos
 

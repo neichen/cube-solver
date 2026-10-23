@@ -45,7 +45,10 @@
     var lay = this.layout = P.graphLayout(), self = this;
     var R = lay.nodeRadius;
     // 图的包围盒（节点 + 圆）
-    var xs = lay.nodes.map(function (p) { return p[0]; }), ys = lay.nodes.map(function (p) { return p[1]; });
+    // lay.hidden：不画的节点（例如五魔方球极投影中投到无穷远的 D 中心），不计入包围盒
+    var hid = {}; (lay.hidden || []).forEach(function (i) { hid[i] = 1; });
+    var vis = lay.nodes.filter(function (_, i) { return !hid[i]; });
+    var xs = vis.map(function (p) { return p[0]; }), ys = vis.map(function (p) { return p[1]; });
     (lay.circles || []).forEach(function (c) { xs.push(c.cx - c.r, c.cx + c.r); ys.push(c.cy - c.r, c.cy + c.r); });
     var pad = R + (lay.nodeStroke || 0) + (lay.trackWidth || 0);
     this.bbox = [Math.min.apply(null, xs) - pad, Math.min.apply(null, ys) - pad, Math.max.apply(null, xs) + pad, Math.max.apply(null, ys) + pad];
@@ -91,7 +94,9 @@
     });
 
     this.nodeEls = lay.nodes.map(function (p, i) {
-      return el('circle', { cx: p[0], cy: p[1], r: R, class: 'node', 'data-i': i }, gN);
+      var c = el('circle', { cx: p[0], cy: p[1], r: R, class: 'node', 'data-i': i }, gN);
+      if (hid[i]) c.style.display = 'none';
+      return c;
     });
     this.trackById = {}; P.tracks.forEach(function (tr) { self.trackById[tr.id] = tr; });
     this.fills = []; this.moved = null; this.baseDirs = {};

@@ -2,17 +2,17 @@
 
 # Cube Solver Lab
 
-Ein Puzzle-Löser, der komplett im Browser läuft: Würfel von 2×2 bis 15×15, Pyraminx und Skewb. Neben dem 3D-Würfel zeigt ein Permutationsgraph jeden Sticker als Knoten – so sieht man, wie jede Drehung die Sticker entlang von Kreisen bewegt.
+Ein Puzzle-Löser, der komplett im Browser läuft: Würfel von 2×2 bis 15×15, Pyraminx, Skewb und Megaminx. Neben dem 3D-Modell zeigt ein Permutationsgraph jeden Sticker als Knoten – so sieht man, wie jede Drehung die Sticker entlang von Kreisen bewegt.
 
 **Website: https://cube-solver.org**
 
 ## Funktionen
 
-- **Lösen** von Würfeln von 2×2 bis 15×15, Pyraminx und Skewb. 2×2, Pyraminx und Skewb werden optimal gelöst. Der 3×3 nutzt den Zwei-Phasen-Algorithmus von Kociemba (meist 19–21 Züge). Ab 5×5 kommt gullicube zum Einsatz, kompiliert zu Multithread-WebAssembly.
+- **Lösen** von Würfeln von 2×2 bis 15×15, Pyraminx, Skewb und Megaminx. 2×2, Pyraminx und Skewb werden optimal gelöst. Der 3×3 nutzt den Zwei-Phasen-Algorithmus von Kociemba (meist 19–21 Züge). Ab 5×5 kommt gullicube zum Einsatz, kompiliert zu Multithread-WebAssembly. Der Megaminx nutzt ein schnelles Mehrphasenverfahren (im Schnitt etwa 120 Züge HTM, nicht optimal).
 - **Stellung eingeben**: Würfelnetz einfärben, Verdrehung eintippen (`R U R' U2 …`, auch Wide- und Slice-Züge), mit der Kamera scannen oder Fotos hochladen.
 - **Prüfung** mit Erklärung, was nicht stimmt: fehlende Farben, verdrehte Ecke, gekippte Kante, Parität und mehr.
 - **Schritt-für-Schritt-Wiedergabe** mit Zeitleiste, Geschwindigkeitsregler und Tastenkürzeln, synchron zwischen 3D-Ansicht und Graph.
-- **Freies Spielen** von 2×2 bis 15×15: Schichten per Ziehen oder Tastatur drehen, mit Timer, optionaler WCA-Inspektion, Rückgängig/Wiederholen und Bestzeiten.
+- **Freies Spielen** mit allen Puzzles: Schichten per Ziehen oder Tastatur drehen, mit Timer, optionaler WCA-Inspektion, Rückgängig/Wiederholen und Bestzeiten. Das Megaminx-Scramble folgt dem WCA-Stil (Pochmann).
 - **12 Sprachen**, mit vollständigem Rechts-nach-links-Layout für Arabisch, und eine statische, suchmaschinenfreundliche Seite für jedes Puzzle in jeder Sprache.
 - **Synthetischer Klang**: Alle Töne werden live mit der Web Audio API erzeugt; es werden keine Audiodateien mitgeliefert.
 
@@ -64,7 +64,7 @@ npm run deploy
 - Die Analyse-IDs stehen nicht im Repository. `npm run build` liest `CF_BEACON_TOKEN` und `GA_MEASUREMENT_ID` aus der Umgebung (oder aus einer von git ignorierten `.env`-Datei mit Zeilen `KEY=Wert`) und schreibt sie nur nach `dist/`. Sind sie nicht gesetzt, enthält der Build keine Analyse, keinen Einwilligungshinweis und kein Tracking; die Analyse läuft außerdem nur auf der Produktionsdomain.
 - Wer eine eigene Kopie betreibt, ändert `name` und `routes` in `deploy/wrangler.toml` sowie `baseUrl` in `seo/site.config.json`.
 
-Hinweise für Entwickler (auf Chinesisch): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+Hinweise für Entwickler: [docs/DEVELOPMENT.de.md](docs/DEVELOPMENT.de.md).
 
 ## Danksagung
 

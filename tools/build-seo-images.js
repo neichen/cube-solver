@@ -28,7 +28,7 @@ function ico(png32) {   // single-image ICO wrapping a PNG (supported by all cur
 (async () => {
   const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-angle=swiftshader'] });
   const p = await b.newPage();
-  for (const [name, size, pad, bg] of [['icon-192.png', 192, 2, null], ['icon-512.png', 512, 2, null], ['icon-maskable-512.png', 512, 7, '#FBF9F5'], ['apple-touch-icon.png', 180, 4, '#FBF9F5'], ['_32.png', 32, 1, null]]) {
+  if (!process.env.OG_ONLY) for (const [name, size, pad, bg] of [['icon-192.png', 192, 2, null], ['icon-512.png', 512, 2, null], ['icon-maskable-512.png', 512, 7, '#FBF9F5'], ['apple-touch-icon.png', 180, 4, '#FBF9F5'], ['_32.png', 32, 1, null]]) {
     await p.setViewportSize({ width: size, height: size });
     await p.setContent(`<html><body style="margin:0;background:${bg || 'transparent'}">${logo(pad).replace('<svg ', `<svg width="${size}" height="${size}" `)}</body></html>`);
     const buf = await p.screenshot({ omitBackground: !bg, clip: { x: 0, y: 0, width: size, height: size } });
@@ -36,24 +36,25 @@ function ico(png32) {   // single-image ICO wrapping a PNG (supported by all cur
   }
   // app screenshots of the stage (3D + permutation graph) for every puzzle
   const app = await b.newPage({ viewport: { width: 1360, height: 900 }, deviceScaleFactor: 1 });
+  const ONLY = process.env.OG_ONLY ? process.env.OG_ONLY.split(',') : null, want = pz => !ONLY || ONLY.includes(pz || 'root');
   const shots = {};
-  for (const pz of [null].concat(R.PUZZLES)) {
+  for (const pz of [null].concat(R.PUZZLES).filter(want)) {
     await app.goto(B + R.path('en', pz) + '?start=scrambled');
     await app.waitForFunction(() => window.app && document.querySelector('#graph svg'), null, { timeout: 30000 });
     await app.waitForTimeout(pz && /cube1[0-5]/.test(pz) ? 2500 : 1500);
     shots[pz || 'root'] = { v: (await (await app.$('#view3d')).screenshot()).toString('base64'), g: (await (await app.$('#graph')).screenshot()).toString('base64') };
   }
   const og = await b.newPage({ viewport: { width: 1200, height: 630 } });
-  for (const pz of [null].concat(R.PUZZLES)) {
+  for (const pz of [null].concat(R.PUZZLES).filter(want)) {
     const n = pz && pz.startsWith('cube') ? +pz.slice(4) : 0;
-    const big = !pz ? 'Rubik’s Cube Solver' : n ? `${n}×${n} Cube Solver` : pz === 'pyraminx' ? 'Pyraminx Solver' : 'Skewb Solver';
-    const sub = !pz ? '2×2 – 15×15 · Pyraminx · Skewb' : n === 2 || !n ? 'Proven optimal solutions' : n === 3 ? 'Near-optimal, ~20 moves' : 'Step-by-step solution';
+    const big = !pz ? 'Rubik’s Cube Solver' : n ? `${n}×${n} Cube Solver` : pz === 'pyraminx' ? 'Pyraminx Solver' : pz === 'megaminx' ? 'Megaminx Solver' : 'Skewb Solver';
+    const sub = !pz ? '2×2 – 15×15 · Pyraminx · Skewb · Megaminx' : pz === 'megaminx' ? 'Fast multi-phase solution' : n === 2 || !n ? 'Proven optimal solutions' : n === 3 ? 'Near-optimal, ~20 moves' : 'Step-by-step solution';
     await og.setContent(`<html><body style="margin:0;width:1200px;height:630px;background:#FBF9F5;font-family:system-ui,'Segoe UI',Roboto,sans-serif;color:#151515;overflow:hidden;position:relative">
       <div style="position:absolute;left:56px;top:56px;width:500px">
         <div style="display:flex;align-items:center;gap:16px;font-size:26px;font-weight:700">${logo(1).replace('<svg ', '<svg width="56" height="56" ')} Cube Solver Lab</div>
         <div style="margin-top:52px;font-size:${big.length > 16 ? 60 : 68}px;line-height:1.05;font-weight:850;letter-spacing:-1px">${big}</div>
         <div style="margin-top:22px;font-size:30px;color:#ff5800;font-weight:700">${sub}</div>
-        <div style="margin-top:26px;font-size:24px;line-height:1.4;color:#45453f">${pz === 'pyraminx' || pz === 'skewb' ? 'Paint or type the scramble' : 'Paint or scan with the camera'} · 3D<br>Permutation graph · Free, in your browser</div>
+        <div style="margin-top:26px;font-size:24px;line-height:1.4;color:#45453f">${pz === 'pyraminx' || pz === 'skewb' || pz === 'megaminx' ? 'Paint or type the scramble' : 'Paint or scan with the camera'} · 3D<br>Permutation graph · Free, in your browser</div>
       </div>
       <div style="position:absolute;right:-30px;top:40px;width:640px;height:550px;border:3px solid #151515;border-radius:22px;box-shadow:8px 8px 0 #151515;overflow:hidden;background:#fffffc">
         <img src="data:image/png;base64,${shots[pz || 'root'].v}" style="position:absolute;left:0;top:30px;width:340px;height:490px;object-fit:contain">

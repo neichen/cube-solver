@@ -67,7 +67,7 @@
   function randomState(P, rnd) {
     rnd = rnd || Math.random;
     if (P.randomState) return P.randomState(rnd);
-    var n = P.n || 3; if (n !== 2 && n !== 3) return null;
+    var n = P.n; if (n !== 2 && n !== 3) return null;   // 没有 n 的谜题（如五魔方）不走魔方的生成器
     var X = getX(), PC = X.pieces(n), S = P.solvedState(), st = S.slice();
     var C = PC.corners, cp = shuffle(C.map(function (_, i) { return i; }), rnd), co = [], sum = 0;
     for (var i = 0; i < C.length - 1; i++) { co[i] = rndInt(rnd, 3); sum += co[i]; }
@@ -93,6 +93,9 @@
     if (P && P.playKeys) {
       var K = P.playKeys, LL = key.toUpperCase();
       if (K.tip && (key === 't' || key === 'T')) return { prefix: { depth: '', wide: false, tip: !prefix.tip } };
+      // 五魔方：K.map 把按键字母映射到面名（I→BL 等），前缀 2 表示 144° 转动
+      if (K.double && key === '2') return { prefix: { depth: '', wide: false, dbl: !prefix.dbl } };
+      if (K.map) { if (key.length === 1 && K.map[LL]) return { tok: K.map[LL] + (prefix.dbl ? '2' : '') + (shift ? "'" : '') }; return null; }
       if (key.length === 1 && K.letters.indexOf(LL) >= 0) return { tok: (prefix.tip ? LL.toLowerCase() : LL) + (shift ? "'" : '') };
       return null;
     }

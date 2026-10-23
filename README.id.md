@@ -2,17 +2,17 @@
 
 # Cube Solver Lab
 
-Pemecah teka-teki yang berjalan sepenuhnya di browser: kubus 2×2 sampai 15×15, Pyraminx, dan Skewb. Di samping kubus 3D, graf permutasi menampilkan setiap stiker sebagai simpul, sehingga Anda bisa melihat setiap putaran menggerakkan stiker di sepanjang lingkaran.
+Pemecah teka-teki yang berjalan sepenuhnya di browser: kubus 2×2 sampai 15×15, Pyraminx, Skewb, dan Megaminx. Di samping model 3D, graf permutasi menampilkan setiap stiker sebagai simpul, sehingga Anda bisa melihat setiap putaran menggerakkan stiker di sepanjang lingkaran.
 
 **Situs: https://cube-solver.org**
 
 ## Fitur
 
-- **Memecahkan** kubus 2×2 sampai 15×15, Pyraminx, dan Skewb. 2×2, Pyraminx, dan Skewb mendapat solusi optimal. 3×3 memakai algoritme dua fase Kociemba (biasanya 19–21 langkah). 5×5 ke atas memakai gullicube yang dikompilasi ke WebAssembly multithread.
+- **Memecahkan** kubus 2×2 sampai 15×15, Pyraminx, Skewb, dan Megaminx. 2×2, Pyraminx, dan Skewb mendapat solusi optimal. 3×3 memakai algoritme dua fase Kociemba (biasanya 19–21 langkah). 5×5 ke atas memakai gullicube yang dikompilasi ke WebAssembly multithread. Megaminx memakai metode multi-fase yang cepat (rata-rata sekitar 120 langkah HTM, tidak optimal).
 - **Masukkan posisi** dengan mewarnai jaring kubus, mengetik acakan (`R U R' U2 …`, termasuk gerakan lebar dan lapisan tengah), memindai dengan kamera, atau mengunggah foto.
 - **Validasi** yang menjelaskan kesalahannya: warna kurang, sudut terpuntir, rusuk terbalik, paritas, dan lainnya.
 - **Pemutar langkah demi langkah** dengan linimasa, pengatur kecepatan, dan pintasan keyboard, tersinkron antara tampilan 3D dan graf.
-- **Main bebas** 2×2 sampai 15×15: putar lapisan dengan menyeret atau keyboard, dengan pengatur waktu, inspeksi WCA opsional, urungkan/ulangi, dan waktu terbaik.
+- **Main bebas** di semua teka-teki: putar lapisan dengan menyeret atau keyboard, dengan pengatur waktu, inspeksi WCA opsional, urungkan/ulangi, dan waktu terbaik. Acakan Megaminx mengikuti gaya WCA (Pochmann).
 - **12 bahasa**, termasuk tata letak kanan-ke-kiri penuh untuk bahasa Arab, serta satu halaman statis yang ramah mesin pencari untuk setiap teka-teki dalam setiap bahasa.
 - **Suara sintetis**: semua suara dibuat langsung dengan Web Audio API, tanpa file audio apa pun.
 
@@ -64,7 +64,7 @@ npm run deploy
 - ID analitik tidak ada di repositori. `npm run build` membaca `CF_BEACON_TOKEN` dan `GA_MEASUREMENT_ID` dari environment (atau dari file `.env` yang diabaikan git, berisi baris `KEY=value`) dan hanya menuliskannya ke `dist/`. Jika tidak diatur, hasil build tidak memuat analitik, spanduk persetujuan, maupun pelacakan; analitik juga hanya berjalan di domain produksi.
 - Jika Anda men-deploy salinan sendiri, ubah `name` dan `routes` di `deploy/wrangler.toml` serta `baseUrl` di `seo/site.config.json`.
 
-Catatan pengembang (dalam bahasa Mandarin): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+Catatan pengembang: [docs/DEVELOPMENT.id.md](docs/DEVELOPMENT.id.md).
 
 ## Ucapan terima kasih
 

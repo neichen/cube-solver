@@ -2,17 +2,17 @@
 
 # Cube Solver Lab
 
-Um resolvedor de quebra-cabeças que roda inteiramente no navegador: cubos de 2×2 a 15×15, Pyraminx e Skewb. Ao lado do cubo em 3D, um grafo de permutações mostra cada adesivo como um nó, para você ver cada giro movendo os adesivos ao longo de círculos.
+Um resolvedor de quebra-cabeças que roda inteiramente no navegador: cubos de 2×2 a 15×15, Pyraminx, Skewb e Megaminx. Ao lado do modelo em 3D, um grafo de permutações mostra cada adesivo como um nó, para você ver cada giro movendo os adesivos ao longo de círculos.
 
 **Site: https://cube-solver.org**
 
 ## Recursos
 
-- **Resolve** cubos de 2×2 a 15×15, Pyraminx e Skewb. O 2×2, o Pyraminx e o Skewb recebem soluções ótimas. O 3×3 usa o algoritmo de duas fases de Kociemba (normalmente 19–21 movimentos). Do 5×5 para cima é usado o gullicube compilado para WebAssembly multithread.
+- **Resolve** cubos de 2×2 a 15×15, Pyraminx, Skewb e Megaminx. O 2×2, o Pyraminx e o Skewb recebem soluções ótimas. O 3×3 usa o algoritmo de duas fases de Kociemba (normalmente 19–21 movimentos). Do 5×5 para cima é usado o gullicube compilado para WebAssembly multithread. O Megaminx usa um método rápido em várias fases (cerca de 120 movimentos HTM em média; não é ótimo).
 - **Informe uma posição** pintando a planificação do cubo, digitando um embaralhamento (`R U R' U2 …`, com movimentos largos e de camada do meio), escaneando com a câmera ou enviando fotos.
 - **Validação** que explica o que está errado: cores faltando, uma quina torcida, um meio invertido, paridade e mais.
 - **Player passo a passo** com linha do tempo, controle de velocidade e atalhos de teclado, sincronizado entre a visão 3D e o grafo.
-- **Modo livre** do 2×2 ao 15×15: gire camadas arrastando ou pelo teclado, com cronômetro, inspeção WCA opcional, desfazer/refazer e melhores tempos.
+- **Modo livre** em todos os quebra-cabeças: gire camadas arrastando ou pelo teclado, com cronômetro, inspeção WCA opcional, desfazer/refazer e melhores tempos. O embaralhamento do Megaminx segue o estilo WCA (Pochmann).
 - **12 idiomas**, com layout completo da direita para a esquerda em árabe, e uma página estática otimizada para buscadores para cada quebra-cabeça em cada idioma.
 - **Som sintetizado**: todos os sons são gerados ao vivo com a Web Audio API, e nenhum arquivo de áudio é incluído.
 
@@ -64,7 +64,7 @@ npm run deploy
 - Os IDs de análise não estão no repositório. `npm run build` lê `CF_BEACON_TOKEN` e `GA_MEASUREMENT_ID` do ambiente (ou de um arquivo `.env` ignorado pelo git, com linhas `CHAVE=valor`) e os grava apenas em `dist/`. Sem eles, o build não tem análise, aviso de consentimento nem rastreamento; além disso, a análise só roda no domínio de produção.
 - Se você publicar sua própria cópia, altere `name` e `routes` em `deploy/wrangler.toml` e `baseUrl` em `seo/site.config.json`.
 
-Notas para desenvolvedores (em chinês): [docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md).
+Notas para desenvolvedores: [docs/DEVELOPMENT.pt.md](docs/DEVELOPMENT.pt.md).
 
 ## Agradecimentos
 
