@@ -1,0 +1,22 @@
+663c663,665
+<   Cube.prototype.solveUpright = function(maxDepth = 22) {
+---
+>   Cube.prototype.solveUpright = function(maxDepth = 22, deadline = 0) {
+>     // [CubeLab patch] 可选截止时间（ms 时间戳），超时抛出 'timeout'，用于在 Worker 中迭代缩短解法
+>     var tick = 0, checkTime = function() { if (deadline && ((++tick) & 1023) === 0 && Date.now() > deadline) { throw new Error('timeout'); } };
+828a831
+>       checkTime();
+872a876
+>       checkTime();
+907a912,914
+>     if (solution === null) {
+>       throw new Error('nosolution');
+>     }
+932c939
+<   Cube.prototype.solve = function(maxDepth = 22) {
+---
+>   Cube.prototype.solve = function(maxDepth = 22, deadline = 0) {
+938c945
+<     uprightSolution = clone.solveUpright(maxDepth);
+---
+>     uprightSolution = clone.solveUpright(maxDepth, deadline);

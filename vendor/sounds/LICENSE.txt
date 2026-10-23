@@ -1,0 +1,19 @@
+CubeLab 声音来源与许可 / Sound sources & licenses
+=================================================
+
+No audio files are shipped. Every sound (turn sound, solve chime, showcase sweep, paint / capture blips,
+background music) is synthesized at runtime by js/core/audio.js with the Web Audio API and is part of
+this project's code.
+
+本项目不包含任何音频文件；所有声音均由 js/core/audio.js 用 Web Audio API 实时合成。
+
+Recordings used for ANALYSIS ONLY to tune the synthesis (not copied, not distributed, not deployed,
+not part of this repository):
+- "Rubik Cube Turn - 9" by SpaceJoe, Freesound #486585, CC0 1.0
+  https://freesound.org/people/SpaceJoe/sounds/486585/
+- Pixabay "rubicks cube sfx" (mrstokes302, #575043) and "rubiks cube 3x3" (freesound_community, #51131),
+  Pixabay Content License (no standalone redistribution).
+- Wikimedia Commons "Revolviendo un cubo de Rubik 4x4.wav" (Luis Alvaz, CC BY-SA 4.0), used for the earlier v2 tuning.
+
+(An optional sample-based "real sound" mode using a CC0 slice of Freesound #486585 existed briefly and was
+removed on 2026-10-22; the clip is no longer shipped.)

@@ -1,0 +1,16 @@
+{
+  "baseUrl": "https://cube-solver.org",
+  "siteName": "Cube Solver Lab",
+  "themeColor": "#FBF9F5",
+  "ogImageDir": "/img/og/",
+  "hreflang": { "en": "en", "zh-Hans": "zh-Hans", "zh-Hant": "zh-Hant", "es": "es", "ar": "ar", "pt": "pt", "id": "id", "ms": "ms", "fr": "fr", "ja": "ja", "ru": "ru", "de": "de" },
+  "ogLocale": { "en": "en_US", "zh-Hans": "zh_CN", "zh-Hant": "zh_TW", "es": "es_ES", "ar": "ar_AR", "pt": "pt_BR", "id": "id_ID", "ms": "ms_MY", "fr": "fr_FR", "ja": "ja_JP", "ru": "ru_RU", "de": "de_DE" },
+  "measured": {
+    "cube2": { "avg": 8.87, "max": 10, "samples": 100 },
+    "cube3": { "range": "19–21" },
+    "cube4": { "avg": 57.6, "samples": 20, "sec": 8 },
+    "big": { "5": [119, 168], "6": [169, 281], "7": [257, 402], "8": [329, 571], "9": [448, 695], "10": [563, 972], "11": [678, 1130], "12": [833, 1495], "13": [981, 1635], "14": [1131, 1950], "15": [1408, 2231] },
+    "pyraminx": { "avg": 10.4, "coreMax": 11, "tipsMax": 4, "states": 933120 },
+    "skewb": { "avg": 8.4, "max": 11, "states": 3149280 }
+  }
+}

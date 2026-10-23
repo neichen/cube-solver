@@ -1,0 +1,32 @@
+# dependencies and build output
+node_modules/
+dist/
+seo/out/
+.wrangler/
+
+# secrets and local settings
+.env
+.env.*
+.dev.vars*
+
+# local-only material (not part of the repository)
+ref/
+user-sounds/
+screenshots/
+seo/lang/*.whl
+*.whl
+*backup*/
+*.bak
+*.orig
+
+# private notes
+NXN_PROGRESS.md
+OPEN_SOURCE_AUDIT.md
+tools/i18n_*.py
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

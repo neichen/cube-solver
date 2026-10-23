@@ -1,0 +1,9 @@
+<!doctype html><meta charset=utf-8><link rel=stylesheet href="/css/style.css"><style>body{margin:0;background:#fbf9f5}#g{width:860px;height:900px}</style>
+<div id=g class=graph></div>
+<script src="/js/core/registry.js"></script><script src="/puzzles/cube3/model.js"></script><script src="/puzzles/cube3/cube3.js"></script><script src="/js/core/graph-view.js"></script>
+<script>
+// 与参考高清帧裁切 (1150,250)-(2010,1150) 完全相同的像素映射：O=(413.3,515.5)，d=135.7px
+var P=CubeLab.getPuzzle('cube3');var g=new CubeLab.GraphView(document.getElementById('g'),P);
+g.fit=function(){};var D=135.7;g.svg.setAttribute('viewBox',[-413.3/D,-515.5/D,860/D,900/D].join(' '));
+var s=P.solvedState();var q=new URLSearchParams(location.search);if(q.get('scr'))s=P.apply(s,q.get('scr'));g.setState(s);if(q.get('mv'))g.animate(q.get('mv'),+q.get('e'),s);
+</script>

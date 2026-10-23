@@ -1,0 +1,31 @@
+# Deploy: npm run deploy (builds dist/ first). The account comes from the CLOUDFLARE_ACCOUNT_ID environment
+# variable and the credentials from CLOUDFLARE_API_TOKEN (or `wrangler login`); nothing secret lives in this file.
+name = "cube-graph-solver"
+compatibility_date = "2026-10-01"
+main = "worker.js"
+workers_dev = true   # kept on so old links keep working: worker.js answers them with a 301 to cube-solver.org
+
+routes = [
+  { pattern = "cube-solver.org", custom_domain = true },
+  { pattern = "www.cube-solver.org", custom_domain = true },
+]
+
+[assets]
+directory = "../dist"
+binding = "ASSETS"
+# Only page routes (HTML) and redirects invoke the Worker; static assets are served directly and never count
+# against the Worker request quota.
+run_worker_first = [
+  "/*",
+  "!/js/*",
+  "!/css/*",
+  "!/img/*",
+  "!/puzzles/*",
+  "!/vendor/*",
+  "!/favicon.ico",
+  "!/sitemap.xml",
+  "!/robots.txt",
+  "!/manifest.webmanifest",
+]
+html_handling = "auto-trailing-slash"
+not_found_handling = "none"
