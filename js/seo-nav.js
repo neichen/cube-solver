@@ -48,15 +48,19 @@
     }).catch(function () { return false; });
   }
 
+  var started, readyRes;
   var nav = CL.seoNav = {
     /** called by app.js after the user picks a puzzle */
     go: function (puzzle) { pinned = true; return sync(I.lang(), puzzle); },
-    sync: sync, ready: null
+    sync: sync, ready: new Promise(function (r) { readyRes = r; }),
+    /** called by app.js once the language pack and the first puzzle are mounted */
+    start: function () {
+      if (started) return nav.ready; started = true;
+      I.onChange(function (lang) { sync(lang, pinned ? ps.value : null); });
+      var q = location.search, hadQuery = /[?&](puzzle|n|lang)=/.test(q);
+      if (/[?&](puzzle|n)=/.test(q)) pinned = true;
+      readyRes(sync(I.lang(), pinned ? ps.value : null, hadQuery || location.pathname !== '/'));
+      return nav.ready;
+    }
   };
-  I.onChange(function (lang) { sync(lang, pinned ? ps.value : null); });
-
-  // first load
-  var q = location.search, hadQuery = /[?&](puzzle|n|lang)=/.test(q);
-  if (/[?&](puzzle|n)=/.test(q)) pinned = true;
-  nav.ready = sync(I.lang(), pinned ? ps.value : null, hadQuery || location.pathname !== '/');
 })();

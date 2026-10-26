@@ -1,6 +1,8 @@
 /* Analytics, privacy first (see README "Privacy"):
    - Cloudflare Web Analytics: cookieless, no personal data, loaded for every visitor on the production host.
-   - Google Analytics 4: gtag.js is NOT loaded until the visitor presses "Accept" in the consent banner. The choice is kept in
+   - Google Analytics 4 in the consent region (EU/EEA, UK, CH, unknown country; deploy/worker.js decides per request):
+     gtag.js is NOT loaded until the visitor presses "Accept" in the consent banner. Elsewhere it loads without a banner
+     (analytics_storage granted, all ads signals denied), and the footer link offers the same Accept / Decline choice. The choice is kept in
      localStorage ("cubelab.consent" = "granted" | "denied") and can be changed from the footer link. Consent Mode v2 defaults
      are all "denied"; Accept grants analytics_storage only (ads storage / user data / personalization stay denied, Google
      signals and ad personalization are off). After a later "Decline" GA is disabled for the page and its cookies are removed.
@@ -68,7 +70,12 @@
   function text(el, key) { el.setAttribute('data-i18n', key); el.textContent = I ? I.t(key) : key; }
 
   function hideBanner() { if (banner) { banner.hidden = true; document.body.classList.remove('has-consent'); } }
+  function wire(b) {
+    b.querySelector('#consentDecline').addEventListener('click', function () { choose('denied'); });
+    b.querySelector('#consentAccept').addEventListener('click', function () { choose('granted'); });
+  }
   function showBanner() {
+    if (!banner && document.getElementById('consentBanner')) { banner = document.getElementById('consentBanner'); wire(banner); }
     if (!banner) {
       banner = document.createElement('div');
       banner.id = 'consentBanner'; banner.className = 'consent'; banner.setAttribute('role', 'region');
@@ -98,5 +105,11 @@
   var wrap = document.getElementById('consentLinkWrap'), link = document.getElementById('consentSettings');
   if (wrap && link) { wrap.hidden = false; link.addEventListener('click', function () { showBanner(); }); }
   var c = getChoice();
-  if (c === 'granted') loadGA(); else { window['ga-disable-' + GA_ID] = true; if (!c) showBanner(); }
+  // Consent region (EU/EEA, UK, Switzerland, or country unknown): opt-in banner. Elsewhere (deploy/worker.js sets
+  // <html data-consent="0">) GA4 runs without a banner, with analytics_storage granted and every ads signal denied;
+  // the footer link still opens the banner, and "Decline" there switches GA off and deletes its cookies.
+  var noBanner = document.documentElement.getAttribute('data-consent') === '0';
+  CL.analytics.region = noBanner ? 'notice' : 'consent';
+  if (c === 'granted' || (!c && noBanner)) loadGA();
+  else { window['ga-disable-' + GA_ID] = true; if (!c) showBanner(); }
 })();

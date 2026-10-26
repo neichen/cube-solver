@@ -139,12 +139,43 @@
     bound.push(b); render(b); return el;
   }
 
-  function setLang(code, persist) {
-    if (!info(code)) code = 'en';
+  // Language packs are loaded on demand: a page ships only its own language (js/i18n/<code>.js, deferred script);
+  // another language is fetched when detected or chosen. Literal URLs so tools/build-dist.js can version them.
+  var PACKS = { en: 'js/i18n/en.js', 'zh-Hans': 'js/i18n/zh-Hans.js', 'zh-Hant': 'js/i18n/zh-Hant.js', es: 'js/i18n/es.js', ar: 'js/i18n/ar.js',
+    pt: 'js/i18n/pt.js', id: 'js/i18n/id.js', ms: 'js/i18n/ms.js', fr: 'js/i18n/fr.js', ja: 'js/i18n/ja.js', ru: 'js/i18n/ru.js', de: 'js/i18n/de.js' };
+  var loadingPacks = {};
+  function loadPack(code) {
+    if (dicts[code] || !root.document || !PACKS[code]) return Promise.resolve();
+    if (loadingPacks[code]) return loadingPacks[code];
+    return (loadingPacks[code] = new Promise(function (res, rej) {
+      var s = root.document.createElement('script'); s.src = PACKS[code];
+      s.onload = function () { res(); }; s.onerror = function () { delete loadingPacks[code]; rej(new Error('language pack ' + code)); };
+      root.document.head.appendChild(s);
+    }));
+  }
+  function setLangNow(code, persist) {
     lang = code; nfCache = {};
     if (persist !== false) { try { root.localStorage.setItem(LS_KEY, code); } catch (e) {} }
     applyDocument();
     listeners.forEach(function (f) { try { f(code); } catch (e) { if (root.console) console.error(e); } });
+  }
+  /** Switch language (loads its pack first if needed). Returns a promise that resolves once the page is translated. */
+  function setLang(code, persist) {
+    if (!info(code)) code = 'en';
+    if (dicts[code]) { setLangNow(code, persist); return Promise.resolve(code); }
+    return loadPack(code).then(function () { setLangNow(code, persist); return code; }, function (e) {
+      if (root.console) console.error(e);
+      if (!dicts[lang]) return loadPack('en').then(function () { setLangNow('en', false); return 'en'; });
+      return lang;
+    });
+  }
+  var readyP = null;
+  /** Detect the language, load its pack, translate the page. Called once by js/app.js before the app mounts. */
+  function init() {
+    if (readyP) return readyP;
+    var code = detect();
+    readyP = dicts[code] ? Promise.resolve(code) : loadPack(code).then(function () { return code; }, function () { return loadPack('en').then(function () { return 'en'; }); });
+    return (readyP = readyP.then(function (c) { lang = info(c) ? c : 'en'; nfCache = {}; applyDocument(); return lang; }));
   }
 
   var I18N = CL.i18n = {
@@ -152,7 +183,7 @@
     register: function (code, dict) { dicts[code] = dict; },
     t: t, format: format, nf: nf, plural: plural, match: match, detect: detect, info: info, bind: bind,
     lang: function () { return lang; }, dir: function () { return (info(lang) || {}).dir || 'ltr'; },
-    setLang: setLang, apply: applyDocument,
+    setLang: setLang, apply: applyDocument, init: init, loadPack: loadPack, PACKS: PACKS,
     /** 订阅语言切换；返回取消订阅的函数（切换谜题时释放旧视图的监听） */
     onChange: function (f) { listeners.push(f); return function () { var k = listeners.indexOf(f); if (k >= 0) listeners.splice(k, 1); }; },
     /** Populate a <select> with the language list: flat top-level options in the fixed order (no optgroups). */

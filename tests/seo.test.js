@@ -124,6 +124,28 @@ async function staticMode() {
     const r = await at(u); ok(r.status === 301 && r.redirect === want, `worker host redirect ${u} → ${r.redirect}`);
   }
   ok((await at('https://cube-solver.org/fr/')).asset, 'worker serves the canonical host from assets');
+  { // geo consent flag (mocked request.cf.country) + region-specific ETag
+    const X = W._internals;
+    for (const c of ['DE', 'FR', 'IE', 'NO', 'IS', 'LI', 'GB', 'CH', 'XX', 'T1', '', undefined, 'zz9']) ok(X.consentRequired(c), `consent region: ${JSON.stringify(c)}`);
+    for (const c of ['SG', 'US', 'CN', 'JP', 'BR', 'IN', 'TR', 'RS']) ok(!X.consentRequired(c), `no-banner region: ${c}`);
+    ok(X.tagEtag('"abc"', true) === '"abc-c1"' && X.tagEtag('W/"abc"', false) === 'W/"abc-c0"', 'ETag region suffix');
+    ok(X.untagIfNoneMatch('"abc-c1"', true) === '"abc"' && X.untagIfNoneMatch('"abc-c0"', true) === null && X.untagIfNoneMatch('"abc"', false) === null, 'If-None-Match: own variant translated, other region dropped');
+    // servePage end to end with minimal Request / Response / Headers / HTMLRewriter stand-ins
+    class H extends Map { constructor(i) { super(i instanceof Map ? i : Object.entries(i || {}).map(([k, v]) => [k.toLowerCase(), v])); } get(k) { return super.has(k.toLowerCase()) ? super.get(k.toLowerCase()) : null; } set(k, v) { return super.set(k.toLowerCase(), v); } delete(k) { return super.delete(k.toLowerCase()); } }
+    class Rs { constructor(body, o) { o = o || {}; this.body = body; this.status = o.status || 200; this.statusText = o.statusText || ''; this.headers = new H(o.headers); } }
+    class Rq { constructor(r, o) { this.url = r.url; this.cf = r.cf; this.headers = o && o.headers || r.headers; } }
+    class HR { on(sel, h) { this.h = h; return this; } transform(r) { const el = { attrs: {}, setAttribute(k, v) { this.attrs[k] = v; } }; this.h.element(el); return new Rs(r.body.replace('<html', '<html ' + Object.entries(el.attrs).map(([k, v]) => `${k}="${v}"`).join(' ')), { status: r.status, headers: r.headers }); } }
+    const src2 = fs.readFileSync(path.join(ROOT, 'deploy/worker.js'), 'utf8').replace('export default', 'module.exports =');
+    const m2 = { exports: {} }; new Function('module', 'Response', 'Request', 'Headers', 'HTMLRewriter', src2)(m2, Rs, Rq, H, HR);
+    let seen = null;
+    const env2 = { ASSETS: { fetch: r => { seen = r.headers.get('if-none-match'); return seen === '"e1"' ? new Rs(null, { status: 304, headers: { etag: '"e1"' } }) : new Rs('<!doctype html><html lang="en"><body>x</body></html>', { headers: { 'content-type': 'text/html; charset=utf-8', etag: '"e1"' } }); } } };
+    const pg = async (country, inm) => m2.exports.fetch({ url: BASE + '/fr/', cf: country === null ? undefined : { country }, headers: new H(inm ? { 'if-none-match': inm } : {}) }, env2);
+    let r = await pg('DE'); ok(/<html data-consent="1"/.test(r.body) && r.headers.get('etag') === '"e1-c1"', 'mock DE: data-consent="1", ETag -c1');
+    r = await pg('SG'); ok(/<html data-consent="0"/.test(r.body) && r.headers.get('etag') === '"e1-c0"', 'mock SG: data-consent="0", ETag -c0');
+    r = await pg(null); ok(/data-consent="1"/.test(r.body), 'mock no country: consent required');
+    r = await pg('US', '"e1-c0"'); ok(r.status === 304 && seen === '"e1"' && r.headers.get('etag') === '"e1-c0"', 'US revalidates its own variant → 304');
+    r = await pg('FR', '"e1-c0"'); ok(r.status === 200 && seen === null && /data-consent="1"/.test(r.body), 'variant from another region is not revalidated (full page, consent flag)');
+  }
   const toml = fs.readFileSync(path.join(ROOT, 'deploy/wrangler.toml'), 'utf8');
   ok(/main = "worker.js"/.test(toml) && !/account_id/.test(toml), 'wrangler: worker.js, no account_id in the file');
   ok(/pattern = "cube-solver.org", custom_domain = true/.test(toml) && /pattern = "www.cube-solver.org", custom_domain = true/.test(toml), 'wrangler: apex + www custom domains');

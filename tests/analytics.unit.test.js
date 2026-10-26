@@ -8,14 +8,17 @@ const idLike = /\bG-[A-Z0-9]{8,}\b|data-cf-beacon='\{"token":"[0-9a-f]{32}/;
 const files = ['index.html', 'js/analytics.js'];
 ok(files.every(f => !idLike.test(fs.readFileSync(path.join(ROOT, f), 'utf8'))), 'no measurement ID / beacon token in index.html or js/analytics.js');
 
-function run(code, host) {
-  const added = [], els = {};
-  const el = id => (els[id] = els[id] || { id, hidden: true, addEventListener() {}, setAttribute() {}, appendChild() {} });
+function run(code, host, opt) {
+  opt = opt || {};
+  const added = [], els = {}, gtagCalls = [];
+  const el = id => id === 'consentBanner' ? null : (els[id] = els[id] || { id, hidden: true, addEventListener() {}, setAttribute() {}, appendChild() {} });
   const document = { head: { appendChild: s => added.push(s.src) }, body: { appendChild: e => added.push('#' + e.id), classList: { add() {}, remove() {} } },
+    documentElement: { getAttribute: k => k === 'data-consent' ? (opt.consent == null ? null : opt.consent) : null },
     createElement: () => ({ setAttribute() {}, appendChild() {}, addEventListener() {}, querySelector() {} }), getElementById: el, cookie: '' };
-  const w = { location: { hostname: host, protocol: 'https:' }, document, localStorage: { getItem: () => null, setItem() {} } };
+  const w = { location: { hostname: host, protocol: 'https:' }, document, localStorage: { getItem: () => opt.stored || null, setItem() {} } };
   w.window = w; vm.runInNewContext(code, w);
-  return { added, link: !!els.consentLinkWrap && els.consentLinkWrap.hidden === false, enabled: w.CubeLab.analytics.enabled };
+  const consent = (w.dataLayer || []).filter(a => a[0] === 'consent').map(a => a[1] + ':' + JSON.stringify(a[2]));
+  return { added, consent, link: !!els.consentLinkWrap && els.consentLinkWrap.hidden === false, enabled: w.CubeLab.analytics.enabled, region: w.CubeLab.analytics.region };
 }
 let r = run(src, 'cube-solver.org');
 ok(!r.enabled && !r.added.length && !r.link, 'placeholders on cube-solver.org: no scripts, no banner, footer link stays hidden');
@@ -26,5 +29,13 @@ r = run(filled, 'localhost');
 ok(!r.enabled && !r.added.length, 'IDs filled but not the production host: nothing loaded');
 r = run(src.replace('__CF_BEACON_TOKEN__', '0123456789abcdef0123456789abcdef'), 'cube-solver.org');
 ok(r.added.length === 1 && /cloudflareinsights/.test(r.added[0]), 'only CF token set: beacon only, no banner');
+// geo (deploy/worker.js sets <html data-consent="0"> outside the EU/EEA/UK/CH): no banner, GA with analytics granted, ads denied
+r = run(filled, 'cube-solver.org', { consent: '0' });
+ok(r.region === 'notice' && !r.added.includes('#consentBanner') && r.added.some(s => /googletagmanager/.test(s)) && r.link, 'data-consent="0": no banner, gtag.js loads, footer link visible');
+ok(r.consent.some(c => /^default:.*"ad_storage":"denied".*"ad_user_data":"denied".*"ad_personalization":"denied"/.test(c)) && r.consent.some(c => c === 'update:{"analytics_storage":"granted"}') && !r.consent.some(c => /ad_\w+":"granted/.test(c)), 'data-consent="0": analytics_storage granted, every ad_* signal denied');
+r = run(filled, 'cube-solver.org', { consent: '0', stored: 'denied' });
+ok(!r.added.some(s => /googletagmanager/.test(s)) && !r.added.includes('#consentBanner'), 'data-consent="0" but stored Decline: GA stays off, no banner');
+r = run(filled, 'cube-solver.org', { consent: '1' });
+ok(r.region === 'consent' && r.added.includes('#consentBanner') && !r.added.some(s => /googletagmanager/.test(s)), 'data-consent="1": opt-in banner, no gtag.js before Accept');
 console.log(fails ? `analytics unit: ${fails} FAILED` : 'analytics unit: all passed');
 process.exit(fails ? 1 : 0);
