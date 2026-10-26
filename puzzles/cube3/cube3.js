@@ -144,7 +144,8 @@
   // ---- 扫描计划：每一步拍一个面，cells 为图像中从左上到右下的贴纸序号 ----
   var cameraPlan = ['F', 'R', 'B', 'L', 'U', 'D'].map(function (f) {
     var fi = FACES.indexOf(f), st = { face: f, grid: 3, cells: faces[fi].stickers.slice(), center: fi * 9 + 4 };
-    i18nProp(st, 'title', 'scan.face.' + f); return i18nProp(st, 'instruction', 'scan.instr.' + f);
+    var jp = function (k) { return function () { return k + (CL.getScheme && CL.getScheme() === 'japanese' && /[BUD]$/.test(k) ? '.jp' : ''); }; };
+    i18nProp(st, 'title', jp('scan.face.' + f)); return i18nProp(st, 'instruction', jp('scan.instr.' + f));
   });
 
   var notationRows = [['U / D', 'notation.UD'], ['R / L', 'notation.RL'], ['F / B', 'notation.FB'], ['M / E / S', 'notation.MES']];
@@ -168,7 +169,7 @@
     Object.assign({ id: 'yellowTop', orientation: [0, 0, Math.PI] }, holdMap({ U: 'D', D: 'U', R: 'L', L: 'R' }, { M: true, E: true })),
     Object.assign({ id: 'whiteTop', orientation: [0, 0, 0] }, holdMap({}))
   ];
-  holds.forEach(function (h) { i18nProp(h, 'name', 'hold.' + h.id); i18nProp(h, 'short', 'hold.' + h.id + '.short'); });
+  holds.forEach(function (h) { var hk = function (sfx) { return function () { var id = h.id === 'yellowTop' && CL.getScheme && CL.getScheme() === 'japanese' ? 'blueTop' : h.id; return 'hold.' + id + sfx; }; }; i18nProp(h, 'name', hk('')); i18nProp(h, 'short', hk('.short')); });
 
   var def = {
     id: 'cube3', n: 3, order: 3, short: '3×3',

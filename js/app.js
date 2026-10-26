@@ -1,7 +1,21 @@
 /* 应用装配：只通过 Puzzle 接口把核心模块连起来。切换谜题（2×2 … 15×15）时重建所有视图。 */
 (function () {
   'use strict';
-  var CL = window.CubeLab, $ = function (id) { return document.getElementById(id); };
+  var CL = window.CubeLab;
+  // 初始谜题：?n=4 / ?puzzle=cube4 → 谜题页自身的谜题 → 3×3。
+  // 首页（各语言根目录）总是 3×3：不再记住/恢复上次选择的谜题（旧版本留下的 cubelab.puzzle 一并清除）
+  var q0 = /[?&]n=(\d+)/.exec(location.search), qp0 = /[?&]puzzle=(\w+)/.exec(location.search);
+  try { localStorage.removeItem('cubelab.puzzle'); } catch (e) {}
+  var pagePz = document.documentElement.getAttribute('data-page-puzzle');   // prerendered puzzle page
+  var first = qp0 ? qp0[1] : q0 ? 'cube' + q0[1] : pagePz;
+  if (!first || !CL.puzzleMeta().some(function (m) { return m.id === first; })) first = 'cube3';
+  // 语言包与谜题插件按需加载（每页只带自己的语言和谜题）：两者就绪后再装配
+  var booted = false;
+  function go() { if (!booted) { booted = true; boot(first); } }
+  Promise.all([CL.i18n.init(), CL.loadPuzzle(first)]).then(go, function (e) { if (window.console) console.error(e); go(); });
+
+  function boot(first) {
+  var $ = function (id) { return document.getElementById(id); };
   // i18n：所有界面文字走 t()（js/i18n/*.js）；bind() 记住键 + 参数，切换语言时自动重译
   var I = CL.i18n, t = I.t, bind = I.bind, nf = I.nf;
   var mv = function (tok) { return tok.replace("'", '′'); };
@@ -47,6 +61,7 @@
     // 一次性 Worker（gullicube）在求解后即释放；其它求解器保留，切回来不用重新初始化
   }
   function mount(id) {
+    if (active) cancelSolve();   // 换谜题：终止进行中的求解
     unmount();
     P = CL.getPuzzle(id);
     document.body.dataset.puzzle = id; document.body.dataset.solverReady = '';
@@ -70,6 +85,7 @@
     view.setAutoRotate($('autoRotate').checked);
     editor = new CL.NetEditor($('net'), $('palette'), P, { onChange: onEdit, onPaint: function (i, c) { audio.paint(Math.max(0, Object.keys(P.colors).indexOf(c))); } });
     // 没有扫描计划的谜题（金字塔 / 斜转）：隐藏「摄像头 / 照片」选项卡
+    syncSchemeUI(); if (lettersCb && lettersCb.checked) { document.body.classList.add('letters-on'); if (view.setLetters) view.setLetters(true); }
     var scanTab = document.querySelector('.tab[data-tab="scan"]');
     scanTab.hidden = !P.cameraPlan;
     if (!P.cameraPlan && scanTab.classList.contains('active')) document.querySelector('.tab[data-tab="paint"]').click();
@@ -138,9 +154,9 @@
   function issueText(it) {
     var p = {}, k;
     for (k in it.p) p[k] = it.p[k];
-    if (p.color) p.color = t('color.' + p.color);
+    if (p.color) p.color = t('color.' + CL.phys(P, p.color));
     if (p.piece) p.piece = t(p.piece);
-    if (p.colors) p.colors = p.colors.map(function (c) { return t('color.' + c); }).join('/');
+    if (p.colors) p.colors = p.colors.map(function (c) { return t('color.' + CL.phys(P, c)); }).join('/');
     if (p.pos) p.pos = p.pos.split('').map(function (f) { return t('pos.' + f); }).join(t('pos.sep'));
     return t(it.k, p);
   }
@@ -172,8 +188,23 @@
       document.body.dataset.solverReady = '1';
       return;
     }
+    // 查表（cubejs-prune.bin.gz 等）不在首屏下载：第一次交互（点 / 按键）、空闲时或按「求解」时才初始化求解器
+    if (!solverCache[solverKey(def)] && !warm) {
+      bind($('solverStatus'), 'solve.lazy');
+      document.body.dataset.solverReady = '1';
+      return;
+    }
     getSolver(def);
   }
+  var warm = /[?&]warm=1/.test(location.search);
+  function warmUp() {
+    if (warm) return; warm = true;
+    ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) { document.removeEventListener(ev, warmUp, true); });
+    if (P) { var d = curSolverDef(); if (d && !d.oneShot && !solverCache[solverKey(d)]) getSolver(d); }
+  }
+  ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) { document.addEventListener(ev, warmUp, { capture: true, passive: true }); });
+  // 空闲预热：页面加载完 8 秒后（Lighthouse / 首屏指标不受影响，真实用户点「求解」时多半已就绪）
+  window.addEventListener('load', function () { setTimeout(function () { (window.requestIdleCallback || function (f) { f(); })(warmUp, { timeout: 4000 }); }, 8000); });
   function getSolver(def) {
     var key = solverKey(def);
     if (!solverCache[key]) {
@@ -181,11 +212,11 @@
       if (!def.oneShot) {
         bind($('solverStatus'), def.initKey || 'solve.init');
         c.ready.then(function () {
-          if (P.id + ':' + curSolverDef().id !== key) return;
+          if (P.id + ':' + curSolverDef().id !== key || solverCache[key] !== c) return;
           var ms = c.initMs = Math.round(performance.now() - t0);
-          bind($('solverStatus'), 'solve.ready', { ms: ms });
+          if (!active) bind($('solverStatus'), 'solve.ready', { ms: ms });   // 求解进行中（首次点「求解」时才初始化）不覆盖进度文字
           document.body.dataset.solverReady = '1';
-        }, function (e) { bind($('solverStatus'), function () { return t('solve.loadFail', { msg: errText(e) }); }); });
+        }, function (e) { if (solverCache[key] === c && !c.cancelled) bind($('solverStatus'), function () { return t('solve.loadFail', { msg: errText(e) }); }); });
       }
     } else if (!def.oneShot && !document.body.dataset.solverReady) {
       // 切回已加载过的求解器（例如 金字塔 → 3×3）：直接显示「就绪」
@@ -201,23 +232,45 @@
   ss.addEventListener('change', function () { document.body.dataset.solverReady = ''; prepareSolver(); });
   bind($('solverStatus'), 'solve.loading');
 
+  // 进行中的求解：进度条 + 已用时间 + 「取消」（终止 Worker；迟到的结果被 solveSeq 丢弃）
+  var active = null, solveSeq = 0;
+  function progressUI(on, t0) {
+    var box = $('solveProgress'), el = $('solveElapsed');
+    clearInterval(progressUI.timer); box.hidden = !on;
+    if (!on) return;
+    var tick = function () { bind(el, 'solve.elapsed', { s: Math.floor((performance.now() - t0) / 1000) }); };
+    tick(); progressUI.timer = setInterval(tick, 1000);
+  }
+  function cancelSolve() {
+    var a = active; if (!a) return;
+    active = null; solveSeq++;
+    a.client.cancelled = true;
+    try { a.client.dispose(); } catch (e) {}
+    if (solverCache[a.key] === a.client) delete solverCache[a.key];
+    progressUI(false); var btn = $('btnSolve'); btn.disabled = false; btn.classList.remove('loading');
+    bind($('solverStatus'), 'solve.cancelled');
+    document.body.dataset.solverReady = '1';
+  }
+  $('btnCancelSolve').addEventListener('click', cancelSolve);
   function solve() {
     var v = validateNow(true);
     if (!v.ok) { return Promise.resolve(null); }
     var btn = $('btnSolve'); btn.disabled = true; btn.classList.add('loading');
-    var def = curSolverDef(), pid = P.id;
-    bind($('solverStatus'), def.oneShot ? 'solve.gcLoading' : 'solve.solving');
+    var def = curSolverDef(), pid = P.id, seq = ++solveSeq;
     var start = editorState.slice(), client = getSolver(def);
     var t0 = performance.now();
+    active = { client: client, key: solverKey(def), def: def };
+    bind($('solverStatus'), def.oneShot ? 'solve.gcLoading' : 'solve.solving');
+    progressUI(true, t0);
     client.onProgress = function (pr) {
-      if (P.id !== pid) return;
+      if (P.id !== pid || seq !== solveSeq) return;
       if (pr.stage === 'download') bind($('solverStatus'), 'solve.gcLoading');
       else if (pr.stage === 'prep') bind($('solverStatus'), 'solve.gcPrep');
       else if (pr.stage === 'search') bind($('solverStatus'), 'solve.gcSearch');
       else if (pr.best) bind($('solverStatus'), 'solve.gcProgress', { n: pr.best, s: Math.round((performance.now() - t0) / 1000) });
     };
     return client.solve(start).then(function (r) {
-      if (P.id !== pid) return null;
+      if (P.id !== pid || seq !== solveSeq) return null;
       solution = r.moves; solMeta = { metric: def.metric, optimal: r.optimal };
       if (!P.isSolved(P.apply(start, solution))) { var ie = new Error('internal'); ie.i18n = { k: 'solve.internal', p: {} }; throw ie; }
       $('solutionBox').hidden = false;
@@ -232,12 +285,14 @@
       document.querySelector('.stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
       return solution;
     }).catch(function (e) {
-      if (P.id !== pid) return;
+      if (P.id !== pid || seq !== solveSeq) return;
       showSolveError(e);
       bind($('solverStatus'), 'solve.failed');
     }).finally(function () {
+      if (def.oneShot) { client.dispose(); if (solverCache[pid + ':' + def.id] === client) delete solverCache[pid + ':' + def.id]; }
+      if (seq !== solveSeq) return;   // 已取消 / 已被新的求解取代
+      active = null; progressUI(false);
       btn.disabled = false; btn.classList.remove('loading');
-      if (def.oneShot) { client.dispose(); delete solverCache[pid + ':' + def.id]; }
     });
   }
   $('btnSolve').addEventListener('click', solve);
@@ -371,6 +426,26 @@
   musT.addEventListener('change', function () { audio.setMusic(musT.checked); });
   volR.addEventListener('input', function () { audio.setVolume(volR.value / 100); });
   $('autoRotate').addEventListener('change', function () { view.setAutoRotate($('autoRotate').checked); });
+  // 配色方案（西方 / 日本：蓝黄互换）+ 贴纸上的颜色字母
+  var schemeSel = $('colorScheme'), lettersCb = $('colorLetters');
+  function syncSchemeUI() { if (schemeSel) schemeSel.closest('label').hidden = !CL.schemeApplies(P); }
+  function applyLetters(on) {
+    document.body.classList.toggle('letters-on', on);
+    if (editor && editor.setLetters) editor.setLetters(on);
+    if (view && view.setLetters) view.setLetters(on);
+  }
+  if (schemeSel) {
+    schemeSel.value = CL.getScheme();
+    schemeSel.addEventListener('change', function () {
+      CL.setScheme(schemeSel.value); CL.applyScheme(P);
+      editor.refreshColors(); player._emit(); setHold(hold.id); relabelSelects(); validateNow(false);
+      if (scan && scan.relabel) scan.relabel();
+    });
+  }
+  if (lettersCb) {
+    lettersCb.checked = CL.NetEditor.lettersOn();
+    lettersCb.addEventListener('change', function () { try { localStorage.setItem('cubelab.letters', lettersCb.checked ? '1' : '0'); } catch (e) {} applyLetters(lettersCb.checked); });
+  }
   $('speed').addEventListener('change', function () { speedTouched = true; player.speed = +$('speed').value; });
   document.addEventListener('keydown', function (e) {
     if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
@@ -555,14 +630,22 @@
   I.onChange(function () { if (play && mode === 'play') updatePlayUI(); });
 
   // 切换谜题
-  ps.addEventListener('change', function () {
-    mount(ps.value);
-    // SEO pages: the address becomes the puzzle's own page (/fr/5x5-cube-solver/), see js/seo-nav.js
-    if (CL.seoNav) { CL.seoNav.go(P.id); return; }
-    var u = new URL(location.href);
-    if (P.n) { u.searchParams.set('n', String(P.n)); u.searchParams.delete('puzzle'); } else { u.searchParams.set('puzzle', P.id); u.searchParams.delete('n'); }
-    history.replaceState(null, '', u);
-  });
+  var switchSeq = 0;
+  function switchPuzzle(id, noNav) {
+    var my = ++switchSeq;
+    document.body.dataset.solverReady = ''; ps.value = id;
+    return CL.loadPuzzle(id).then(function () {
+      if (my !== switchSeq) return;
+      mount(id);
+      if (noNav) return;
+      // SEO pages: the address becomes the puzzle's own page (/fr/5x5-cube-solver/), see js/seo-nav.js
+      if (CL.seoNav) { CL.seoNav.go(P.id); return; }
+      var u = new URL(location.href);
+      if (P.n) { u.searchParams.set('n', String(P.n)); u.searchParams.delete('puzzle'); } else { u.searchParams.set('puzzle', P.id); u.searchParams.delete('n'); }
+      history.replaceState(null, '', u);
+    }, function (e) { bind($('solverStatus'), function () { return t('solve.loadFail', { msg: errText(e) }); }); if (P) ps.value = P.id; });
+  }
+  ps.addEventListener('change', function () { switchPuzzle(ps.value); });
 
   // 切换语言：静态文字由 I.apply() 处理；这里重画动态部分（选项、校验、播放器、记号表、解法）
   I.onChange(function () {
@@ -572,23 +655,18 @@
     if (graph.svg) graph.svg.setAttribute('aria-label', t('graph.aria'));
   });
 
-  // 初始谜题：?n=4 / ?puzzle=cube4 → 谜题页自身的谜题 → 3×3。
-  // 首页（各语言根目录）总是 3×3：不再记住/恢复上次选择的谜题（旧版本留下的 cubelab.puzzle 一并清除）
-  var q = /[?&]n=(\d+)/.exec(location.search), qp = /[?&]puzzle=(\w+)/.exec(location.search);
-  try { localStorage.removeItem('cubelab.puzzle'); } catch (e) {}
-  var pagePz = document.documentElement.getAttribute('data-page-puzzle');   // prerendered puzzle page
-  var first = qp ? qp[1] : q ? 'cube' + q[1] : pagePz;
-  if (!first || !CL.puzzleMeta().some(function (m) { return m.id === first; })) first = 'cube3';
   var playerHook = function (pl) { onPlayer(pl); };
   var mount0 = mount;
   mount = function (id) { mount0(id); player.on(playerHook); lastTl = null; player._emit(); if (mode === 'play') enterPlay(); };
   if (/[?&]mode=play/.test(location.search)) { mode = 'play'; syncModeUI(); }
   mount(first);
+  if (CL.seoNav && CL.seoNav.start) CL.seoNav.start();
+  else document.addEventListener('DOMContentLoaded', function () { if (CL.seoNav && CL.seoNav.start) CL.seoNav.start(); });
 
   // 供测试 / 控制台调试（getter：切换谜题后仍指向当前对象）
   window.app = {
     i18n: I, audio: audio, setHold: function (id) { setHold(id); }, hold: function () { return hold; }, vt: vt, solve: solve, setEditor: setEditor,
-    mount: function (id) { mount(id); }, getState: function () { return editorState.slice(); },
+    mount: function (id) { return switchPuzzle(id, true); }, getState: function () { return editorState.slice(); },
     setMode: function (m) { setMode(m); }, mode: function () { return mode; },
     play: { turn: function (tok) { doTurn(tok); }, history: function () { return player.tl.moves.slice(); }, state: function () { return playState(); },
       undo: function () { undo(); }, redo: function () { redo(); }, scramble: function () { playScramble(); }, timer: function () { return play && { state: play.tstate, ms: play.result, penalty: play.penalty }; },
@@ -597,4 +675,5 @@
   ['P', 'editor', 'player', 'graph', 'view', 'scan'].forEach(function (k) {
     Object.defineProperty(window.app, k, { get: function () { return { P: P, editor: editor, player: player, graph: graph, view: view, scan: scan }[k]; } });
   });
+  }
 })();

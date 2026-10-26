@@ -122,7 +122,7 @@
     var sg = roundedSquare(ss, sc);
     var pg = plastic && cfg.plates !== false ? roundedSquare(cfg.plateSize || 0.95, [0.04, 0.04, 0.04, 0.04]) : null;
     var bg = new T.BoxGeometry(ps, ps, ps);
-    this.stickerMats = []; this.pickables = [];
+    this.stickerMats = []; this.pickables = []; this.letterSlots = []; this.letterSize = ss;
     this.pieceObjs = P.pieces.map(function (pc, pIdx) {
       var g = new T.Group(); g.position.fromArray(pc.pos);
       var body = new T.Mesh(bg, bodyMat); body.userData.pi = pIdx; g.add(body); self.pickables.push(body);
@@ -140,6 +140,7 @@
         var mat = new (cfg.flatStickers === false ? Mat : T.MeshBasicMaterial)({ color: 0xcccccc, side: T.DoubleSide });
         var sm = new T.Mesh(sg, mat); sm.userData.si = si; place(sm, 0.004); self.pickables.push(sm);
         self.stickerMats[si] = mat;
+        self.letterSlots[si] = { g: g, mesh: sm };
       });
       self.root.add(g);
       return g;
@@ -380,7 +381,48 @@
     this._restore(); this.curTok = null;
     var over = (P.view3d && P.view3d.stickerColors) || {};
     this.stickerMats.forEach(function (m, i) { var c = state[i]; m.color.set(c && over[c] ? over[c] : c && P.colors[c] ? P.colors[c].hex : P.blankColor); });
+    this.lastState = state;
+    if (this.letters) this._updateLetters(state);
     this.dirty = true;
+  };
+  /** 贴纸上的颜色字母（仅立方体类方块贴纸；多边形谜题不显示） */
+  View3D.prototype.setLetters = function (on) {
+    this.letters = !!on && !!(this.letterSlots && this.letterSlots.length);
+    var T = root.THREE, self = this;
+    if (this.letters && !this.letterMeshes) {
+      var geo = new T.PlaneGeometry(this.letterSize * 0.62, this.letterSize * 0.62);
+      this.letterMeshes = this.letterSlots.map(function (sl) {
+        if (!sl) return null;
+        var m = new T.Mesh(geo, self._letterMat('', '#000'));
+        m.position.copy(sl.mesh.position);
+        m.quaternion.copy(sl.mesh.quaternion); m.up.copy(sl.mesh.up);
+        // 沿贴纸法线外移一点，避免 z-fighting
+        var nrm = new T.Vector3(0, 0, 1).applyQuaternion(sl.mesh.quaternion); m.position.add(nrm.multiplyScalar(0.003));
+        m.renderOrder = 2; sl.g.add(m); return m;
+      });
+    }
+    if (this.letterMeshes) this.letterMeshes.forEach(function (m) { if (m) m.visible = self.letters; });
+    if (this.letters && this.lastState) this._updateLetters(this.lastState);
+    this.dirty = true;
+  };
+  View3D.prototype._letterMat = function (letter, ink) {
+    var key = letter + ink, T = root.THREE;
+    this._lmats = this._lmats || {};
+    if (this._lmats[key]) return this._lmats[key];
+    var c = document.createElement('canvas'); c.width = c.height = 128;
+    var x = c.getContext('2d');
+    if (x && letter) { x.font = '700 92px system-ui,sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = ink; x.fillText(letter, 64, 70); }
+    var tex = new T.CanvasTexture(c); if ('colorSpace' in tex && T.SRGBColorSpace) tex.colorSpace = T.SRGBColorSpace;
+    return (this._lmats[key] = new T.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, side: T.FrontSide }));
+  };
+  View3D.prototype._updateLetters = function (state) {
+    if (!this.letterMeshes) return;
+    var P = this.P, self = this, ink = CL.NetEditor ? CL.NetEditor.inkFor : function () { return '#000'; }, lo = CL.NetEditor ? CL.NetEditor.letterOf : function (P, k) { return k; };
+    this.letterMeshes.forEach(function (m, i) {
+      if (!m) return; var c = state[i];
+      if (!c || !P.colors[c]) { m.visible = false; return; }
+      m.visible = true; m.material = self._letterMat(lo(P, c), ink(P.colors[c].hex));
+    });
   };
   View3D.prototype.animate = function (tok, e, fromState) {
     var m = this.P.moves[tok], self = this;

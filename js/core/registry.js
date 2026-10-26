@@ -26,14 +26,74 @@
   var factories = {}, order = [];
   CL.registerPuzzle = function (def) { puzzles[def.id] = prepare(def); if (order.indexOf(def.id) < 0) order.push(def.id); return puzzles[def.id]; };
   CL.registerPuzzleFactory = function (meta, factory) { factories[meta.id] = { meta: meta, factory: factory }; if (order.indexOf(meta.id) < 0) order.push(meta.id); };
-  CL.getPuzzle = function (id) {
+  CL.getPuzzle = function (id) { return CL.applyScheme(getPuzzle0(id)); };
+  function getPuzzle0(id) {
     if (!puzzles[id] && factories[id]) puzzles[id] = prepare(factories[id].factory());
     return puzzles[id];
   };
   /** 谜题元信息列表（不触发构建）：{ id, order, short, nameKey?, name? } */
   CL.puzzleMeta = function () {
-    return order.map(function (id) { return puzzles[id] ? { id: id, short: puzzles[id].short, order: puzzles[id].order || 0, puzzle: puzzles[id] } : { id: id, short: factories[id].meta.short, order: factories[id].meta.order || 0, meta: factories[id].meta }; })
+    var ids = order.slice(); Object.keys(declared).forEach(function (id) { if (ids.indexOf(id) < 0) ids.push(id); });
+    return ids.map(function (id) { return puzzles[id] ? { id: id, short: puzzles[id].short, order: puzzles[id].order || 0, puzzle: puzzles[id] } : factories[id] ? { id: id, short: factories[id].meta.short, order: factories[id].meta.order || 0, meta: factories[id].meta } : { id: id, short: declared[id].short, order: declared[id].order, meta: declared[id] }; })
       .sort(function (a, b) { return a.order - b.order; });
+  };
+
+  // Puzzle index for lazy loading: the menu lists every puzzle (localized name from n / nameKey) before its plugin
+  // script is loaded; CL.loadPuzzle(id) adds the plugin's scripts on demand (a page ships only its own puzzle).
+  // The URLs are plain literals so tools/build-dist.js can version them (?v=<content hash>).
+  var GROUPS = {
+    cube3: ['puzzles/cube3/model.js', 'puzzles/cube3/cube3.js'],
+    nxn: ['puzzles/nxn/nxn.js'],
+    twisty: ['puzzles/twisty/twisty-model.js', 'puzzles/twisty/twisty.js'],
+    megaminx: ['puzzles/megaminx/megaminx-model.js', 'puzzles/megaminx/megaminx.js']
+  };
+  var declared = {};
+  [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].forEach(function (n) { declared['cube' + n] = { id: 'cube' + n, order: n, short: n + '×' + n, n: n, group: n === 3 ? 'cube3' : 'nxn' }; });
+  declared.pyraminx = { id: 'pyraminx', order: 100, short: 'Pyraminx', nameKey: 'puzzle.pyraminx', group: 'twisty' };
+  declared.skewb = { id: 'skewb', order: 101, short: 'Skewb', nameKey: 'puzzle.skewb', group: 'twisty' };
+  declared.megaminx = { id: 'megaminx', order: 102, short: 'Megaminx', nameKey: 'puzzle.megaminx', group: 'megaminx' };
+  CL.PUZZLE_GROUPS = GROUPS;
+  CL.puzzleGroup = function (id) { return declared[id] ? declared[id].group : null; };
+  var loadingScripts = {};
+  function loadScript(src) {
+    if (loadingScripts[src]) return loadingScripts[src];
+    var have = root.document && Array.prototype.some.call(root.document.scripts, function (s) { return (s.getAttribute('src') || '').split('?')[0] === src.split('?')[0]; });
+    return (loadingScripts[src] = have ? Promise.resolve() : new Promise(function (res, rej) {
+      var s = root.document.createElement('script'); s.src = src; s.async = false;
+      s.onload = function () { res(); }; s.onerror = function () { delete loadingScripts[src]; rej(new Error('failed to load ' + src)); };
+      root.document.head.appendChild(s);
+    }));
+  }
+  CL.loadScript = loadScript;
+  /** Make sure the plugin for puzzle `id` is registered (loads its scripts once); resolves when getPuzzle(id) works. */
+  CL.loadPuzzle = function (id) {
+    if (puzzles[id] || factories[id]) return Promise.resolve();
+    var g = declared[id] && GROUPS[declared[id].group];
+    if (!g || !root.document) return Promise.resolve();
+    return g.reduce(function (p, src) { return p.then(function () { return loadScript(src); }); }, Promise.resolve());
+  };
+
+  // ---------------------------------------------------------------- 配色方案（立方体）：西方（默认）/ 日本（蓝黄互换）
+  // 内部状态始终用「逻辑」颜色键（白顶绿前时 U=W、D=Y、B=B），只有显示色、颜色名、字母和摄像头识别
+  // 按物理颜色走：日本配色里白对蓝、黄在后面，于是逻辑 Y 显示为蓝色、逻辑 B 显示为黄色。
+  var SCHEMES = { western: {}, japanese: { Y: 'B', B: 'Y' } };
+  var schemeId = 'western';
+  try { var sv = root.localStorage && root.localStorage.getItem('cubelab.scheme'); if (SCHEMES[sv]) schemeId = sv; } catch (e) {}
+  var qs = root.location && /[?&]scheme=(western|japanese)\b/.exec(root.location.search); if (qs) schemeId = qs[1];
+  function isCube(P) { return !!(P && P.colors && /^cube\d+$/.test(P.id) && ['W', 'Y', 'G', 'B', 'R', 'O'].every(function (k) { return P.colors[k]; })); }
+  CL.SCHEMES = SCHEMES;
+  CL.getScheme = function () { return schemeId; };
+  CL.setScheme = function (id) { if (!SCHEMES[id]) id = 'western'; schemeId = id; try { root.localStorage.setItem('cubelab.scheme', id); } catch (e) {} return id; };
+  CL.schemeApplies = isCube;
+  /** 逻辑颜色键 → 物理颜色键 */
+  CL.phys = function (P, k) { return isCube(P) ? SCHEMES[schemeId][k] || k : k; };
+  /** 把当前方案写进 P.colors（hex / phys / letter）；幂等 */
+  CL.applyScheme = function (P) {
+    if (!P || !P.colors) return P;
+    var C = P.colors, cube = isCube(P), m = cube ? SCHEMES[schemeId] : {};
+    Object.keys(C).forEach(function (k) { if (C[k]._hex0 == null) C[k]._hex0 = C[k].hex; });
+    Object.keys(C).forEach(function (k) { var ph = m[k] || k; C[k].hex = (C[ph] || C[k])._hex0; C[k].phys = ph; C[k].letter = ph; });
+    return P;
   };
   CL.listPuzzles = function () { return Object.keys(puzzles).map(function (k) { return puzzles[k]; }); };
 

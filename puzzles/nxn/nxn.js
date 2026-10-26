@@ -115,7 +115,8 @@
 
     var cameraPlan = ['F', 'R', 'B', 'L', 'U', 'D'].map(function (f) {
       var fi = FACES.indexOf(f), st = { face: f, grid: n, cells: faces[fi].stickers.slice(), center: odd ? faces[fi].center : fi * nn };
-      i18nProp(st, 'title', 'scan.face.' + f); return i18nProp(st, 'instruction', 'scan.instr.' + f);
+      var jp = function (k) { return function () { return k + (CL.getScheme && CL.getScheme() === 'japanese' && /[BUD]$/.test(k) ? '.jp' : ''); }; };
+    i18nProp(st, 'title', jp('scan.face.' + f)); return i18nProp(st, 'instruction', jp('scan.instr.' + f));
     });
 
     var notationRows = [['R L U D F B', 'notation.nxn.outer']];
@@ -136,7 +137,7 @@
       Object.assign({ id: 'yellowTop', orientation: [0, 0, Math.PI] }, holdMap({ U: 'D', D: 'U', R: 'L', L: 'R' }, { M: true, E: true, x: true, y: true })),
       Object.assign({ id: 'whiteTop', orientation: [0, 0, 0] }, holdMap({}))
     ];
-    holds.forEach(function (hd) { i18nProp(hd, 'name', 'hold.' + hd.id); i18nProp(hd, 'short', 'hold.' + hd.id + '.short'); });
+    holds.forEach(function (hd) { var hk = function (sfx) { return function () { var id = hd.id === 'yellowTop' && CL.getScheme && CL.getScheme() === 'japanese' ? 'blueTop' : hd.id; return 'hold.' + id + sfx; }; }; i18nProp(hd, 'name', hk('')); i18nProp(hd, 'short', hk('.short')); });
 
     function encodeFacelets(state, prefer) {
       var v = X.validate(n, state, { prefer: prefer });

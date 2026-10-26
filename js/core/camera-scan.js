@@ -20,6 +20,7 @@
   function dist(a, b) { return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]); }
   function hex2rgb(h) { var n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
   // 典型的摄像头下颜色（未校准时使用）
+  function typicalFor(P) { var o = {}; Object.keys(TYPICAL).forEach(function (k) { o[k] = TYPICAL[CL.phys ? CL.phys(P, k) : k]; }); return o; }
   var TYPICAL = { W: [225, 228, 230], Y: [225, 215, 40], G: [20, 160, 80], B: [20, 70, 175], R: [190, 25, 40], O: [245, 110, 25] };
 
   /** 画布文字：过长时缩小字号以适应宽度（德语/俄语等较长的翻译） */
@@ -49,7 +50,7 @@
   function classify(P, samples, opts) {
     opts = opts || {};
     var keys = Object.keys(P.colors), refs = {};
-    keys.forEach(function (k) { refs[k] = rgb2lab(TYPICAL[k] || hex2rgb(P.colors[k].hex)); });
+    keys.forEach(function (k) { var ph = CL.phys ? CL.phys(P, k) : k; refs[k] = rgb2lab(TYPICAL[ph] || hex2rgb(P.colors[k].hex)); });
     var known = {};
     P.stickers.forEach(function (s, i) { if (s.locked && samples[i] && opts.centerColor) { known[i] = opts.centerColor(i); refs[known[i]] = rgb2lab(samples[i]); } });
     var ids = Object.keys(samples).map(Number), labs = {}, res = {};
@@ -111,6 +112,8 @@
       self.ui.steps.appendChild(b);
     });
   };
+  /** 配色方案改变：刷新步骤圆点、标题与说明 */
+  CameraScan.prototype.relabel = function () { if (!this.destroyed) this.goto(this.step || 0); };
   CameraScan.prototype.goto = function (i) {
     this.step = Math.max(0, Math.min(this.plan.length - 1, i));
     var s = this.plan[this.step];
@@ -231,7 +234,7 @@
     if (this.allDone() && CC && n >= 2 && 6 * n * n === N && 'WYGBRO'.split('').every(function (k) { return P.colors[k]; })) {
       try {
         var fixed = {}; P.stickers.forEach(function (s, i) { if (s.locked) fixed[i] = solved[i]; });
-        var r = CC.classifyCube(n, this.samples, { fixed: fixed });
+        var r = CC.classifyCube(n, this.samples, { fixed: fixed, typical: typicalFor(this.P) });
         if (r) return r;
       } catch (e) { if (root.console) console.warn('colorCluster', e); }
     }

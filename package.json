@@ -21,7 +21,8 @@
     "test:analytics": "node tests/analytics.e2e.js https://cube-solver.org/ --proxy http://localhost:8765 --stub",
     "test:analytics:live": "node tests/analytics.e2e.js https://cube-solver.org/",
     "test:seo:live": "node tests/seo.test.js https://cube-solver.org",
-    "deploy": "npm run build && wrangler deploy -c deploy/wrangler.toml"
+    "deploy": "npm run build && wrangler deploy -c deploy/wrangler.toml",
+    "test:features": "node tests/features.e2e.js http://localhost:8765/"
   },
   "license": "MIT",
   "homepage": "https://cube-solver.org",

@@ -113,7 +113,8 @@
     opts = opts || {};
     var N = 6 * n * n, ids = [], F = [];
     for (var i = 0; i < N; i++) { if (!samples[i]) return null; ids.push(i); F.push(feat(samples[i])); }
-    var cents = KEYS.map(function (k) { return feat(TYPICAL[k]); }), cap = n * n, lab;
+    var TY = opts.typical || TYPICAL;   // 配色方案：逻辑键 → 典型物理色
+    var cents = KEYS.map(function (k) { return feat(TY[k]); }), cap = n * n, lab;
     for (var it = 0; it < 12; it++) {
       lab = balancedAssign(F, cents, cap);
       var sum = cents.map(function () { return [0, 0, 0, 0]; });
@@ -123,7 +124,7 @@
     }
     // 类 → 颜色名：6! 穷举
     P6 = P6 || perms([0, 1, 2, 3, 4, 5]);
-    var ty = KEYS.map(function (k) { return feat(TYPICAL[k]); }), bestP = null, bestC = Infinity;
+    var ty = KEYS.map(function (k) { return feat(TY[k]); }), bestP = null, bestC = Infinity;
     var fixed = opts.fixed || null, fx = fixed ? Object.keys(fixed) : [];
     P6.forEach(function (p) {
       var c = 0; for (var k = 0; k < 6; k++) c += d2(cents[k], ty[p[k]]);
@@ -145,7 +146,7 @@
     }
     return res;
   }
-  var api = { classifyCube: classifyCube, hungarian: hungarian, rgb2lab: rgb2lab };
+  var api = { TYPICAL: TYPICAL, classifyCube: classifyCube, hungarian: hungarian, rgb2lab: rgb2lab };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root.CubeLab) root.CubeLab.colorCluster = api; else root.CubeLabColorCluster = api;
 })(typeof self !== 'undefined' ? self : this);
