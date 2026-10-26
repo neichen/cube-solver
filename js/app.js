@@ -7,7 +7,9 @@
   var q0 = /[?&]n=(\d+)/.exec(location.search), qp0 = /[?&]puzzle=(\w+)/.exec(location.search);
   try { localStorage.removeItem('cubelab.puzzle'); } catch (e) {}
   var pagePz = document.documentElement.getAttribute('data-page-puzzle');   // prerendered puzzle page
-  var first = qp0 ? qp0[1] : q0 ? 'cube' + q0[1] : pagePz;
+  // shared position (#p=cube4&s=…, js/core/share-code.js): the fragment's puzzle wins, the position is applied after boot
+  var share0 = CL.shareCode ? CL.shareCode.parseHash(location.hash) : null;
+  var first = share0 ? share0.p : qp0 ? qp0[1] : q0 ? 'cube' + q0[1] : pagePz;
   if (!first || !CL.puzzleMeta().some(function (m) { return m.id === first; })) first = 'cube3';
   // 语言包与谜题插件按需加载（每页只带自己的语言和谜题）：两者就绪后再装配
   var booted = false;
@@ -22,13 +24,8 @@
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function errText(e) { return e && e.i18n ? t(e.i18n.k, e.i18n.p) : (e && e.message) || String(e); }
 
-  // 语言选择（顺序固定，平铺）
-  var ls = $('langSelect'); I.fillSelect(ls);
-  ls.addEventListener('change', function () { I.setLang(ls.value); });
-
-  // 谜题选择：2×2 … 15×15（插件注册后自动出现）+ 规划中的异形
-  var ps = $('puzzleSelect');
-  CL.puzzleMeta().forEach(function (m) { var o = new Option(m.id, m.id); o.dataset.pid = m.id; ps.add(o); });
+  // 顶栏：谜题菜单 / 语言菜单 / 分享 / GitHub（js/topbar.js，标记由 tools/build-seo.js 预渲染）
+  var TB = CL.topbar;
   function puzzleName(id) {
     var m = CL.puzzleMeta().filter(function (x) { return x.id === id; })[0];
     var nk = m.meta ? m.meta.nameKey : m.puzzle.nameKey;
@@ -47,10 +44,8 @@
   var hs = $('holdSelect'), ss = $('solverSelect');
 
   function relabelSelects() {
-    Array.prototype.forEach.call(ps.options, function (o) { o.text = o.dataset.key ? t(o.dataset.key) : puzzleName(o.value); });
     Array.prototype.forEach.call(hs.options, function (o, i) { o.text = holds[i].name; });
     Array.prototype.forEach.call(ss.options, function (o, i) { o.text = P.solvers[i].name; });
-    ls.value = I.lang();
   }
 
   // ---------------------------------------------------------------- 挂载 / 卸载一个谜题
@@ -65,7 +60,7 @@
     unmount();
     P = CL.getPuzzle(id);
     document.body.dataset.puzzle = id; document.body.dataset.solverReady = '';
-    ps.value = id;
+    TB.setPuzzle(id);
     // 新的 DOM 容器（丢弃旧监听）
     ['net', 'palette'].forEach(function (k) { var o = $(k), c = o.cloneNode(false); o.parentNode.replaceChild(c, o); });
     var sc = $('scan'), fresh = scanTemplate.cloneNode(true); fresh.className = sc.className; sc.parentNode.replaceChild(fresh, sc);
@@ -633,7 +628,7 @@
   var switchSeq = 0;
   function switchPuzzle(id, noNav) {
     var my = ++switchSeq;
-    document.body.dataset.solverReady = ''; ps.value = id;
+    document.body.dataset.solverReady = ''; TB.setPuzzle(id);
     return CL.loadPuzzle(id).then(function () {
       if (my !== switchSeq) return;
       mount(id);
@@ -643,9 +638,69 @@
       var u = new URL(location.href);
       if (P.n) { u.searchParams.set('n', String(P.n)); u.searchParams.delete('puzzle'); } else { u.searchParams.set('puzzle', P.id); u.searchParams.delete('n'); }
       history.replaceState(null, '', u);
-    }, function (e) { bind($('solverStatus'), function () { return t('solve.loadFail', { msg: errText(e) }); }); if (P) ps.value = P.id; });
+    }, function (e) { bind($('solverStatus'), function () { return t('solve.loadFail', { msg: errText(e) }); }); if (P) TB.setPuzzle(P.id); });
   }
-  ps.addEventListener('change', function () { switchPuzzle(ps.value); });
+
+  // ---------------------------------------------------------------- 分享（位置写在 URL 片段里，不发给服务器）
+  var SC = CL.shareCode;
+  function secs(ms) { var f = PL.formatTime(ms); return /:/.test(f) ? f : f + 's'; }   // 23.41s · 1:02.33
+  /** what the share link carries: solve mode → the entered position; free play → the scramble (+ time once solved) */
+  function shareState() {
+    if (!P) return null;
+    var st, m = mode, tm = null, tt = null;
+    if (mode === 'play' && play) {
+      if (play.scrambled) {
+        st = player.states[0];
+        if (play.tstate === 'done' && play.result != null && !play.assisted) { tm = play.result; tt = secs(play.result); }
+      } else { st = playState(); m = P.isSolved(st) ? 'solve' : 'play'; }
+    } else st = editorState;
+    if (!st || P.isSolved(st) && !st.some(function (c) { return c == null; })) return { p: P.id, s: null };
+    try { return { p: P.id, s: SC.encode(P, st), m: m, t: tm, tText: tt }; } catch (e) { return { p: P.id, s: null }; }
+  }
+  function snapshot() {
+    return new Promise(function (res, rej) {
+      var url = view && view.snapshot && view.snapshot(); if (!url) return rej(new Error('no view'));
+      var img = new Image();
+      img.onload = function () {
+        var c = document.createElement('canvas'); c.width = img.naturalWidth; c.height = img.naturalHeight;
+        var g = c.getContext('2d'); g.fillStyle = '#FBF9F5'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0);
+        g.font = Math.max(12, Math.round(c.width / 48)) + 'px system-ui, sans-serif'; g.fillStyle = '#6b6b6b'; g.textAlign = 'right';
+        g.fillText('cube-solver.org', c.width - 12, c.height - 12);
+        c.toBlob(function (b) { b ? res(b) : rej(new Error('toBlob')); }, 'image/png');
+      };
+      img.onerror = rej; img.src = url;
+    });
+  }
+  function clearHash() { if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
+  /** apply a parsed share fragment; invalid codes are ignored with a notice */
+  function applyShare(h) {
+    if (!h) return;
+    var bad = function () { clearHash(); TB.toast(t('share.bad')); };
+    if (!CL.puzzleMeta().some(function (m) { return m.id === h.p; })) return bad();
+    // decode against the target puzzle first: a damaged link never switches the puzzle
+    CL.loadPuzzle(h.p).then(function () {
+      var Q = CL.getPuzzle(h.p), st = SC.decode(Q, h.s);
+      if (!st) return bad();
+      if (h.m === 'play' && (st.some(function (c) { return c == null; }) || !Q.validate(st).ok)) return bad();
+      var go = function () {
+        if (!P || P.id !== h.p) return;
+        if (h.m === 'play') {
+          if (mode !== 'play') setMode('play');
+          startPlay(st, true, t('share.playScr'));
+          var m = $('playMsg'); m.className = 'play-msg';
+          if (h.t != null) bind(m, 'share.loadedTime', { t: secs(h.t) }); else bind(m, 'share.loadedPlay');
+        } else {
+          if (mode === 'play') setMode('solve');
+          setEditor(st); $('formula').value = '';
+          TB.toast(t('share.loaded'));
+        }
+        clearHash();
+      };
+      if (P && P.id === h.p) go(); else switchPuzzle(h.p).then(go);
+    }, bad);
+  }
+  window.addEventListener('hashchange', function () { var h = SC.parseHash(location.hash); if (h) applyShare(h); });
+  TB.init({ onPuzzle: function (id) { switchPuzzle(id); }, onLang: function (code) { I.setLang(code); }, shareState: shareState, snapshot: snapshot });
 
   // 切换语言：静态文字由 I.apply() 处理；这里重画动态部分（选项、校验、播放器、记号表、解法）
   I.onChange(function () {
@@ -660,6 +715,8 @@
   mount = function (id) { mount0(id); player.on(playerHook); lastTl = null; player._emit(); if (mode === 'play') enterPlay(); };
   if (/[?&]mode=play/.test(location.search)) { mode = 'play'; syncModeUI(); }
   mount(first);
+  if (share0) applyShare(share0);
+  else if (location.hash && /(^#|&)s=/.test(location.hash)) { clearHash(); TB.toast(t('share.bad')); }
   // 离线支持：dist 构建给 <html> 加 data-sw，本地源码服务器不注册 Service Worker
   if ('serviceWorker' in navigator && document.documentElement.hasAttribute('data-sw')) {
     var regSW = function () { navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {}); };
@@ -672,7 +729,7 @@
   window.app = {
     i18n: I, audio: audio, setHold: function (id) { setHold(id); }, hold: function () { return hold; }, vt: vt, solve: solve, setEditor: setEditor,
     mount: function (id) { return switchPuzzle(id, true); }, getState: function () { return editorState.slice(); },
-    setMode: function (m) { setMode(m); }, mode: function () { return mode; },
+    setMode: function (m) { setMode(m); }, mode: function () { return mode; }, shareState: function () { return shareState(); },
     play: { turn: function (tok) { doTurn(tok); }, history: function () { return player.tl.moves.slice(); }, state: function () { return playState(); },
       undo: function () { undo(); }, redo: function () { redo(); }, scramble: function () { playScramble(); }, timer: function () { return play && { state: play.tstate, ms: play.result, penalty: play.penalty }; },
       idle: function () { return player.idle(); }, start: function (st, scrambled) { startPlay(st, !!scrambled); } }

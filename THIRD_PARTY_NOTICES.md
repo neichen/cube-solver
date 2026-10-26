@@ -8,6 +8,7 @@ included in `vendor/` and keep their own licenses.
 | gullicube (Tomas Rokicki) | `vendor/gullicube/gullicube.js`, `gullicube.wasm`, `data/*.cls` | MPL-2.0 (used under the MPL-2.0 option of "MPL-2.0 OR GPL-3.0-or-later") | https://github.com/rokicki/gullicube, commit `48bd54b36a95888639f63df63a24d8639b84cd23` |
 | cubejs (Petri Lehtinen, Ludovic Fernandez) | `vendor/cube.js`, `vendor/solve.js` | MIT | https://github.com/ldez/cubejs |
 | three.js (three.js authors) | `vendor/three.min.js` (r160, tree-shaken bundle built from the `three` npm package by `tools/build-three.js`) | MIT | https://github.com/mrdoob/three.js |
+| Octicons (GitHub Inc.) | five icon paths (`mark-github`, `share`, `link`, `download`, `device-mobile`, 16 px, v19) inlined as SVG in `js/topbar.js` | MIT | https://github.com/primer/octicons |
 
 ## gullicube — Mozilla Public License 2.0
 
@@ -48,6 +49,33 @@ material from these posts are included in this repository; the graph view is thi
 `js/analytics.js` loads Cloudflare Web Analytics (`static.cloudflareinsights.com/beacon.min.js`, cookieless) and, only after
 the visitor accepts, Google Analytics 4 (`www.googletagmanager.com/gtag/js`). These scripts are loaded from their providers at
 run time on https://cube-solver.org; they are not part of this repository and are governed by the providers' terms.
+
+## Octicons — MIT
+
+The GitHub mark and the share, link, download and device icons in the top bar are path data from
+[Octicons](https://github.com/primer/octicons), unmodified.
+
+```
+MIT License
+
+Copyright (c) 2026 GitHub Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+```
+
+The GitHub logo is a trademark of GitHub, Inc. and is used here only to link to this project's repository.
 
 ## Trademark
 

@@ -1,6 +1,7 @@
 // 五魔方 端到端：node tests/megaminx.e2e.js [URL] [截图目录]
 // 选择 → 3D / 图视图 / 展开图（涂色 + 校验）→ 公式 → 求解（复原、非最优标注、HTM）→ 播放；
 // 自己玩：拖动、键盘、撤销、打乱（WCA Pochmann）→ 计时 → 从当前状态求解；手机触摸
+const { pickPuzzle, pickLang } = require('./_topbar.js');
 const { chromium } = require('playwright');
 const URL = process.argv[2] || 'http://localhost:8765/', OUT = process.argv[3] || __dirname + '/../screenshots/megaminx';
 require('fs').mkdirSync(OUT, { recursive: true });
@@ -52,10 +53,10 @@ const dragCases = p => p.evaluate(() => {
   p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   await p.goto(URL + '?n=3', { waitUntil: 'load' }); await ready(p);
   console.log('[desktop] select / view / edit');
-  const order = await p.evaluate(() => [...document.querySelectorAll('#puzzleSelect option')].map(o => o.value));
+  const order = await p.evaluate(() => [...document.querySelectorAll('#puzzleMenu [data-pid]')].map(o => o.dataset.pid));
   ok(order.indexOf('megaminx') === order.indexOf('skewb') + 1, 'menu: Megaminx right after Skewb (' + order.slice(-3).join(', ') + ')');
-  await p.selectOption('#puzzleSelect', 'megaminx'); await ready(p);
-  const info = await p.evaluate(() => ({ id: app.P.id, name: document.querySelector('#puzzleSelect').selectedOptions[0].textContent, url: location.pathname,
+  await pickPuzzle(p, 'megaminx'); await ready(p);
+  const info = await p.evaluate(() => ({ id: app.P.id, name: document.getElementById('puzzleName').textContent, url: location.pathname,
     polys: document.querySelectorAll('#net polygon.cell').length, nodes: document.querySelectorAll('#graph .node').length, circles: document.querySelectorAll('#graph circle.track').length,
     scanHidden: document.querySelector('.tab[data-tab="scan"]').hidden, solver: document.getElementById('solverStatus').textContent, h1: (document.querySelector('h1') || {}).textContent }));
   ok(info.id === 'megaminx' && info.name === '五魔方', 'selected ' + info.name);
@@ -143,7 +144,7 @@ const dragCases = p => p.evaluate(() => {
   await p.evaluate(() => app.setMode('solve'));
   // 语言：日语名称
   await p.goto(URL + 'ja/megaminx-solver/', { waitUntil: 'load' }); await ready(p);
-  const ja = await p.evaluate(() => ({ id: app.P.id, name: document.querySelector('#puzzleSelect').selectedOptions[0].textContent, h1: document.querySelector('h1').textContent }));
+  const ja = await p.evaluate(() => ({ id: app.P.id, name: document.getElementById('puzzleName').textContent, h1: document.querySelector('h1').textContent }));
   ok(ja.id === 'megaminx' && ja.name === 'メガミンクス' && /メガミンクス/.test(ja.h1), 'ja page: ' + ja.name + ' / ' + ja.h1);
   ok(!errs.filter(e => !/GL Driver|deprecated|GPU stall/.test(e)).length, 'no page errors' + (errs.length ? ': ' + errs.slice(0, 3).join(' | ') : ''));
   await ctx.close();

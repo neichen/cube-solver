@@ -7,7 +7,7 @@
 (function () {
   var CL = window.CubeLab, R = CL && CL.seoRoutes, I = CL && CL.i18n, html = document.documentElement;
   if (!R || !I || !html.hasAttribute('data-seo-page') || !window.fetch || !window.DOMParser) return;
-  var ps = document.getElementById('puzzleSelect');
+  var ps = { get value() { var b = document.getElementById('puzzleBtn'); return b ? b.dataset.pid : null; } };   // current puzzle (js/topbar.js)
   var pinned = !!html.getAttribute('data-page-puzzle'), seq = 0, cache = {};
   var KEEP = ['puzzle', 'n', 'lang'];
 

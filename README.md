@@ -13,12 +13,14 @@ A puzzle solver that runs entirely in your browser: 2×2 to 15×15 cubes, Pyrami
 - **Validation** that explains what is wrong: missing colors, a twisted corner, a flipped edge, parity and more.
 - **Step-by-step player** with a timeline, speed control and keyboard shortcuts, synchronized between the 3D view and the graph.
 - **Free play** on every puzzle: turn layers by dragging or with the keyboard, with a timer, optional WCA inspection, undo/redo and best times. The Megaminx scramble follows the WCA (Pochmann) style.
+- **Share** a link to the page or to the exact position you entered (in free play: your scramble and time, as a challenge), copy it, send it with the system share sheet or to X, Facebook, Reddit, WhatsApp, Telegram, email and a few regional networks, or save a PNG of the 3D view. The links are plain share URLs; no third-party scripts are loaded.
 - **12 languages**, including full right-to-left layout for Arabic, plus one static, search-friendly page for each puzzle in each language.
 - **Synthesized sound**: every sound is generated live with the Web Audio API, and no audio files are shipped.
 
 ## Privacy
 
 - Camera images and uploaded photos are processed only in your browser. They are never uploaded or stored on a server.
+- A shared position is stored in the link's `#` fragment, which browsers never send to the server.
 - The live site counts visits with Cloudflare Web Analytics, which is cookieless and does not collect personal data; it loads for every visitor. Google Analytics 4 always runs with Consent Mode v2 and with ad storage, ad user data, ad personalization and Google signals off. In the EU/EEA, the UK and Switzerland (and whenever the country cannot be determined) it is loaded only after you press Accept in the consent banner; elsewhere there is no banner and it loads for page-view statistics only. Either way you can switch it off or on at any time with the “Analytics settings” link in the footer; Decline stops it and deletes its cookies. Settings such as language, sound, best times and your analytics choice are saved only in your browser's local storage. Analytics only counts page views: puzzle states and camera images are never sent.
 - The site is a set of static files hosted on Cloudflare, which handles ordinary web requests as any web host does.
 

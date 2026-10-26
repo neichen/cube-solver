@@ -5,6 +5,7 @@
    Also writes screenshots/i18n/{lang}-{desktop|mobile}.png for en, zh-Hant, ar, de, ja.
    Run: node tests/i18n.test.js [baseUrl] [--no-shots] */
 const path = require('path'), fs = require('fs');
+const { pickLang } = require('./_topbar.js');
 const { chromium } = require('playwright');
 const BASE = process.argv.find(a => /^https?:/.test(a)) || 'http://localhost:8765/';
 const SHOTS = !process.argv.includes('--no-shots');
@@ -47,8 +48,8 @@ function audit() {
 // collect user-visible strings (text nodes outside the language picker, plus title/aria-label/placeholder)
 function visibleStrings() {
   const out = [], w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  let n; while ((n = w.nextNode())) { const p = n.parentElement; if (!p || p.closest('#langSelect, script, style, [hidden]')) continue; const s = n.textContent.trim(); if (s) out.push(s); }
-  for (const el of document.querySelectorAll('[title],[aria-label],[placeholder]')) { if (el.closest('#langSelect')) continue; for (const a of ['title', 'aria-label', 'placeholder']) { const v = el.getAttribute(a); if (v) out.push(v); } }
+  let n; while ((n = w.nextNode())) { const p = n.parentElement; if (!p || p.closest('#langMenu, #langBtn, script, style, [hidden]')) continue; const s = n.textContent.trim(); if (s) out.push(s); }
+  for (const el of document.querySelectorAll('[title],[aria-label],[placeholder]')) { if (el.closest('#langMenu')) continue; for (const a of ['title', 'aria-label', 'placeholder']) { const v = el.getAttribute(a); if (v) out.push(v); } }
   return out;
 }
 
@@ -64,7 +65,7 @@ function visibleStrings() {
       p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
       await p.goto(BASE); await ready(p);
       const dict = await p.evaluate(l => ({ title: app.i18n.t('meta.title'), desc: app.i18n.t('meta.description'), rawTitle: app.i18n.dicts[l]['meta.title'], html: app.i18n.info(l).html }), lang);
-      const head = await p.evaluate(async () => { await CubeLab.seoNav.ready; return { lang: document.documentElement.lang, dir: document.documentElement.dir, cur: app.i18n.lang(), title: document.title, desc: document.querySelector('meta[name=description]').content, sel: langSelect.value }; });
+      const head = await p.evaluate(async () => { await CubeLab.seoNav.ready; return { lang: document.documentElement.lang, dir: document.documentElement.dir, cur: app.i18n.lang(), title: document.title, desc: document.querySelector('meta[name=description]').content, sel: document.getElementById('langBtn').dataset.lang }; });
       // the title / description now come from the prerendered page of that language (tools/build-seo.js)
       const pre = await p.evaluate(async l => { const d = new DOMParser().parseFromString(await (await fetch(CubeLab.seoRoutes.path(l, null))).text(), 'text/html'); return { title: d.title, desc: d.querySelector('meta[name=description]').content }; }, lang);
       ok(head.cur === lang && head.sel === lang, `${tag} detected from navigator locale ${LOCALES[lang]} (got ${head.cur}, select ${head.sel})`);
@@ -137,24 +138,24 @@ function visibleStrings() {
     }
   }
 
-  // persistence: choose each language in the dropdown, reload, it sticks (overrides the browser locale)
+  // persistence: choose each language in the menu, reload, it sticks (overrides the browser locale)
   {
     const ctx = await browser.newContext({ locale: 'en-US', viewport: { width: 1280, height: 900 } });
     const p = await ctx.newPage(); await p.goto(BASE); await ready(p);
-    const opts = await p.evaluate(() => [...langSelect.querySelectorAll('option,optgroup')].map(o => o.tagName === 'OPTGROUP' ? '[' + o.label + ']' : o.value + '=' + o.text));
-    ok(opts.join('|') === 'en=English|zh-Hans=简体中文|zh-Hant=繁體中文|es=Español|ar=العربية|pt=Português|id=Bahasa Indonesia|ms=Bahasa Melayu|fr=Français|ja=日本語|ru=Русский|de=Deutsch', 'dropdown order, flat (no optgroup): ' + opts.join('|'));
-    ok(await p.evaluate(() => langSelect.querySelectorAll('optgroup').length === 0 && [...langSelect.options].every(o => o.parentElement === langSelect)), 'all language options are top-level');
+    const opts = await p.evaluate(() => [...document.querySelectorAll('#langMenu [role=menuitem]')].map(o => o.dataset.lang + '=' + o.querySelector('span:not(.lang-code)').textContent));
+    ok(opts.join('|') === 'en=English|zh-Hans=简体中文|zh-Hant=繁體中文|es=Español|ar=العربية|pt=Português|id=Bahasa Indonesia|ms=Bahasa Melayu|fr=Français|ja=日本語|ru=Русский|de=Deutsch', 'language menu order: ' + opts.join('|'));
+    ok(await p.evaluate(() => [...document.querySelectorAll('#langMenu a')].every(a => a.getAttribute('href') === CubeLab.seoRoutes.path(a.dataset.lang, null))), 'language items are crawlable links to each root');
     for (const lang of [...ORDER.slice(1), 'en']) {
-      await p.selectOption('#langSelect', lang); await p.waitForTimeout(80);
+      await pickLang(p, lang); await p.waitForTimeout(80);
       const live = await p.evaluate(() => [document.documentElement.lang, document.querySelector('[data-tab=paint]').textContent, localStorage.getItem('cubelab.lang')]);
       await p.reload(); await ready(p);
-      const after = await p.evaluate(() => [app.i18n.lang(), langSelect.value, document.documentElement.dir, document.querySelector('[data-tab=paint]').textContent]);
+      const after = await p.evaluate(() => [app.i18n.lang(), document.getElementById('langBtn').dataset.lang, document.documentElement.dir, document.querySelector('[data-tab=paint]').textContent]);
       const want = await p.evaluate(l => app.i18n.dicts[l]['tab.paint'], lang);
       ok(live[2] === lang && after[0] === lang && after[1] === lang && after[3] === want && live[1] === want && after[2] === (lang === 'ar' ? 'rtl' : 'ltr'), `persist ${lang} across reload: ${JSON.stringify({ live, after })}`);
     }
     // switching language live re-renders dynamic text (solution header, move explanation, validation)
     await p.evaluate(() => { btnScramble.click(); btnSolve.click(); }); await p.waitForSelector('#solutionBox:not([hidden])'); await p.evaluate(() => app.player.next()); await p.waitForTimeout(700);
-    await p.selectOption('#langSelect', 'ru'); await p.waitForTimeout(100);
+    await pickLang(p, 'ru'); await p.waitForTimeout(100);
     const ru = await p.evaluate(() => ({ count: solCount.textContent, desc: nowDesc.textContent, val: validation.textContent, sv: solverStatus.textContent }));
     ok(/^Решение: \d+ ход/.test(ru.count) && /Поверните|слой/.test(ru.desc) && /✔/.test(ru.val) && /Решатель|Решено/.test(ru.sv), 'live switch re-renders dynamic text: ' + JSON.stringify(ru));
     await ctx.close();

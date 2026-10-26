@@ -1,6 +1,7 @@
 // 金字塔 / 斜转 端到端：node tests/twisty.e2e.js [URL] [截图目录]
 // 选择谜题 → 3D / 图视图 / 展开图编辑（涂色 + 校验）→ 随机状态 → 最优求解（步数 = BFS 距离）→ 播放复原；
 // 自己玩：拖动（顶角 / 棱 / 中心）、键盘、计时、求解按钮；手机触摸（页面不滚动、无横向溢出）；多语言
+const { pickPuzzle, pickLang } = require('./_topbar.js');
 const { chromium } = require('playwright');
 const URL = process.argv[2] || 'http://localhost:8765/', OUT = process.argv[3] || __dirname + '/../screenshots/oddshape';
 require('fs').mkdirSync(OUT, { recursive: true });
@@ -70,10 +71,10 @@ async function dragDir(p, a, dx, dy, touch, cdp) {
   await p.goto(URL + '?n=3', { waitUntil: 'load' }); await ready(p);
   for (const id of ['pyraminx', 'skewb']) {
     console.log('\n[desktop] ' + id + ': select / view / edit');
-    await p.selectOption('#puzzleSelect', id); await ready(p);
-    const info = await p.evaluate(() => ({ id: app.P.id, name: document.querySelector('#puzzleSelect').selectedOptions[0].textContent, url: location.pathname + location.search,
+    await pickPuzzle(p, id); await ready(p);
+    const info = await p.evaluate(() => ({ id: app.P.id, name: document.getElementById('puzzleName').textContent, url: location.pathname + location.search,
       polys: document.querySelectorAll('#net polygon.cell').length, nodes: document.querySelectorAll('#graph .node').length, circles: document.querySelectorAll('#graph circle.track').length,
-      scanHidden: document.querySelector('.tab[data-tab="scan"]').hidden, solver: document.getElementById('solverStatus').textContent, opts: [...document.querySelectorAll('#puzzleSelect option')].map(o => o.textContent + (o.disabled ? '(disabled)' : '')) }));
+      scanHidden: document.querySelector('.tab[data-tab="scan"]').hidden, solver: document.getElementById('solverStatus').textContent, opts: [...document.querySelectorAll('#puzzleMenu [data-pid]')].map(o => o.textContent + (o.getAttribute('aria-disabled') === 'true' ? '(disabled)' : '')) }));
     const N = id === 'pyraminx' ? 36 : 30;
     ok(info.id === id && !/规划中/.test(info.name) && info.opts.every(o => !/规划中|disabled/.test(o)), `selected ${info.name}; no "planned"/disabled options (${info.opts.slice(-3).join(', ')})`);
     ok(info.url.includes('/' + id + '-solver/'), 'URL updated to the puzzle page: ' + info.url);
@@ -188,7 +189,7 @@ async function dragDir(p, a, dx, dy, touch, cdp) {
   }
   ok(!errs.filter(e => !/GL Driver|deprecated|GPU stall/.test(e)).length, 'no page errors' + (errs.length ? ': ' + errs.slice(0, 3).join(' | ') : ''));
   // 切回 3×3：展开图恢复为方格、扫描选项卡重新出现
-  await p.selectOption('#puzzleSelect', 'cube3'); await ready(p);
+  await pickPuzzle(p, 'cube3'); await ready(p);
   const back = await p.evaluate(() => ({ cells: document.querySelectorAll('#net button.cell').length, poly: document.getElementById('net').classList.contains('poly'), scan: !document.querySelector('.tab[data-tab="scan"]').hidden }));
   ok(back.cells === 54 && !back.poly && back.scan, 'back to 3×3: grid net + scan tab restored');
   await ctx.close();
@@ -222,7 +223,7 @@ async function dragDir(p, a, dx, dy, touch, cdp) {
   }
   for (const lang of ['en', 'ar', 'ja', 'ru']) {
     await m.evaluate(l => app.i18n.setLang(l), lang);
-    const t = await m.evaluate(() => ({ name: document.querySelector('#puzzleSelect').selectedOptions[0].textContent, hint: document.getElementById('playHint').textContent, notation: document.getElementById('notationTable').textContent }));
+    const t = await m.evaluate(() => ({ name: document.getElementById('puzzleName').textContent, hint: document.getElementById('playHint').textContent, notation: document.getElementById('notationTable').textContent }));
     ok(t.name && !/puzzle\.|\.hint|notation\./.test(t.name + t.hint + t.notation), `${lang}: "${t.name}" · ${t.hint.slice(0, 40)}…`);
     if (lang === 'ar' || lang === 'en') await m.screenshot({ path: `${OUT}/mobile-skewb-play-${lang}.png` });
   }

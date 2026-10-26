@@ -5,6 +5,7 @@
 // Checks: crossOriginIsolated stays true with the analytics scripts; the Cloudflare beacon loads and reports; the consent
 // banner (en + zh-hans, mobile) does not cover the main controls; GA (gtag.js, /g/collect) is not requested before consent
 // or after Decline, and sends page_view after Accept, including in-app route changes.
+const { pickPuzzle, pickLang } = require('./_topbar.js');
 const { chromium } = require('playwright');
 const args = process.argv.slice(2), opt = n => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : null; };
 const BASE = (args[0] && !args[0].startsWith('--') ? args[0] : 'https://cube-solver.org/'), PROXY = opt('--proxy'), STUB = args.includes('--stub');
@@ -50,7 +51,7 @@ async function bannerCheck(b, lang, path) {
   const r = await p.evaluate(() => {
     const box = e => { if (!e) return null; const b = e.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom, h: b.height }; };
     const ban = document.getElementById('consentBanner');
-    const ctrls = ['#puzzleSelect', '#langSelect', '#homeLink', '.mode-switch button, [data-mode]', '#btnSolve', '#btnScramble'].flatMap(s => [...document.querySelectorAll(s)])
+    const ctrls = ['#puzzleBtn', '#langBtn', '#shareBtn', '#ghLink', '#homeLink', '.mode-switch button, [data-mode]', '#btnSolve', '#btnScramble'].flatMap(s => [...document.querySelectorAll(s)])
       .filter(e => e.offsetParent && e.getBoundingClientRect().bottom <= innerHeight && e.getBoundingClientRect().top >= 0);
     return { shown: !!ban && !ban.hidden, text: ban && ban.querySelector('p').textContent, accept: ban && ban.querySelector('#consentAccept').textContent,
       ban: box(ban), vh: innerHeight, vw: innerWidth, ctrls: ctrls.map(e => ({ id: e.id || e.textContent.trim().slice(0, 12), b: box(e) })), overflowX: document.documentElement.scrollWidth > innerWidth };
@@ -99,7 +100,7 @@ async function bannerCheck(b, lang, path) {
     await p.goto(BASE, { waitUntil: 'load' }); await p.click('#consentDecline');
     await p.reload({ waitUntil: 'load' }); await p.waitForTimeout(1500);
     const banner = await p.evaluate(() => !!document.querySelector('#consentBanner:not([hidden])'));
-    await p.selectOption('#puzzleSelect', { index: 3 }); await p.waitForTimeout(3000);
+    await pickPuzzle(p, { index: 3 }); await p.waitForTimeout(3000);
     ok(!banner && (await p.evaluate(() => localStorage.getItem('cubelab.consent'))) === 'denied', 'Decline is remembered (no banner after reload)');
     ok(!log.some(q => isGtag(q.url) || isCollect(q.url)), 'after Decline: gtag.js never requested, no /g/collect (incl. reload + route change)');
     await ctx.close();
@@ -120,7 +121,7 @@ async function bannerCheck(b, lang, path) {
     ok(consent.every(c => c === 'G101'), `consent state sent to GA: gcs=${[...new Set(consent)].join(',')} (analytics granted, ads denied)`);
     ok(await p.evaluate(() => self.crossOriginIsolated), 'still crossOriginIsolated with gtag.js loaded');
     const before = pv.length;
-    await p.selectOption('#puzzleSelect', { index: 3 });
+    await pickPuzzle(p, { index: 3 });
     await p.waitForFunction(() => /cube-solver\/$/.test(location.pathname), null, { timeout: 10000 }).catch(() => {});
     const path = await p.evaluate(() => location.pathname);
     // GA4 counts the history change itself (enhanced measurement) and may batch the hit for a few seconds
@@ -135,7 +136,7 @@ async function bannerCheck(b, lang, path) {
     // change the choice from the footer link
     await p.click('#consentSettings'); await p.click('#consentDecline');
     const n = log.filter(q => isCollect(q.url)).length;
-    await p.selectOption('#puzzleSelect', { index: 4 }); await p.waitForTimeout(8000);
+    await pickPuzzle(p, { index: 4 }); await p.waitForTimeout(8000);
     const path2 = await p.evaluate(() => location.pathname);
     // a hit already queued before the Decline (e.g. the scroll to the footer) may still be flushed; nothing after it is sent
     const after = log.filter(q => isCollect(q.url)).slice(n).filter(q => (q.url + '&' + q.post).includes(encodeURIComponent('https://cube-solver.org' + path2)));

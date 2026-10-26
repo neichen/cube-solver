@@ -13,7 +13,9 @@ global.CubeLab = {}; vm.runInThisContext(fs.readFileSync(path.join(ROOT, 'js/i18
 const LINFO = {}; CubeLab.i18n.LANGS.forEach(l => { LINFO[l.code] = l; });
 // the app's own string tables (js/i18n/<code>.js) for the prerendered consent banner
 R.LANGS.forEach(c => { vm.runInThisContext(fs.readFileSync(path.join(ROOT, 'js/i18n', c + '.js'), 'utf8')); });
-const APPT = (lang, key) => { CubeLab.i18n._setLangSilently(lang); return CubeLab.i18n.t(key); };
+const APPT = (lang, key, params) => { CubeLab.i18n._setLangSilently(lang); return CubeLab.i18n.t(key, params); };
+// top-bar controls (puzzle menu, language menu, share, GitHub), prerendered so nothing shifts when the app starts
+const TOPBAR = require(path.join(ROOT, 'js/topbar.js'));
 // Per-page scripts, all deferred (parsing never blocks): only the page's language pack and the page's puzzle plugin;
 // other languages / puzzles are loaded on demand (js/i18n/i18n.js loadPack, js/core/registry.js loadPuzzle).
 const GROUP_SCRIPTS = {
@@ -25,7 +27,7 @@ function scriptList(lang, pz) {
   return ['js/i18n/i18n.js', 'js/seo-routes.js', 'js/i18n/' + lang + '.js', 'js/core/registry.js', 'puzzles/nxn/nxn-model.js']
     .concat(GROUP_SCRIPTS[groupOf(pz)], ['vendor/three.min.js', 'js/core/graph-view.js', 'js/core/view3d.js', 'js/core/player.js', 'js/core/play-core.js',
       'js/core/solver-client.js', 'js/core/net-editor.js', 'js/core/color-cluster.js', 'js/core/camera-scan.js', 'js/core/audio.js',
-      'js/app.js', 'js/seo-nav.js', 'js/analytics.js']);
+      'js/core/share-code.js', 'js/topbar.js', 'js/app.js', 'js/seo-nav.js', 'js/analytics.js']);
 }
 // Consent banner, prerendered in the page language (no layout shift, not the LCP element). It stays hidden unless the
 // inline script below shows it: production host, GA configured (data-ga="1", set by tools/build-dist.js), consent region
@@ -171,7 +173,8 @@ function page(lang, pz) {
   const homeLabel = esc(`${SITE} – ${t('nav.home')}`);
   const homeHtml = `<a class="logo" id="homeLink" href="${R.path(lang, null)}" aria-label="${homeLabel}" title="${homeLabel}">${'<i></i>'.repeat(9)}</a>`;
   const scripts = scriptList(lang, pz).map(f => `<script defer src="${f}"></script>`).join('\n');
-  return { head, body, noscript, htmlAttr, h1html, homeHtml, url, title, desc, lang, pz, scripts, consent: consentHtml(lang) };
+  const picks = TOPBAR.html(lang, pz, (k, p) => APPT(lang, k, p), R, CubeLab.i18n.LANGS);
+  return { head, body, noscript, htmlAttr, h1html, homeHtml, picks, url, title, desc, lang, pz, scripts, consent: consentHtml(lang) };
 }
 
 const hashes = {};
@@ -187,7 +190,7 @@ function fill(tpl, pg) {
   // change their size after first paint (empty buttons growing once filled caused a 0.33 CLS on /zh-hans/ desktop)
   s = s.replace(/(<([a-z][a-z0-9]*)\b[^>]*\sdata-i18n="([^"]+)"[^>]*>)([^<]*)(<\/\2>)/g, (m, open, tag, key, txt, close) =>
     /^consent\./.test(key) ? m : open + esc(APPT(pg.lang, key)) + close);
-  s = rep(s, 'head', pg.head); s = rep(s, 'h1', pg.h1html); s = rep(s, 'body', pg.body); s = rep(s, 'noscript', pg.noscript); s = rep(s, 'home', pg.homeHtml);
+  s = rep(s, 'head', pg.head); s = rep(s, 'h1', pg.h1html); s = rep(s, 'body', pg.body); s = rep(s, 'noscript', pg.noscript); s = rep(s, 'home', pg.homeHtml); s = rep(s, 'picks', pg.picks);
   s = rep(s, 'consent', pg.consent); s = rep(s, 'scripts', pg.scripts);
   // cache busting for the HTML-referenced scripts / styles (served with a 1 h max-age, see deploy/_headers)
   s = s.replace(/(src|href)="((?:js|css|vendor|puzzles)\/[^"?]+)(\?v=[0-9a-f]+)?"/g, (m, a, f) => `${a}="${f}?v=${hash(f)}"`);

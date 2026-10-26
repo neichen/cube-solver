@@ -1,6 +1,7 @@
 /* Puzzle menu order / default / names in each language; screenshots → screenshots/naming/.
    Run: node tests/naming.e2e.js [baseUrl] */
 const path = require('path');
+const { pickPuzzle, pickLang } = require('./_topbar.js');
 const { chromium } = require('playwright');
 const BASE = (process.argv[2] || 'http://localhost:8765').replace(/\/+$/, '');
 const OUT = path.join(__dirname, '..', 'screenshots', 'naming');
@@ -12,7 +13,7 @@ const EXP = {
   ja: { dir: '/ja', loc: 'ja-JP', cube2: '2×2キューブ', cube3: '3×3キューブ', cube10: '10×10キューブ', pyraminx: 'ピラミンクス', skewb: 'スキューブ', megaminx: 'メガミンクス' },
 };
 let fails = 0, passes = 0; const ok = (c, m) => { if (c) passes++; else { fails++; console.log('  ✘ FAIL:', m); } };
-const menu = p => p.evaluate(() => { const s = document.getElementById('puzzleSelect'); return { value: s.value, sel: s.selectedOptions[0] && s.selectedOptions[0].value, opts: [...s.options].map(o => [o.value, o.textContent]), path: location.pathname, h1: document.getElementById('pageTitle').textContent, title: document.title, lang: document.documentElement.lang }; });
+const menu = p => p.evaluate(() => { const s = document.getElementById('puzzleBtn'), cur = document.querySelector('#puzzleMenu [aria-current=true]'); return { value: s.dataset.pid, sel: cur && cur.dataset.pid, opts: [...document.querySelectorAll('#puzzleMenu [data-pid]')].map(o => [o.dataset.pid, o.querySelector('span').textContent]), path: location.pathname, h1: document.getElementById('pageTitle').textContent, title: document.title, lang: document.documentElement.lang }; });
 (async () => {
   const b = await chromium.launch();
   for (const [lang, E] of Object.entries(EXP)) {
@@ -26,13 +27,13 @@ const menu = p => p.evaluate(() => { const s = document.getElementById('puzzleSe
       for (const k of ['cube2', 'cube3', 'cube10', 'pyraminx', 'skewb', 'megaminx']) { const o = m.opts.find(x => x[0] === k); ok(o && o[1] === E[k], `${lang}: ${k} label "${o && o[1]}" (want "${E[k]}")`); }
       if (vp.tag === 'desktop') console.log(lang, m.opts.filter(o => ['cube2', 'cube3', 'cube4', 'cube10', 'pyraminx', 'skewb'].includes(o[0])).map(o => o[1]).join(' | '));
       // select not overflowing its box, no horizontal page overflow
-      const ov = await p.evaluate(() => { const s = document.getElementById('puzzleSelect'), r = s.getBoundingClientRect(); return { pageOv: document.documentElement.scrollWidth > innerWidth + 1, right: r.right, vw: innerWidth }; });
+      const ov = await p.evaluate(() => { const s = document.getElementById('topPicks'), r = s.getBoundingClientRect(); return { pageOv: document.documentElement.scrollWidth > innerWidth + 1, right: r.right, vw: innerWidth }; });
       ok(!ov.pageOv && ov.right <= ov.vw, `${lang} ${vp.tag}: no overflow (${JSON.stringify(ov)})`);
-      // expanded list screenshot (native dropdowns are not captured, so show it as a listbox)
-      await p.evaluate(() => { const s = document.getElementById('puzzleSelect'); s.size = s.options.length; s.style.position = 'relative'; s.style.zIndex = 50; s.style.background = '#fff'; s.scrollIntoView({ block: 'start' }); });
+      // open puzzle menu screenshot
+      await p.click('#puzzleBtn');
       await p.waitForTimeout(200);
       await p.screenshot({ path: `${OUT}/${lang}-${vp.tag}-menu.png` });
-      await p.evaluate(() => { const s = document.getElementById('puzzleSelect'); s.size = 0; s.style.cssText = ''; });
+      await p.keyboard.press('Escape');
       // puzzle page preselects its puzzle
       for (const pz of ['cube2', 'cube10', 'skewb']) {
         const slug = pz.startsWith('cube') ? pz.slice(4) + 'x' + pz.slice(4) + '-cube-solver' : pz + '-solver';
@@ -42,7 +43,7 @@ const menu = p => p.evaluate(() => { const s = document.getElementById('puzzleSe
       }
       if (vp.tag === 'desktop') { await p.evaluate(() => scrollTo(0, 0)); await p.screenshot({ path: `${OUT}/${lang}-desktop-skewb-page.png` }); }
       // picking 4×4 from the menu moves to its page and its heading
-      await p.selectOption('#puzzleSelect', 'cube4'); await p.waitForTimeout(800);
+      await pickPuzzle(p, 'cube4'); await p.waitForTimeout(800);
       m = await menu(p);
       ok(m.path === (E.dir || '') + '/4x4-cube-solver/' && m.value === 'cube4', `${lang} ${vp.tag}: pick cube4 → ${m.path} "${m.h1}"`);
       await ctx.close();
@@ -63,7 +64,7 @@ const menu = p => p.evaluate(() => { const s = document.getElementById('puzzleSe
         ok(m.path === root && m.value === 'cube3' && m.sel === 'cube3', `${lang} ${vp.tag}: logo from /${slug}/ → ${m.path}, selected ${m.value}`);
       }
       // pick 5×5, then come back to the home page (typed URL and logo) → still 3×3
-      await p.selectOption('#puzzleSelect', 'cube5'); await p.waitForTimeout(800);
+      await pickPuzzle(p, 'cube5'); await p.waitForTimeout(800);
       let m = await menu(p);
       ok(m.value === 'cube5' && m.path === root + '5x5-cube-solver/', `${lang} ${vp.tag}: picking 5×5 → ${m.path}`);
       await p.goto(BASE + root); await p.waitForFunction(() => window.app && app.P); await p.waitForTimeout(300);
@@ -83,9 +84,9 @@ const menu = p => p.evaluate(() => { const s = document.getElementById('puzzleSe
   {
     const ctx = await b.newContext({ locale: 'en-US', viewport: { width: 1440, height: 1000 } }); const p = await ctx.newPage();
     await p.goto(BASE + '/'); await p.waitForFunction(() => window.app && app.P);
-    await p.selectOption('#langSelect', 'ja'); await p.waitForTimeout(800);
+    await pickLang(p, 'ja'); await p.waitForTimeout(800);
     await p.goto(BASE + '/'); await p.waitForFunction(() => window.app && app.P); await p.waitForTimeout(800);
-    const r = await p.evaluate(() => ({ lang: app.i18n.lang(), href: document.getElementById('homeLink').getAttribute('href'), v: document.getElementById('puzzleSelect').value }));
+    const r = await p.evaluate(() => ({ lang: app.i18n.lang(), href: document.getElementById('homeLink').getAttribute('href'), v: document.getElementById('puzzleBtn').dataset.pid }));
     ok(r.lang === 'ja' && r.href === '/ja/' && r.v === 'cube3', `saved language kept on / (${JSON.stringify(r)}), logo → /ja/`);
     // old ?puzzle= links still open that puzzle
     await p.goto(BASE + '/?puzzle=cube7'); await p.waitForFunction(() => window.app && app.P); await p.waitForTimeout(500);
