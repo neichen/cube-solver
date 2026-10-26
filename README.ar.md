@@ -66,6 +66,8 @@ npm run deploy
 
 ملاحظات للمطورين: [docs/DEVELOPMENT.ar.md](docs/DEVELOPMENT.ar.md).
 
+المساهمة: نرحّب بتقارير الأخطاء وتصحيحات الترجمة وطلبات الدمج — راجع [CONTRIBUTING.md](CONTRIBUTING.md) (بالإنجليزية). للمشكلات الأمنية: [SECURITY.md](SECURITY.md).
+
 ## شكر وتقدير
 
 عرض المخطط الذي يرسم المكعب على شكل دوائر مستوحى من رسوم じゃがりきん المتحركة ([@jagarikin](https://x.com/jagarikin)): [العمل الأصلي (2022-05)](https://x.com/jagarikin/status/1524175137633095681)، [مع مكعب ثلاثي الأبعاد (2022-11)](https://x.com/jagarikin/status/1593771091738374144). تعرّفنا على الفكرة أول مرة من خلال [هذا المنشور من @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684)، فشكرًا لكليهما.

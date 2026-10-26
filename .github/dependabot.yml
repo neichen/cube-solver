@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      dev-tools:
+        patterns: ["esbuild", "playwright", "wrangler"]
+    ignore:
+      # three.js is pinned on purpose (r160, tree-shaken by tools/build-three.js); update it by hand.
+      - dependency-name: three
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

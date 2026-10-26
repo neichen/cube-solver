@@ -66,6 +66,8 @@ npm run deploy
 
 Заметки для разработчиков: [docs/DEVELOPMENT.ru.md](docs/DEVELOPMENT.ru.md).
 
+Участие: сообщения об ошибках, исправления переводов и pull request’ы приветствуются — см. [CONTRIBUTING.md](CONTRIBUTING.md) (на английском). Проблемы безопасности: [SECURITY.md](SECURITY.md).
+
 ## Благодарности
 
 Графовое представление кубика в виде окружностей вдохновлено анимациями じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [оригинал (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [с 3D-кубиком (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Впервые мы увидели эту идею благодаря [этому посту @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). Спасибо обоим.

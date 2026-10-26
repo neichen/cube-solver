@@ -66,6 +66,8 @@ npm run deploy
 
 Notes pour les développeurs : [docs/DEVELOPMENT.fr.md](docs/DEVELOPMENT.fr.md).
 
+Contribuer : rapports de bogues, corrections de traduction et pull requests sont les bienvenus — voir [CONTRIBUTING.md](CONTRIBUTING.md) (en anglais). Problèmes de sécurité : [SECURITY.md](SECURITY.md).
+
 ## Remerciements
 
 La vue en graphe qui représente le cube sous forme de cercles s’inspire des animations de じゃがりきん ([@jagarikin](https://x.com/jagarikin)) : [original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [avec cube 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Nous avons découvert l’idée grâce à [cette publication de @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). Merci à tous les deux.

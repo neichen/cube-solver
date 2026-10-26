@@ -66,6 +66,8 @@ npm run deploy
 
 Catatan pengembang: [docs/DEVELOPMENT.id.md](docs/DEVELOPMENT.id.md).
 
+Berkontribusi: laporan bug, perbaikan terjemahan, dan pull request sangat diterima — lihat [CONTRIBUTING.md](CONTRIBUTING.md) (bahasa Inggris). Masalah keamanan: [SECURITY.md](SECURITY.md).
+
 ## Ucapan terima kasih
 
 Tampilan graf yang menggambar kubus sebagai lingkaran-lingkaran terinspirasi dari animasi じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [versi asli (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [dengan kubus 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Kami pertama kali mengenal ide ini lewat [unggahan @UnicornBitcoin ini](https://x.com/UnicornBitcoin/status/2107652690113339684). Terima kasih untuk keduanya.

@@ -66,6 +66,8 @@ npm run deploy
 
 開発者向けメモ：[docs/DEVELOPMENT.ja.md](docs/DEVELOPMENT.ja.md)
 
+コントリビュート：バグ報告、翻訳の修正、プルリクエストを歓迎します。詳しくは [CONTRIBUTING.md](CONTRIBUTING.md)（英語）をご覧ください。セキュリティの問題は [SECURITY.md](SECURITY.md) へ。
+
 ## 謝辞
 
 キューブを円の集まりとして描くグラフ表示は、じゃがりきんさん（[@jagarikin](https://x.com/jagarikin)）のアニメーションに着想を得ています：[オリジナル（2022-05）](https://x.com/jagarikin/status/1524175137633095681)、[3D キューブ付き（2022-11）](https://x.com/jagarikin/status/1593771091738374144)。このアイデアを最初に知ったのは [@UnicornBitcoin さんのこの投稿](https://x.com/UnicornBitcoin/status/2107652690113339684) でした。おふたりに感謝します。

@@ -66,6 +66,8 @@ npm run deploy
 
 Hinweise für Entwickler: [docs/DEVELOPMENT.de.md](docs/DEVELOPMENT.de.md).
 
+Mitmachen: Fehlerberichte, Übersetzungskorrekturen und Pull Requests sind willkommen – siehe [CONTRIBUTING.md](CONTRIBUTING.md) (Englisch). Sicherheitsprobleme: [SECURITY.md](SECURITY.md).
+
 ## Danksagung
 
 Die Graphansicht, die den Würfel als Kreise darstellt, ist von den Animationen von じゃがりきん ([@jagarikin](https://x.com/jagarikin)) inspiriert: [Original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [mit 3D-Würfel (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Auf die Idee gestoßen sind wir durch [diesen Beitrag von @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). Danke an beide.

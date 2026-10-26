@@ -66,6 +66,8 @@ npm run deploy
 
 開發說明：[docs/DEVELOPMENT.zh-Hant.md](docs/DEVELOPMENT.zh-Hant.md)。
 
+參與貢獻：歡迎提交錯誤回報、翻譯修正和 Pull Request，詳見 [CONTRIBUTING.md](CONTRIBUTING.md)（英文）。安全問題請參閱 [SECURITY.md](SECURITY.md)。
+
 ## 致謝
 
 把魔術方塊畫成一組圓環的圖形視圖，靈感來自じゃがりきん（[@jagarikin](https://x.com/jagarikin)）的動畫：[原作（2022-05）](https://x.com/jagarikin/status/1524175137633095681)、[附 3D 方塊的版本（2022-11）](https://x.com/jagarikin/status/1593771091738374144)。我們最早是透過 [@UnicornBitcoin 的這則貼文](https://x.com/UnicornBitcoin/status/2107652690113339684) 看到這個創意的，感謝兩位。

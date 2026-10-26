@@ -66,6 +66,8 @@ npm run deploy
 
 开发说明：[docs/DEVELOPMENT.zh-Hans.md](docs/DEVELOPMENT.zh-Hans.md)。
 
+参与贡献：欢迎提交错误报告、翻译修正和 Pull Request，详见 [CONTRIBUTING.md](CONTRIBUTING.md)（英文）。安全问题请参阅 [SECURITY.md](SECURITY.md)。
+
 ## 致谢
 
 把魔方画成一组圆环的图形视图，灵感来自じゃがりきん（[@jagarikin](https://x.com/jagarikin)）的动画：[原作（2022-05）](https://x.com/jagarikin/status/1524175137633095681)、[带 3D 魔方的版本（2022-11）](https://x.com/jagarikin/status/1593771091738374144)。我们最早是通过 [@UnicornBitcoin 的这条帖子](https://x.com/UnicornBitcoin/status/2107652690113339684) 看到这个创意的，感谢两位。

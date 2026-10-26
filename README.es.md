@@ -66,6 +66,8 @@ npm run deploy
 
 Notas para desarrolladores: [docs/DEVELOPMENT.es.md](docs/DEVELOPMENT.es.md).
 
+Contribuir: los informes de errores, las correcciones de traducción y los pull requests son bienvenidos; consulta [CONTRIBUTING.md](CONTRIBUTING.md) (en inglés). Problemas de seguridad: [SECURITY.md](SECURITY.md).
+
 ## Agradecimientos
 
 La vista de grafo que dibuja el cubo como círculos está inspirada en las animaciones de じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [con cubo 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Conocimos la idea gracias a [esta publicación de @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684). Gracias a ambos.

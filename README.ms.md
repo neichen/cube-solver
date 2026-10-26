@@ -66,6 +66,8 @@ npm run deploy
 
 Nota pembangun: [docs/DEVELOPMENT.ms.md](docs/DEVELOPMENT.ms.md).
 
+Menyumbang: laporan pepijat, pembetulan terjemahan dan pull request dialu-alukan — lihat [CONTRIBUTING.md](CONTRIBUTING.md) (bahasa Inggeris). Isu keselamatan: [SECURITY.md](SECURITY.md).
+
 ## Penghargaan
 
 Paparan graf yang melukis kiub sebagai bulatan-bulatan diilhamkan oleh animasi じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [asal (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [dengan kiub 3D (2022-11)](https://x.com/jagarikin/status/1593771091738374144). Kami mula-mula mengetahui idea ini melalui [hantaran @UnicornBitcoin ini](https://x.com/UnicornBitcoin/status/2107652690113339684). Terima kasih kepada kedua-duanya.

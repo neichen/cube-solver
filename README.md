@@ -66,6 +66,8 @@ npm run deploy
 
 Developer notes: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
+Contributing: bug reports, translation fixes and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) (English). Security issues: [SECURITY.md](SECURITY.md).
+
 ## Acknowledgements
 
 The cube-as-circles graph view is inspired by the animations of じゃがりきん ([@jagarikin](https://x.com/jagarikin)): [original (2022-05)](https://x.com/jagarikin/status/1524175137633095681), [with 3D cube (2022-11)](https://x.com/jagarikin/status/1593771091738374144). We first came across the idea through [this post by @UnicornBitcoin](https://x.com/UnicornBitcoin/status/2107652690113339684) — thanks to both.

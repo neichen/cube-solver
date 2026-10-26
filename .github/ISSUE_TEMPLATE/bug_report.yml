@@ -1,0 +1,51 @@
+name: Bug report
+description: Something on cube-solver.org or in a local build does not work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for the report! Please do not paste camera photos of people or anything private.
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: The address where it happened, e.g. https://cube-solver.org/5x5-cube-solver/
+    validations:
+      required: true
+  - type: dropdown
+    id: puzzle
+    attributes:
+      label: Puzzle
+      options: ["2×2", "3×3", "4×4", "5×5–15×15", Pyraminx, Skewb, Megaminx, Not puzzle-specific]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What you did, step by step. The scramble you entered (or a screenshot of the net) helps a lot.
+      placeholder: |
+        1. Open …
+        2. Enter scramble …
+        3. Press Solve
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: e.g. Chrome 141 on Android 15, Safari 26 on iPhone
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output (optional)
+      description: Errors from the browser developer console, if any.
+      render: text
