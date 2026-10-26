@@ -321,8 +321,9 @@ body.mode-play .mv{cursor:default}
 .seo{max-width:1440px;margin:4px auto 0;padding:clamp(16px,2.4vw,28px) clamp(16px,3vw,36px);box-sizing:border-box;width:calc(100% - 2*clamp(10px,3vw,36px));font-size:15px;color:#2b2b27}
 .seo h2{font-size:18px;margin:18px 0 6px}
 .seo h3{font-size:15px;margin:12px 0 2px}
-.seo p,.seo ol{margin:0 0 6px;max-width:78ch}
-.seo ol{padding-inline-start:22px}
+.seo p,.seo ol,.seo ul{margin:0 0 6px;max-width:78ch}
+.seo ol,.seo ul{padding-inline-start:22px}
+.seo .seo-links{padding:0;margin:4px 0 0;max-width:none}
 .seo-intro{font-size:16px;color:var(--ink)}
 .seo-links{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:6px 8px}
 .seo-links a{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--ink);text-decoration:none;font-size:13px;background:var(--bg)}

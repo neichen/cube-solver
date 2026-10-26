@@ -83,5 +83,13 @@
   "solver.megaminx": "Penyelesai berbilang fasa yang pantas dan berjalan dalam Web Worker: ia membina teka-teki muka demi muka dengan jadual carian kecil dan menamatkan lapisan terakhir dalam dua langkah dengan jadual algoritma yang dijana. Pada {samples} kedudukan rawak purata {avg} gerakan diperlukan (paling banyak {max}, HTM gaya WCA: setiap pusingan muka 72° atau 144° dikira 1) dalam kira-kira {ms} ms. Penyelesaiannya tidak optimum.",
   "notation.megaminx": "Pusingan muka (putih di atas, hijau di hadapan): U F R L BL BR untuk muka atas dan muka-muka bahagian atas, D FL FR DL DR B untuk muka bawah dan muka-muka bahagian bawah. Tanpa akhiran 72° ikut arah jam, ' lawan arah jam, 2 = 144°. Kocakan Pochmann WCA (R++ R-- D++ D-- U U') juga diterima.",
   "graph.megaminx": "Setiap satu daripada 132 pelekat ialah nod. Pelekat diletakkan dengan unjuran stereografi dodekahedron dari pusat muka bawah, jadi setiap pusingan muka menggerakkan pelekat dalam kitaran 5 di sepanjang bulatan sebenar: muka bahagian atas membentuk gelang di sekitar tengah, muka bahagian bawah lima kelopak besar. Graf menganimasikan penyelesaian gerakan demi gerakan.",
-  "faq.optimal.megaminx": "Tidak. Penyelesaian optimum Megaminx jauh di luar jangkauan; penyelesai ini mengutamakan kelajuan dan memberikan penyelesaian lengkap kira-kira {avg} gerakan dalam sepecah saat."
+  "faq.optimal.megaminx": "Tidak. Penyelesaian optimum Megaminx jauh di luar jangkauan; penyelesai ini mengutamakan kelajuan dan memberikan penyelesaian lengkap kira-kira {avg} gerakan dalam sepecah saat.",
+  "facts.title": "Kiub {n}×{n} dalam angka",
+  "facts.pieces": "{stickers} pelekat pada {pieces} kepingan yang kelihatan: 8 bucu, {edges} kepingan tepi dan {centers} kepingan tengah.",
+  "facts.states": "{states} kedudukan yang mungkin – nombor dengan {digits} digit.",
+  "facts.orbits": "Kepingan bergerak dalam kumpulan tetap (orbit) 24 keping: {wings} untuk tepi sayap dan {corbits} untuk kepingan tengah. Kepingan tidak pernah keluar dari orbitnya, jadi setiap orbit perlu diselesaikan.",
+  "facts.odd": "Saiz ganjil: 6 kepingan tengah utama sentiasa mengekalkan kedudukan relatifnya dan menentukan skema warna, dan 12 tepi tengah berkelakuan seperti tepi kiub 3×3.",
+  "facts.even": "Saiz genap: tiada kepingan tengah tetap, jadi orientasi ditentukan oleh bucu, dan kes pariti seperti pada 4×4 boleh berlaku.",
+  "facts.layers": "3 paksi × {n} lapisan = {layers} lapisan yang boleh diputar, setiap satu suku putaran ke mana-mana arah atau setengah putaran.",
+  "facts.compare": "Diukur di sini: kira-kira {q} gerakan dalam mod kualiti, {dq} lebih banyak daripada {p}×{p} ({qp})."
 }

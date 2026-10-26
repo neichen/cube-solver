@@ -83,5 +83,13 @@
  "solver.megaminx": "Un solveur multi-phases rapide qui tourne dans un Web Worker : il construit le puzzle face par face avec de petites tables de recherche et termine la dernière couche en deux étapes grâce à une table d'algorithmes générés. Sur {samples} positions aléatoires, il a fallu {avg} mouvements en moyenne (au plus {max}, HTM style WCA : chaque rotation de face de 72° ou 144° compte 1) en environ {ms} ms. Les solutions ne sont pas optimales.",
  "notation.megaminx": "Rotations de face (blanc en haut, vert devant) : U F R L BL BR pour la face du haut et les faces supérieures, D FL FR DL DR B pour la face du bas et les faces inférieures. Sans suffixe : 72° dans le sens horaire, ' antihoraire, 2 = 144°. Les mélanges Pochmann WCA (R++ R-- D++ D-- U U') sont aussi acceptés.",
  "graph.megaminx": "Chacun des 132 autocollants est un nœud. Ils sont placés par une projection stéréographique du dodécaèdre depuis le centre du bas, si bien que chaque rotation de face déplace les autocollants par cycles de 5 le long de vrais cercles : les faces supérieures forment des anneaux autour du centre, les faces inférieures cinq grands pétales. Le graphe anime la solution coup par coup.",
- "faq.optimal.megaminx": "Non. Résoudre le Megaminx de façon optimale est hors de portée ; ce solveur vise la vitesse et renvoie une solution complète d'environ {avg} mouvements en une fraction de seconde."
+ "faq.optimal.megaminx": "Non. Résoudre le Megaminx de façon optimale est hors de portée ; ce solveur vise la vitesse et renvoie une solution complète d'environ {avg} mouvements en une fraction de seconde.",
+ "facts.title": "Le cube {n}×{n} en chiffres",
+ "facts.pieces": "{stickers} facettes sur {pieces} pièces visibles : 8 coins, {edges} arêtes et {centers} centres.",
+ "facts.states": "{states} positions possibles – un nombre à {digits} chiffres.",
+ "facts.orbits": "Les pièces se déplacent dans des groupes fixes (orbites) de 24 : {wings} pour les arêtes ailes et {corbits} pour les centres. Une pièce ne quitte jamais son orbite, chaque orbite doit donc être résolue.",
+ "facts.odd": "Taille impaire : les 6 centres du milieu gardent toujours leurs positions relatives et définissent le schéma de couleurs ; les 12 arêtes du milieu se comportent comme celles d’un 3×3.",
+ "facts.even": "Taille paire : il n’y a pas de centre fixe, l’orientation est donnée par les coins et des parités comme sur le 4×4 peuvent apparaître.",
+ "facts.layers": "3 axes × {n} couches = {layers} couches tournables, chacune d’un quart de tour dans un sens ou l’autre ou d’un demi-tour.",
+ "facts.compare": "Mesuré ici : environ {q} mouvements en mode qualité, soit {dq} de plus que sur le {p}×{p} ({qp})."
 }

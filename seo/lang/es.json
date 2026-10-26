@@ -83,5 +83,13 @@
   "solver.megaminx": "Un solucionador rápido por fases que se ejecuta en un Web Worker: construye el puzle cara a cara con pequeñas tablas de búsqueda y termina la última capa en dos pasos con una tabla de algoritmos generados. En {samples} posiciones aleatorias necesitó {avg} movimientos de media (como máximo {max}, HTM al estilo WCA: cada giro de cara de 72° o 144° cuenta 1) en unos {ms} ms. Las soluciones no son óptimas.",
   "notation.megaminx": "Giros de cara (blanco arriba, verde delante): U F R L BL BR para la cara superior y las de arriba, D FL FR DL DR B para la inferior y las de abajo. Sin sufijo es 72° en sentido horario, ' antihorario y 2 son 144°. También se aceptan mezclas Pochmann de la WCA (R++ R-- D++ D-- U U').",
   "graph.megaminx": "Cada una de las 132 pegatinas es un nodo. Se colocan mediante una proyección estereográfica del dodecaedro desde el centro inferior, de modo que cada giro de cara mueve las pegatinas en ciclos de 5 a lo largo de círculos reales: las caras de arriba forman anillos alrededor del centro y las de abajo cinco grandes pétalos. El grafo anima la solución movimiento a movimiento.",
-  "faq.optimal.megaminx": "No. Resolver el Megaminx de forma óptima está fuera de alcance; este solucionador prioriza la velocidad y devuelve una solución completa de unos {avg} movimientos en una fracción de segundo."
+  "faq.optimal.megaminx": "No. Resolver el Megaminx de forma óptima está fuera de alcance; este solucionador prioriza la velocidad y devuelve una solución completa de unos {avg} movimientos en una fracción de segundo.",
+  "facts.title": "El cubo {n}×{n} en cifras",
+  "facts.pieces": "{stickers} pegatinas en {pieces} piezas visibles: 8 esquinas, {edges} aristas y {centers} centros.",
+  "facts.states": "{states} posiciones posibles: un número de {digits} cifras.",
+  "facts.orbits": "Las piezas se mueven en grupos fijos (órbitas) de 24: {wings} de aristas ala y {corbits} de centros. Una pieza nunca sale de su órbita, así que hay que resolver cada órbita.",
+  "facts.odd": "Tamaño impar: los 6 centros del medio siempre mantienen sus posiciones relativas y definen el esquema de colores; las 12 aristas centrales se comportan como las de un 3×3.",
+  "facts.even": "Tamaño par: no hay centro fijo, así que la orientación la dan las esquinas y pueden aparecer paridades como en el 4×4.",
+  "facts.layers": "3 ejes × {n} capas = {layers} capas que se pueden girar, cada una un cuarto de vuelta en ambos sentidos o media vuelta.",
+  "facts.compare": "Medido aquí: unos {q} movimientos en modo calidad, {dq} más que en el {p}×{p} ({qp})."
 }

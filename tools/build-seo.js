@@ -64,6 +64,25 @@ function params(lang, pz) {
   p.name = pz ? puzzleName(lang, pz) : '';
   return p;
 }
+// ---------- per-size facts for 5x5–15x15 (exact combinatorics + the measured move counts above) ----------
+const fact = n => { let r = 1n; for (let i = 2n; i <= BigInt(n); i++) r *= i; return r; };
+function nxnStates(n) { // standard orbit count: corners/midges (odd) or 7 corners fixed (even), 24! per wing orbit, 24!/(4!)^6 per center orbit
+  const F24 = fact(24), C = F24 / (24n ** 6n);
+  if (n % 2) return fact(8) * 3n ** 7n * fact(12) * 2n ** 10n * F24 ** BigInt((n - 3) / 2) * C ** BigInt((n - 3) * (n - 1) / 4);
+  return fact(7) * 3n ** 6n * F24 ** BigInt((n - 2) / 2) * C ** BigInt((n - 2) ** 2 / 4);
+}
+const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+function bigFacts(lang, n) {
+  const nf = (x, d) => new Intl.NumberFormat(lang === 'ar' ? 'ar-u-nu-latn' : LINFO[lang].html, { maximumFractionDigits: d || 0, minimumFractionDigits: d || 0 }).format(x);
+  const st = nxnStates(n).toString(), mant = nf(+(st[0] + '.' + st.slice(1, 4)), 2);
+  const wings = Math.floor((n - 2) / 2), corbits = n % 2 ? (n - 3) * (n - 1) / 4 : (n - 2) ** 2 / 4;
+  const p = n - 1, qp = p === 4 ? M.cube4.avg : M.big[p][0], q = M.big[n][0];
+  const P = { n: String(n), stickers: nf(6 * n * n), pieces: nf(n ** 3 - (n - 2) ** 3), edges: nf(12 * (n - 2)), centers: nf(6 * (n - 2) ** 2),
+    states: mant + ' × 10' + String(st.length - 1).split('').map(d => SUP[d]).join(''), digits: nf(st.length), wings: nf(wings), corbits: nf(corbits),
+    layers: nf(3 * n), q: nf(q), p: String(p), qp: nf(qp, p === 4 ? 1 : 0), dq: nf(Math.round(q - qp)) };
+  const t = key => tr(lang, key, P);
+  return [t('facts.pieces'), t('facts.states'), t('facts.orbits'), t(n % 2 ? 'facts.odd' : 'facts.even'), t('facts.layers'), t('facts.compare')];
+}
 function puzzleName(lang, pz) {
   const T = TXT[lang];
   if (pz === 'cube3') return T['name.cube3'];
@@ -104,6 +123,7 @@ function page(lang, pz) {
   if (!pz) body += `<nav aria-labelledby="seo-links">` + `<h2 id="seo-links">${esc(t('links.title'))}</h2>${linkList}</nav>\n`;
   body += sec('howto', pz ? t('howto.title') : t('howto.titleRoot'), `<ol>${steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`) + '\n';
   if (solverP) body += sec('solver', t('solver.title'), `<p>${esc(solverP)}</p>`) + '\n';
+  if (k === 'big') body += sec('facts', t('facts.title'), `<ul>${bigFacts(lang, n).map(s => `<li>${esc(s)}</li>`).join('')}</ul>`) + '\n';
   if (notation) body += sec('notation', t('notation.title'), `<p dir="auto">${esc(notation)}</p>`) + '\n';
   body += sec('graph', t('graph.title'), `<p>${esc(graphP)}</p>`) + '\n';
   body += sec('faq', t('faq.title'), faq.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('')) + '\n';

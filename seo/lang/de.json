@@ -83,5 +83,13 @@
  "solver.megaminx": "Ein schneller Mehrphasen-Löser in einem Web Worker: Er baut das Puzzle mit kleinen Suchtabellen Fläche für Fläche auf und löst die letzte Ebene in zwei Schritten mit einer Tabelle erzeugter Algorithmen. Bei {samples} Zufallsstellungen brauchte er im Schnitt {avg} Züge (höchstens {max}, HTM im WCA-Stil: jede Flächendrehung um 72° oder 144° zählt 1) in etwa {ms} ms. Die Lösungen sind nicht optimal.",
  "notation.megaminx": "Flächendrehungen (Weiß oben, Grün vorne): U F R L BL BR für die obere Fläche und die oberen Seitenflächen, D FL FR DL DR B für die untere Fläche und die unteren. Ohne Zusatz 72° im Uhrzeigersinn, ' gegen den Uhrzeigersinn, 2 = 144°. WCA-Pochmann-Verdrehungen (R++ R-- D++ D-- U U') werden ebenfalls akzeptiert.",
  "graph.megaminx": "Jeder der 132 Aufkleber ist ein Knoten. Sie sind per stereografischer Projektion des Dodekaeders vom unteren Mittelstein aus angeordnet, sodass jede Flächendrehung die Aufkleber in 5er-Zyklen entlang echter Kreise bewegt: die oberen Flächen ergeben Ringe um die Mitte, die unteren fünf große Blütenblätter. Der Graph animiert die Lösung Zug für Zug.",
- "faq.optimal.megaminx": "Nein. Optimales Lösen des Megaminx ist unerreichbar; dieser Löser ist auf Tempo ausgelegt und liefert in Sekundenbruchteilen eine vollständige Lösung mit rund {avg} Zügen."
+ "faq.optimal.megaminx": "Nein. Optimales Lösen des Megaminx ist unerreichbar; dieser Löser ist auf Tempo ausgelegt und liefert in Sekundenbruchteilen eine vollständige Lösung mit rund {avg} Zügen.",
+ "facts.title": "Der {n}×{n} Würfel in Zahlen",
+ "facts.pieces": "{stickers} Sticker auf {pieces} sichtbaren Steinen: 8 Ecken, {edges} Kantensteine und {centers} Mittelsteine.",
+ "facts.states": "{states} mögliche Stellungen – eine Zahl mit {digits} Stellen.",
+ "facts.orbits": "Die Steine bewegen sich in festen Gruppen (Orbits) zu je 24: {wings} für die Flügelkanten und {corbits} für die Mittelsteine. Ein Stein verlässt nie seinen Orbit, daher muss jeder Orbit gelöst werden.",
+ "facts.odd": "Ungerade Größe: die 6 mittleren Mittelsteine behalten immer ihre Lage zueinander und legen das Farbschema fest; die 12 mittleren Kanten verhalten sich wie die Kanten eines 3×3.",
+ "facts.even": "Gerade Größe: es gibt keinen festen Mittelstein, die Ausrichtung ergibt sich aus den Ecken, und Paritäten wie beim 4×4 können auftreten.",
+ "facts.layers": "3 Achsen × {n} Schichten = {layers} drehbare Schichten, jede um eine Vierteldrehung in beide Richtungen oder eine halbe Drehung.",
+ "facts.compare": "Hier gemessen: etwa {q} Züge im Qualitätsmodus, {dq} mehr als beim {p}×{p} ({qp})."
 }

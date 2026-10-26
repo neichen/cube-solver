@@ -83,5 +83,13 @@
   "solver.megaminx": "A fast multi-phase solver running in a Web Worker: it builds the puzzle face by face with small search tables and finishes the last layer with a two-look table of generated algorithms. On {samples} random positions it needed {avg} moves on average (at most {max}, WCA-style HTM: every 72° or 144° face turn counts 1) in about {ms} ms. The solutions are not optimal.",
   "notation.megaminx": "Face turns (white on top, green in front): U F R L BL BR for the top and upper faces, D FL FR DL DR B for the bottom and lower faces. No suffix is 72° clockwise, ' counterclockwise, 2 is 144°. WCA Pochmann scrambles (R++ R-- D++ D-- U U') are accepted too.",
   "graph.megaminx": "Every one of the 132 stickers is a node. The stickers are placed by a stereographic projection of the dodecahedron from the bottom center, so every face turn moves stickers in 5-cycles along true circles: the upper faces give rings around the middle, the lower faces five big petals. The graph animates the solution move by move.",
-  "faq.optimal.megaminx": "No. Optimal Megaminx solving is far out of reach; this solver is built for speed and returns a complete solution of about {avg} moves in a fraction of a second."
+  "faq.optimal.megaminx": "No. Optimal Megaminx solving is far out of reach; this solver is built for speed and returns a complete solution of about {avg} moves in a fraction of a second.",
+  "facts.title": "The {n}×{n} cube in numbers",
+  "facts.pieces": "{stickers} stickers on {pieces} visible pieces: 8 corners, {edges} edge pieces and {centers} center pieces.",
+  "facts.states": "{states} possible positions – a number with {digits} digits.",
+  "facts.orbits": "Pieces move in fixed groups (orbits) of 24: {wings} for the wing edges and {corbits} for the centers. A piece never leaves its orbit, so every orbit has to be solved.",
+  "facts.odd": "Odd size: the 6 middle centers always keep their relative positions and define the color scheme, and the 12 middle edges behave like the edges of a 3×3.",
+  "facts.even": "Even size: there is no fixed center, so the orientation is given by the corners, and parity cases like on the 4×4 can occur.",
+  "facts.layers": "3 axes × {n} layers = {layers} turnable layers, each by a quarter turn either way or a half turn.",
+  "facts.compare": "Measured here: about {q} moves in quality mode, {dq} more than on the {p}×{p} ({qp})."
 }

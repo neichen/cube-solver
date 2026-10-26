@@ -83,5 +83,13 @@
   "solver.megaminx": "Um resolvedor rápido em fases que roda em um Web Worker: monta o quebra-cabeça face a face com pequenas tabelas de busca e termina a última camada em dois passos com uma tabela de algoritmos gerados. Em {samples} posições aleatórias precisou de {avg} movimentos em média (no máximo {max}, HTM no estilo WCA: cada giro de face de 72° ou 144° conta 1) em cerca de {ms} ms. As soluções não são ótimas.",
   "notation.megaminx": "Giros de face (branco em cima, verde na frente): U F R L BL BR para a face superior e as de cima, D FL FR DL DR B para a inferior e as de baixo. Sem sufixo é 72° no sentido horário, ' anti-horário e 2 são 144°. Embaralhamentos Pochmann da WCA (R++ R-- D++ D-- U U') também são aceitos.",
   "graph.megaminx": "Cada um dos 132 adesivos é um nó. Eles são posicionados por uma projeção estereográfica do dodecaedro a partir do centro inferior, então cada giro de face move os adesivos em ciclos de 5 ao longo de círculos de verdade: as faces de cima formam anéis ao redor do centro e as de baixo cinco grandes pétalas. O grafo anima a solução movimento a movimento.",
-  "faq.optimal.megaminx": "Não. Resolver o Megaminx de forma ótima está fora de alcance; este resolvedor prioriza a velocidade e devolve uma solução completa de cerca de {avg} movimentos em uma fração de segundo."
+  "faq.optimal.megaminx": "Não. Resolver o Megaminx de forma ótima está fora de alcance; este resolvedor prioriza a velocidade e devolve uma solução completa de cerca de {avg} movimentos em uma fração de segundo.",
+  "facts.title": "O cubo {n}×{n} em números",
+  "facts.pieces": "{stickers} adesivos em {pieces} peças visíveis: 8 cantos, {edges} arestas e {centers} centros.",
+  "facts.states": "{states} posições possíveis – um número com {digits} dígitos.",
+  "facts.orbits": "As peças se movem em grupos fixos (órbitas) de 24: {wings} de arestas laterais (wings) e {corbits} de centros. Uma peça nunca sai da sua órbita, então cada órbita precisa ser resolvida.",
+  "facts.odd": "Tamanho ímpar: os 6 centros do meio sempre mantêm suas posições relativas e definem o esquema de cores; as 12 arestas do meio se comportam como as de um 3×3.",
+  "facts.even": "Tamanho par: não há centro fixo, então a orientação vem dos cantos, e podem ocorrer paridades como no 4×4.",
+  "facts.layers": "3 eixos × {n} camadas = {layers} camadas giráveis, cada uma um quarto de volta para qualquer lado ou meia volta.",
+  "facts.compare": "Medido aqui: cerca de {q} movimentos no modo qualidade, {dq} a mais que no {p}×{p} ({qp})."
 }

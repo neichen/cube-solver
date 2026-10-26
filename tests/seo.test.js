@@ -87,7 +87,13 @@ async function staticMode() {
   for (const pg of PAGES) {
     const f = pg.path === '/' ? path.join(ROOT, 'index.html') : path.join(OUT, pg.path, 'index.html');
     ok(fs.existsSync(f), 'page exists ' + pg.path); if (!fs.existsSync(f)) continue;
-    const r = checkPage(pg, fs.readFileSync(f, 'utf8'), titles, descs); imgs.add(r.img);
+    const html = fs.readFileSync(f, 'utf8'), r = checkPage(pg, html, titles, descs); imgs.add(r.img);
+    const nn = /^cube(\d+)$/.test(pg.pz || '') ? +pg.pz.slice(4) : 0, facts = /<section aria-labelledby="seo-facts">.*?<\/section>/.exec(html);
+    ok(nn >= 5 ? !!facts && (facts[0].match(/<li>/g) || []).length === 6 : !facts, `${pg.path}: per-size facts section`);
+  }
+  { // known position counts (4x4–7x7) pin the formula used for the facts section
+    const want = { 5: '2.83 × 10⁷⁴', 6: '1.57 × 10¹¹⁶', 7: '1.95 × 10¹⁶⁰', 8: '3.52 × 10²¹⁷' };
+    for (const n in want) ok(fs.readFileSync(path.join(OUT, R.path('en', 'cube' + n), 'index.html'), 'utf8').includes(want[n]), `state count ${n}x${n}`);
   }
   for (const u of imgs) {
     const f = path.join(ROOT, u.replace(BASE, '')); ok(fs.existsSync(f), 'og image exists ' + u);

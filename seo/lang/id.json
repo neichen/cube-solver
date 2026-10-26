@@ -83,5 +83,13 @@
   "solver.megaminx": "Pemecah multi-tahap yang cepat dan berjalan di Web Worker: menyusun puzzle sisi demi sisi dengan tabel pencarian kecil, lalu menyelesaikan lapisan terakhir dalam dua langkah dengan tabel algoritma yang dibangkitkan. Pada {samples} posisi acak rata-rata dibutuhkan {avg} gerakan (paling banyak {max}, HTM gaya WCA: setiap putaran sisi 72° atau 144° dihitung 1) dalam sekitar {ms} ms. Solusinya tidak optimal.",
   "notation.megaminx": "Putaran sisi (putih di atas, hijau di depan): U F R L BL BR untuk sisi atas dan sisi-sisi bagian atas, D FL FR DL DR B untuk sisi bawah dan sisi-sisi bagian bawah. Tanpa akhiran 72° searah jarum jam, ' berlawanan, 2 = 144°. Acakan Pochmann WCA (R++ R-- D++ D-- U U') juga diterima.",
   "graph.megaminx": "Setiap dari 132 stiker adalah simpul. Stiker ditempatkan dengan proyeksi stereografis dodekahedron dari pusat sisi bawah, sehingga setiap putaran sisi menggerakkan stiker dalam siklus 5 di sepanjang lingkaran sungguhan: sisi bagian atas membentuk cincin di sekitar tengah, sisi bagian bawah lima kelopak besar. Graf menganimasikan solusi gerakan demi gerakan.",
-  "faq.optimal.megaminx": "Tidak. Solusi optimal Megaminx jauh di luar jangkauan; pemecah ini mengutamakan kecepatan dan memberikan solusi lengkap sekitar {avg} gerakan dalam sepersekian detik."
+  "faq.optimal.megaminx": "Tidak. Solusi optimal Megaminx jauh di luar jangkauan; pemecah ini mengutamakan kecepatan dan memberikan solusi lengkap sekitar {avg} gerakan dalam sepersekian detik.",
+  "facts.title": "Kubus {n}×{n} dalam angka",
+  "facts.pieces": "{stickers} stiker pada {pieces} keping yang terlihat: 8 sudut, {edges} keping tepi, dan {centers} keping tengah.",
+  "facts.states": "{states} kemungkinan posisi – bilangan dengan {digits} digit.",
+  "facts.orbits": "Keping bergerak dalam kelompok tetap (orbit) berisi 24: {wings} untuk tepi sayap dan {corbits} untuk keping tengah. Keping tidak pernah keluar dari orbitnya, jadi setiap orbit harus diselesaikan.",
+  "facts.odd": "Ukuran ganjil: 6 keping tengah utama selalu mempertahankan posisi relatifnya dan menentukan skema warna, dan 12 tepi tengah berperilaku seperti tepi kubus 3×3.",
+  "facts.even": "Ukuran genap: tidak ada keping tengah yang tetap, jadi orientasi ditentukan oleh sudut, dan kasus parity seperti pada 4×4 bisa muncul.",
+  "facts.layers": "3 sumbu × {n} lapisan = {layers} lapisan yang bisa diputar, masing-masing seperempat putaran ke dua arah atau setengah putaran.",
+  "facts.compare": "Diukur di sini: sekitar {q} langkah dalam mode kualitas, {dq} lebih banyak daripada {p}×{p} ({qp})."
 }
