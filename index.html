@@ -70,10 +70,10 @@
     </div>
   </div>
   <div class="top-picks">
-    <label class="puzzle-pick"><span data-i18n="puzzle.label"></span>
+    <label class="puzzle-pick"><span data-i18n="puzzle.label">Puzzle</span>
       <select id="puzzleSelect" data-i18n-aria="puzzle.aria"></select>
     </label>
-    <label class="puzzle-pick lang-pick"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-2.95a15.7 15.7 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.9 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.2 8.2 0 0 1 0-4h3.38a16.5 16.5 0 0 0 0 4H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.08 16zm2.95-8H5.08a7.99 7.99 0 0 1 4.33-3.56A15.7 15.7 0 0 0 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14a16.5 16.5 0 0 0 0-4h3.38a8.2 8.2 0 0 1 0 4h-3.38z"/></svg><span class="vh" data-i18n="lang.label"></span>
+    <label class="puzzle-pick lang-pick"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-2.95a15.7 15.7 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.9 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.2 8.2 0 0 1 0-4h3.38a16.5 16.5 0 0 0 0 4H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.08 16zm2.95-8H5.08a7.99 7.99 0 0 1 4.33-3.56A15.7 15.7 0 0 0 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14a16.5 16.5 0 0 0 0-4h3.38a8.2 8.2 0 0 1 0 4h-3.38z"/></svg><span class="vh" data-i18n="lang.label">Language</span>
       <select id="langSelect" data-i18n-aria="lang.label"></select>
     </label>
   </div>
@@ -86,8 +86,8 @@
   <!-- 舞台：左 3D / 右 图（始终 LTR） -->
   <section class="card stage" data-i18n-aria="stage.aria">
     <div class="mode-switch" role="tablist" data-i18n-aria="mode.aria">
-      <button type="button" role="tab" class="mode-btn active" data-mode="solve" aria-selected="true" data-i18n="mode.solve"></button>
-      <button type="button" role="tab" class="mode-btn" data-mode="play" aria-selected="false" data-i18n="mode.play"></button>
+      <button type="button" role="tab" class="mode-btn active" data-mode="solve" aria-selected="true" data-i18n="mode.solve">Solve</button>
+      <button type="button" role="tab" class="mode-btn" data-mode="play" aria-selected="false" data-i18n="mode.play">Free play</button>
     </div>
     <div class="views" dir="ltr">
       <figure class="pane">
@@ -107,26 +107,26 @@
         </div>
       </div>
       <div class="play-actions">
-        <button type="button" class="btn primary" id="btnPlayScramble" data-i18n="play.scramble"></button>
+        <button type="button" class="btn primary" id="btnPlayScramble" data-i18n="play.scramble">🎲 Scramble</button>
         <span class="play-undo" dir="ltr">
           <button type="button" class="btn icon" id="btnUndo" data-i18n-title="play.undoTip" data-i18n-aria="play.undo"><svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05 1-6.9 2.6L2 7v9h9l-3.62-3.62A7.95 7.95 0 0 1 12.5 10.5c3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg></button>
           <button type="button" class="btn icon" id="btnRedo" data-i18n-title="play.redoTip" data-i18n-aria="play.redo"><svg viewBox="0 0 24 24"><path d="M18.4 10.6A10.4 10.4 0 0 0 11.5 8c-4.65 0-8.58 3.03-9.96 7.22l2.36.78A8 8 0 0 1 11.5 10.5c1.95 0 3.73.72 5.12 1.88L13 16h9V7z"/></svg></button>
         </span>
-        <button type="button" class="btn" id="btnPlayReset" data-i18n="play.reset"></button>
-        <button type="button" class="btn" id="btnPlaySolve" data-i18n="play.solve"></button>
-        <label class="toggle" data-i18n-title="play.inspectTip"><input type="checkbox" id="inspectToggle"><span></span><b data-i18n="play.inspect"></b></label>
+        <button type="button" class="btn" id="btnPlayReset" data-i18n="play.reset">↺ Reset</button>
+        <button type="button" class="btn" id="btnPlaySolve" data-i18n="play.solve">Solve from here</button>
+        <label class="toggle" data-i18n-title="play.inspectTip"><input type="checkbox" id="inspectToggle"><span></span><b data-i18n="play.inspect">WCA inspection (15 s)</b></label>
       </div>
     </div>
     <div class="play-extra" id="playExtra" hidden>
       <div class="play-formula">
         <input type="text" id="playFormula" dir="auto" spellcheck="false" autocomplete="off" data-i18n-placeholder="play.formulaPh" data-i18n-aria="play.formulaAria">
-        <button type="button" class="btn" id="btnPlayApply" data-i18n="play.apply"></button>
+        <button type="button" class="btn" id="btnPlayApply" data-i18n="play.apply">Apply</button>
       </div>
       <p class="play-msg" id="playMsg" aria-live="polite"></p>
       <p class="hint play-hint" id="playHint"></p>
       <p class="play-scr" id="playScr" dir="ltr"></p>
     </div>
-    <p class="stage-hint"><span id="holdHint"></span> <span data-i18n="stage.dragHint"></span> · <span id="graphHint"></span></p>
+    <p class="stage-hint"><span id="holdHint"></span> <span data-i18n="stage.dragHint">(drag to rotate, double-click to reset)</span> · <span id="graphHint"></span></p>
 
     <div class="player" id="player">
       <div class="now">
@@ -135,7 +135,7 @@
           <div class="now-desc" id="nowDesc"></div>
           <div class="now-meta" id="nowMeta"></div>
         </div>
-        <div class="badge" id="solvedBadge" hidden data-i18n="player.solved"></div>
+        <div class="badge" id="solvedBadge" hidden data-i18n="player.solved">Solved ✔</div>
       </div>
       <div class="controls">
         <div class="transport" dir="ltr">
@@ -148,20 +148,20 @@
           <span class="counter" id="counter">0 / 0</span>
         </div>
         <div class="options">
-          <label class="toggle" data-i18n-title="player.autoRotateTip"><input type="checkbox" id="autoRotate" checked><span></span><b data-i18n="player.autoRotate"></b></label>
-          <label class="toggle" data-i18n-title="settings.lettersTip"><input type="checkbox" id="colorLetters"><span></span><b data-i18n="settings.letters"></b></label>
+          <label class="toggle" data-i18n-title="player.autoRotateTip"><input type="checkbox" id="autoRotate" checked><span></span><b data-i18n="player.autoRotate">Auto-rotate</b></label>
+          <label class="toggle" data-i18n-title="settings.lettersTip"><input type="checkbox" id="colorLetters"><span></span><b data-i18n="settings.letters">Letters</b></label>
           <span class="audio-ctl" role="group" data-i18n-aria="audio.group">
-            <label class="toggle" data-i18n-title="audio.sfxTip"><input type="checkbox" id="sfxToggle"><span></span><b data-i18n="audio.sfx"></b></label>
-            <label class="toggle" data-i18n-title="audio.musicTip"><input type="checkbox" id="musicToggle"><span></span><b data-i18n="audio.music"></b></label>
-            <label class="vol" data-i18n-title="audio.volume"><b data-i18n="audio.volume"></b><input type="range" id="volume" min="0" max="100" step="1" data-i18n-aria="audio.volume"></label>
+            <label class="toggle" data-i18n-title="audio.sfxTip"><input type="checkbox" id="sfxToggle"><span></span><b data-i18n="audio.sfx">Effects</b></label>
+            <label class="toggle" data-i18n-title="audio.musicTip"><input type="checkbox" id="musicToggle"><span></span><b data-i18n="audio.music">Music</b></label>
+            <label class="vol" data-i18n-title="audio.volume"><b data-i18n="audio.volume">Volume</b><input type="range" id="volume" min="0" max="100" step="1" data-i18n-aria="audio.volume"></label>
           </span>
-          <label class="speed" data-i18n-title="player.holdTip"><b data-i18n="player.hold"></b>
+          <label class="speed" data-i18n-title="player.holdTip"><b data-i18n="player.hold">Grip</b>
             <select id="holdSelect"></select>
           </label>
-          <label class="speed" data-i18n-title="settings.schemeTip"><b data-i18n="settings.scheme"></b>
-            <select id="colorScheme"><option value="western" data-i18n="scheme.western"></option><option value="japanese" data-i18n="scheme.japanese"></option></select>
+          <label class="speed" data-i18n-title="settings.schemeTip"><b data-i18n="settings.scheme">Colors</b>
+            <select id="colorScheme"><option value="western" data-i18n="scheme.western">Western</option><option value="japanese" data-i18n="scheme.japanese">Japanese</option></select>
           </label>
-          <label class="speed"><b data-i18n="player.speed"></b>
+          <label class="speed"><b data-i18n="player.speed">Speed</b>
             <select id="speed" dir="ltr"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.6">1.6×</option><option value="2.5">2.5×</option><option value="4">4×</option><option value="8">8×</option><option value="16">16×</option><option value="32">32×</option><option value="64">64×</option></select>
           </label>
         </div>
@@ -174,9 +174,9 @@
     <!-- 输入 -->
     <section class="card input-card" data-i18n-aria="input.aria">
       <div class="tabs" role="tablist">
-        <button role="tab" class="tab active" data-tab="paint" data-i18n="tab.paint"></button>
-        <button role="tab" class="tab" data-tab="scan" data-i18n="tab.scan"></button>
-        <button role="tab" class="tab" data-tab="formula" data-i18n="tab.formula"></button>
+        <button role="tab" class="tab active" data-tab="paint" data-i18n="tab.paint">🎨 Paint</button>
+        <button role="tab" class="tab" data-tab="scan" data-i18n="tab.scan">📷 Camera / photo</button>
+        <button role="tab" class="tab" data-tab="formula" data-i18n="tab.formula">⌨️ Notation</button>
       </div>
 
       <div class="tabpane active" data-pane="paint">
@@ -184,9 +184,9 @@
         <div class="palette" id="palette"></div>
         <div id="net" dir="ltr"></div>
         <div class="row">
-          <button class="btn" id="btnScramble" data-i18n="btn.scramble"></button>
-          <button class="btn" id="btnReset" data-i18n="btn.reset"></button>
-          <button class="btn ghost" id="btnClear" data-i18n="btn.clear"></button>
+          <button class="btn" id="btnScramble" data-i18n="btn.scramble">🎲 Random scramble</button>
+          <button class="btn" id="btnReset" data-i18n="btn.reset">↺ Reset</button>
+          <button class="btn ghost" id="btnClear" data-i18n="btn.clear">Clear</button>
         </div>
       </div>
 
@@ -196,46 +196,46 @@
         <div class="scan-body">
           <canvas class="scan-canvas" width="480" height="480" dir="ltr"></canvas>
           <div class="scan-side">
-            <button class="btn primary btn-cam" data-i18n="scan.camOn"></button>
-            <button class="btn btn-shot" disabled data-i18n="scan.capture"></button>
-            <label class="btn ghost file"><span data-i18n="scan.upload"></span><input type="file" accept="image/*" class="scan-file" hidden></label>
-            <label class="slider"><span data-i18n="scan.gridSize"></span> <input type="range" class="scan-gridsize" min="40" max="96" value="72"></label>
-            <div class="row tight"><button class="btn ghost btn-scan-prev" data-i18n="scan.prevFace"></button><button class="btn ghost btn-scan-next" data-i18n="scan.nextFace"></button></div>
-            <button class="btn ghost btn-scan-reset" data-i18n="scan.reset"></button>
+            <button class="btn primary btn-cam" data-i18n="scan.camOn">Turn on camera</button>
+            <button class="btn btn-shot" disabled data-i18n="scan.capture">Capture this face</button>
+            <label class="btn ghost file"><span data-i18n="scan.upload">🖼 Upload photo</span><input type="file" accept="image/*" class="scan-file" hidden></label>
+            <label class="slider"><span data-i18n="scan.gridSize">Grid size</span> <input type="range" class="scan-gridsize" min="40" max="96" value="72"></label>
+            <div class="row tight"><button class="btn ghost btn-scan-prev" data-i18n="scan.prevFace">← Previous face</button><button class="btn ghost btn-scan-next" data-i18n="scan.nextFace">Next face →</button></div>
+            <button class="btn ghost btn-scan-reset" data-i18n="scan.reset">Clear scan</button>
           </div>
         </div>
         <p class="scan-warn" hidden></p>
         <p class="scan-msg" aria-live="polite"></p>
-        <p class="hint" data-i18n="scan.hint"></p>
+        <p class="hint" data-i18n="scan.hint">Results are filled into the “Paint” net as you go. When you are done, switch over to check them and fix any mistakes. The small dots on the image are a live preview of the recognized colors.</p>
       </div>
 
       <div class="tabpane" data-pane="formula">
         <p class="hint" id="formulaHint"></p>
         <textarea id="formula" rows="3" spellcheck="false" dir="ltr" data-i18n-placeholder="formula.placeholder"></textarea>
-        <div class="row"><button class="btn primary" id="btnApplyFormula" data-i18n="formula.apply"></button><button class="btn ghost" id="btnFormulaRandom" data-i18n="formula.random"></button></div>
+        <div class="row"><button class="btn primary" id="btnApplyFormula" data-i18n="formula.apply">Apply</button><button class="btn ghost" id="btnFormulaRandom" data-i18n="formula.random">Fill in a random scramble</button></div>
         <p class="formula-msg" id="formulaMsg"></p>
       </div>
     </section>
 
     <!-- 求解 -->
     <section class="card solve-card" data-i18n-aria="solve.title">
-      <h2 data-i18n="solve.title"></h2>
-      <label class="field"><span data-i18n="solve.solver"></span>
+      <h2 data-i18n="solve.title">Solve</h2>
+      <label class="field"><span data-i18n="solve.solver">Solver</span>
         <select id="solverSelect"></select>
       </label>
       <div class="status" id="validation" aria-live="polite"></div>
-      <button class="btn primary big" id="btnSolve" data-i18n="solve.button"></button>
-      <div class="solve-progress" id="solveProgress" hidden><progress id="solveBar" data-i18n-aria="solve.solving"></progress><span id="solveElapsed" dir="ltr"></span><button type="button" class="btn ghost small" id="btnCancelSolve" data-i18n="solve.cancel"></button></div>
+      <button class="btn primary big" id="btnSolve" data-i18n="solve.button">⚡ Solve</button>
+      <div class="solve-progress" id="solveProgress" hidden><progress id="solveBar" data-i18n-aria="solve.solving"></progress><span id="solveElapsed" dir="ltr"></span><button type="button" class="btn ghost small" id="btnCancelSolve" data-i18n="solve.cancel">Cancel</button></div>
       <p class="solver-status" id="solverStatus" aria-live="polite"></p>
       <div class="solution" id="solutionBox" hidden>
-        <div class="sol-head"><b id="solCount"></b><abbr class="metric" id="solMetric" hidden></abbr><button class="btn ghost small" id="btnCopy" data-i18n="solve.copy"></button></div>
+        <div class="sol-head"><b id="solCount"></b><abbr class="metric" id="solMetric" hidden></abbr><button class="btn ghost small" id="btnCopy" data-i18n="solve.copy">Copy</button></div>
         <code id="solText" dir="ltr"></code>
         <p class="hint" id="solHold"></p>
-        <button class="btn" id="btnDemo" data-i18n="solve.demo"></button>
+        <button class="btn" id="btnDemo" data-i18n="solve.demo">🎬 Demo: scramble, then solve</button>
       </div>
 
       <details class="notation" open>
-        <summary data-i18n="notation.title"></summary>
+        <summary data-i18n="notation.title">Notation</summary>
         <table id="notationTable"></table>
         <p class="hint" id="notationHint"></p>
       </details>
@@ -251,7 +251,7 @@
 <section aria-labelledby="seo-faq"><h2 id="seo-faq">Frequently asked questions</h2><h3>Which puzzles are supported?</h3><p>Cubes from 2×2 to 15×15, the Pyraminx, the Skewb and the Megaminx. Each one has its own page with notation and measured move counts.</p><h3>Is the solver free, and are my photos uploaded?</h3><p>It is free and runs entirely in your browser. Camera images and photos are processed on your device and never uploaded. The site counts visits with Cloudflare Web Analytics, which uses no cookies. In the EU/EEA, the UK and Switzerland, Google Analytics is loaded only if you accept it in the banner; elsewhere it loads without a banner and with all ad features off. Either way you can change the choice in the footer.</p><h3>Is the solution the shortest possible?</h3><p>2×2, Pyraminx and Skewb solutions are proven optimal. 3×3 solutions are near-optimal (usually 19–21 moves). From 4×4 up the solvers use reduction methods, so solutions are longer but are found in seconds.</p><h3>Can I scan my cube with the camera?</h3><p>Yes, for cubes from 2×2 to 15×15: show each face to the camera or upload photos, then check the colors on the net. The Pyraminx, Skewb and Megaminx are entered by painting.</p></section>
 </article>
 <!--/seo:body-->
-<footer><p data-i18n="footer"></p><p class="footer-meta"><a href="https://github.com/neichen/cube-solver" rel="noopener" data-i18n="footer.source">Source code on GitHub (MIT License)</a> · <span data-i18n="footer.tm">Rubik’s Cube is a registered trademark of Spin Master Ltd. This site is not affiliated with Spin Master.</span><span id="consentLinkWrap" hidden> · <button type="button" id="consentSettings" class="linkbtn" data-i18n="consent.settings">Analytics settings</button></span></p></footer>
+<footer><p data-i18n="footer">Runs entirely in your browser · no server needed · Solvers: Kociemba two-phase (cubejs, MIT), gullicube by Tomas Rokicki (MPL-2.0, WebAssembly), own 2×2 / 4×4 solvers · 3D: three.js (MIT)</p><p class="footer-meta"><a href="https://github.com/neichen/cube-solver" rel="noopener" data-i18n="footer.source">Source code on GitHub (MIT License)</a> · <span data-i18n="footer.tm">Rubik’s Cube is a registered trademark of Spin Master Ltd. This site is not affiliated with Spin Master.</span><span id="consentLinkWrap" hidden> · <button type="button" id="consentSettings" class="linkbtn" data-i18n="consent.settings">Analytics settings</button></span></p></footer>
 
 <!--seo:consent-->
 <div id="consentBanner" class="consent" role="region" data-i18n-aria="consent.title" aria-label="Analytics" data-ga="" hidden><p data-i18n="consent.text">May we use Google Analytics (cookies) to learn how the site is used? Cookieless Cloudflare statistics are always on. Camera images never leave your browser.</p><div class="consent-btns"><button type="button" id="consentDecline" data-i18n="consent.decline">Decline</button><button type="button" id="consentAccept" class="primary" data-i18n="consent.accept">Accept</button></div></div>

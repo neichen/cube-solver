@@ -183,6 +183,10 @@ function fill(tpl, pg) {
     return s.replace(re, (m, a, b) => a + '\n' + v + '\n' + b);
   };
   let s = tpl.replace(/<html[^>]*>/, `<html ${pg.htmlAttr}>`);
+  // prerender the app shell's plain-text labels (data-i18n) in the page language, so the runtime i18n pass does not
+  // change their size after first paint (empty buttons growing once filled caused a 0.33 CLS on /zh-hans/ desktop)
+  s = s.replace(/(<([a-z][a-z0-9]*)\b[^>]*\sdata-i18n="([^"]+)"[^>]*>)([^<]*)(<\/\2>)/g, (m, open, tag, key, txt, close) =>
+    /^consent\./.test(key) ? m : open + esc(APPT(pg.lang, key)) + close);
   s = rep(s, 'head', pg.head); s = rep(s, 'h1', pg.h1html); s = rep(s, 'body', pg.body); s = rep(s, 'noscript', pg.noscript); s = rep(s, 'home', pg.homeHtml);
   s = rep(s, 'consent', pg.consent); s = rep(s, 'scripts', pg.scripts);
   // cache busting for the HTML-referenced scripts / styles (served with a 1 h max-age, see deploy/_headers)
