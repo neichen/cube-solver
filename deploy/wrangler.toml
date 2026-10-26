@@ -26,6 +26,8 @@ run_worker_first = [
   "!/sitemap.xml",
   "!/robots.txt",
   "!/manifest.webmanifest",
+  "!/manifest/*",
+  "!/sw.js",
 ]
 html_handling = "auto-trailing-slash"
 not_found_handling = "none"

@@ -38,7 +38,7 @@ function checkPage(pg, html, titles, descs) {
   for (const p of ['og:title', 'og:description', 'og:url', 'og:image', 'og:type', 'og:locale', 'og:image:alt']) ok(new RegExp(`<meta property="${p}" content="[^"]+"`).test(html), `${where}: ${p}`);
   for (const p of ['twitter:card', 'twitter:title', 'twitter:image']) ok(new RegExp(`<meta name="${p}" content="[^"]+"`).test(html), `${where}: ${p}`);
   ok(one(/<meta property="og:url" content="([^"]*)"/, html) === BASE + pg.path, `${where}: og:url`);
-  ok(/<link rel="manifest" href="\/manifest.webmanifest">/.test(html) && /<link rel="apple-touch-icon"/.test(html) && /<link rel="icon" href="\/img\/favicon.svg"/.test(html), `${where}: icons + manifest`);
+  ok(/<link rel="manifest" href="\/manifest(\.webmanifest|\/[a-z-]+\.webmanifest)">/.test(html) && /<link rel="apple-touch-icon"/.test(html) && /<link rel="icon" href="\/img\/favicon.svg"/.test(html), `${where}: icons + manifest`);
   // visible text: no unresolved placeholders, no empty i18n-only heading
   const article = one(/(<article id="seo"[\s\S]*?<\/article>)/, html) || '';
   ok(article.length > 800, `${where}: static content present (${article.length} chars)`);
@@ -151,7 +151,7 @@ async function staticMode() {
   ok(/pattern = "cube-solver.org", custom_domain = true/.test(toml) && /pattern = "www.cube-solver.org", custom_domain = true/.test(toml), 'wrangler: apex + www custom domains');
   { // run_worker_first: every static asset path is excluded, so only page routes invoke the Worker
     const rwf = JSON.parse(/run_worker_first = (\[[\s\S]*?\])/.exec(toml)[1].replace(/,\s*\]/, ']'));
-    const top = fs.readdirSync(ROOT).filter(f => ['js', 'css', 'img', 'puzzles', 'vendor', 'favicon.ico'].includes(f)).concat(['sitemap.xml', 'robots.txt', 'manifest.webmanifest']);
+    const top = fs.readdirSync(ROOT).filter(f => ['js', 'css', 'img', 'puzzles', 'vendor', 'favicon.ico'].includes(f)).concat(['sitemap.xml', 'robots.txt', 'manifest.webmanifest', 'sw.js']);
     ok(rwf[0] === '/*' && top.every(f => rwf.includes('!/' + f + (fs.existsSync(path.join(ROOT, f)) && fs.statSync(path.join(ROOT, f)).isDirectory() ? '/*' : ''))), 'wrangler: run_worker_first excludes all asset paths ' + rwf.join(' '));
     const outTop = fs.readdirSync(OUT).filter(f => f !== 'pages.json' && !fs.statSync(path.join(OUT, f)).isDirectory());
     ok(outTop.every(f => rwf.includes('!/' + f)), 'wrangler: generated root files excluded too: ' + outTop.join(', '));

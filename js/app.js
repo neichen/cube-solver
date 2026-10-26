@@ -660,6 +660,11 @@
   mount = function (id) { mount0(id); player.on(playerHook); lastTl = null; player._emit(); if (mode === 'play') enterPlay(); };
   if (/[?&]mode=play/.test(location.search)) { mode = 'play'; syncModeUI(); }
   mount(first);
+  // 离线支持：dist 构建给 <html> 加 data-sw，本地源码服务器不注册 Service Worker
+  if ('serviceWorker' in navigator && document.documentElement.hasAttribute('data-sw')) {
+    var regSW = function () { navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {}); };
+    if (document.readyState === 'complete') setTimeout(regSW, 0); else window.addEventListener('load', regSW);
+  }
   if (CL.seoNav && CL.seoNav.start) CL.seoNav.start();
   else document.addEventListener('DOMContentLoaded', function () { if (CL.seoNav && CL.seoNav.start) CL.seoNav.start(); });
 

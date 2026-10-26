@@ -142,7 +142,7 @@ function page(lang, pz) {
     `<meta name="twitter:card" content="summary_large_image">`, `<meta name="twitter:title" content="${esc(title)}">`,
     `<meta name="twitter:description" content="${esc(desc)}">`, `<meta name="twitter:image" content="${img}">`, `<meta name="twitter:image:alt" content="${esc(imgAlt)}">`,
     `<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">`, `<link rel="icon" href="/favicon.ico" sizes="32x32">`,
-    `<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">`, `<link rel="manifest" href="/manifest.webmanifest">`,
+    `<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">`, `<link rel="manifest" href="${lang === 'en' ? '/manifest.webmanifest' : '/manifest/' + lang.toLowerCase() + '.webmanifest'}">`,
     `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`
   ].join('\n');
   const htmlAttr = `lang="${LINFO[lang].html}" dir="${LINFO[lang].dir || 'ltr'}"` + (pz || lang !== 'en' ? ` data-page-lang="${lang}"` : '') + (pz ? ` data-page-puzzle="${pz}"` : '') + ' data-seo-page=""';
@@ -192,9 +192,12 @@ function main() {
   sm.push('</urlset>');
   fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sm.join('\n') + '\n');
   fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${BASE}/sitemap.xml\n`);
-  fs.writeFileSync(path.join(OUT, 'manifest.webmanifest'), JSON.stringify({
-    name: CFG.siteName, short_name: 'CubeLab', description: TXT.en['desc.root'].replace('{site}', CFG.siteName), start_url: '/', scope: '/', display: 'standalone',
-    background_color: CFG.themeColor, theme_color: CFG.themeColor, lang: 'en', dir: 'ltr',
+  // one web app manifest per language (/manifest.webmanifest for English, /manifest/<lang>.webmanifest otherwise)
+  fs.mkdirSync(path.join(OUT, 'manifest'), { recursive: true });
+  for (const l of R.LANGS) fs.writeFileSync(path.join(OUT, l === 'en' ? 'manifest.webmanifest' : 'manifest/' + l.toLowerCase() + '.webmanifest'), JSON.stringify({
+    id: '/', name: TXT[l].site || CFG.siteName, short_name: 'CubeLab', description: TXT[l]['desc.root'].replace('{site}', TXT[l].site || CFG.siteName),
+    start_url: R.path(l, null), scope: '/', display: 'standalone',
+    background_color: CFG.themeColor, theme_color: CFG.themeColor, lang: LINFO[l].html, dir: LINFO[l].dir || 'ltr',
     icons: [{ src: '/img/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/img/icon-512.png', sizes: '512x512', type: 'image/png' },
       { src: '/img/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }, { src: '/img/favicon.svg', sizes: 'any', type: 'image/svg+xml' }]
   }, null, 2) + '\n');

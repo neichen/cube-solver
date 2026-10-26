@@ -1,23 +1,29 @@
 /*
   X-Content-Type-Options: nosniff
-  Permissions-Policy: camera=(self)
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=()
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  Content-Security-Policy: __CSP__
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Resource-Policy: same-origin
 /*.js
   Content-Type: text/javascript; charset=utf-8
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
-/css/*
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
-/vendor/three.min.js
-  Cache-Control: public, max-age=604800
-/vendor/gullicube/data/*
-  Cache-Control: public, max-age=2592000
-/vendor/gullicube/gullicube.wasm
-  Cache-Control: public, max-age=86400
+/*.json
+  Content-Type: application/json; charset=utf-8
 /puzzles/*.bin.gz
   Content-Type: application/octet-stream
-  Cache-Control: public, max-age=86400
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/puzzles/*
+  Cache-Control: public, max-age=31536000, immutable
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+/sw.js
+  Cache-Control: no-cache
 /img/*
   ! Cross-Origin-Resource-Policy
   Cross-Origin-Resource-Policy: cross-origin
@@ -27,6 +33,9 @@
   Cross-Origin-Resource-Policy: cross-origin
   Cache-Control: public, max-age=604800
 /manifest.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=86400
+/manifest/*
   Content-Type: application/manifest+json
   Cache-Control: public, max-age=86400
 /sitemap.xml
