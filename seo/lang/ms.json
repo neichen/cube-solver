@@ -55,7 +55,7 @@
   "graph.root": "Setiap pelekat ialah nod dan setiap gerakan ialah pilih atur pelekat. Pilih atur terbahagi kepada kitaran yang dilukis sebagai bulatan, jadi graf menunjukkan struktur teka-teki: pelekat mana boleh sampai ke kedudukan mana. Penyelesaian ialah laluan dalam graf keadaan dari kocakan anda ke keadaan selesai, dan graf menganimasikan laluan itu gerakan demi gerakan.",
   "faq.title": "Soalan lazim",
   "faq.free.q": "Adakah penyelesai ini percuma, dan adakah foto saya dimuat naik?",
-  "faq.free.a": "Ia percuma dan berjalan sepenuhnya dalam pelayar anda. Imej kamera dan foto diproses pada peranti anda dan tidak pernah dimuat naik. Laman ini mengira lawatan dengan Cloudflare Web Analytics yang tidak menggunakan kuki; Google Analytics hanya dimuatkan jika anda menerimanya pada sepanduk, dan pilihan itu boleh ditukar di pengaki.",
+  "faq.free.a": "Ia percuma dan berjalan sepenuhnya dalam pelayar anda. Imej kamera dan foto diproses pada peranti anda dan tidak pernah dimuat naik. Laman ini mengira lawatan dengan Cloudflare Web Analytics yang tidak menggunakan kuki. Di EU/EEA, UK dan Switzerland, Google Analytics hanya dimuatkan jika anda menerimanya pada sepanduk; di tempat lain ia dimuatkan tanpa sepanduk dan dengan semua ciri iklan dimatikan. Dalam kedua-dua kes pilihan itu boleh ditukar di pengaki.",
   "faq.optimal.q": "Adakah penyelesaiannya yang paling pendek?",
   "faq.optimal.yes": "Ya. Penyelesai menggunakan jadual lengkap bagi setiap kedudukan, jadi setiap penyelesaian mempunyai bilangan gerakan paling sedikit.",
   "faq.optimal.cube3": "Kedudukan dalam 8 gerakan diselesaikan secara optimum; selainnya algoritma dua fasa memberikan penyelesaian hampir optimum, biasanya {range} gerakan.",

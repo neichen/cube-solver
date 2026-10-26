@@ -55,7 +55,7 @@
   "graph.root": "Cada adesivo é um nó e cada movimento é uma permutação dos adesivos. A permutação se divide em ciclos, desenhados como círculos, então o grafo mostra a estrutura do quebra-cabeça: quais adesivos podem chegar a quais posições. Uma solução é um caminho no grafo de estados do seu embaralhamento até o estado resolvido, e o grafo anima esse caminho movimento a movimento.",
   "faq.title": "Perguntas frequentes",
   "faq.free.q": "O resolvedor é grátis? Minhas fotos são enviadas?",
-  "faq.free.a": "É grátis e roda inteiramente no seu navegador. As imagens da câmera e as fotos são processadas no seu dispositivo e nunca são enviadas. O site conta as visitas com o Cloudflare Web Analytics, que não usa cookies; o Google Analytics só é carregado se você aceitar no aviso, e você pode mudar essa escolha no rodapé.",
+  "faq.free.a": "É grátis e roda inteiramente no seu navegador. As imagens da câmera e as fotos são processadas no seu dispositivo e nunca são enviadas. O site conta as visitas com o Cloudflare Web Analytics, que não usa cookies. Na UE/EEE, no Reino Unido e na Suíça, o Google Analytics só é carregado se você aceitar no aviso; nos demais lugares ele carrega sem aviso e com todos os recursos de anúncios desativados. Em ambos os casos você pode mudar essa escolha no rodapé.",
   "faq.optimal.q": "A solução é a mais curta possível?",
   "faq.optimal.yes": "Sim. O resolvedor usa uma tabela completa com todas as posições, então cada solução tem o menor número possível de movimentos.",
   "faq.optimal.cube3": "Posições a até 8 movimentos do resolvido são resolvidas de forma ótima; nos demais casos o algoritmo de duas fases dá uma solução quase ótima, normalmente de {range} movimentos.",

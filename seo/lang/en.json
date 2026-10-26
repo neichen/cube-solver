@@ -55,7 +55,7 @@
   "graph.root": "Every sticker is a node and every move is a permutation of the stickers. The permutation splits into cycles, drawn as circles, so the graph shows the structure of the puzzle: which stickers can reach which places. A solution is a path through the puzzle's state graph from your scramble to the solved state, and the graph animates that path move by move.",
   "faq.title": "Frequently asked questions",
   "faq.free.q": "Is the solver free, and are my photos uploaded?",
-  "faq.free.a": "It is free and runs entirely in your browser. Camera images and photos are processed on your device and never uploaded. The site counts visits with Cloudflare Web Analytics, which uses no cookies; Google Analytics is loaded only if you accept it in the banner, and you can change that choice in the footer.",
+  "faq.free.a": "It is free and runs entirely in your browser. Camera images and photos are processed on your device and never uploaded. The site counts visits with Cloudflare Web Analytics, which uses no cookies. In the EU/EEA, the UK and Switzerland, Google Analytics is loaded only if you accept it in the banner; elsewhere it loads without a banner and with all ad features off. Either way you can change the choice in the footer.",
   "faq.optimal.q": "Is the solution the shortest possible?",
   "faq.optimal.yes": "Yes. The solver uses a complete table of every position, so each solution has the fewest possible moves.",
   "faq.optimal.cube3": "Positions within 8 moves of solved are solved optimally; otherwise the two-phase solver returns a near-optimal solution, usually {range} moves.",

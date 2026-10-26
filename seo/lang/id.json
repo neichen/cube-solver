@@ -55,7 +55,7 @@
   "graph.root": "Setiap stiker adalah simpul dan setiap langkah adalah permutasi stiker. Permutasi terbagi menjadi siklus yang digambar sebagai lingkaran, sehingga graf menunjukkan struktur puzzle: stiker mana yang bisa mencapai posisi mana. Solusi adalah jalur di graf keadaan dari acakan kamu menuju keadaan selesai, dan graf menganimasikan jalur itu langkah demi langkah.",
   "faq.title": "Pertanyaan umum",
   "faq.free.q": "Apakah solver ini gratis, dan apakah foto saya diunggah?",
-  "faq.free.a": "Gratis dan sepenuhnya berjalan di browser kamu. Gambar kamera dan foto diproses di perangkatmu dan tidak pernah diunggah. Situs ini menghitung kunjungan dengan Cloudflare Web Analytics yang tidak memakai cookie; Google Analytics hanya dimuat jika kamu menerimanya di spanduk, dan pilihan itu bisa diubah di footer.",
+  "faq.free.a": "Gratis dan sepenuhnya berjalan di browser kamu. Gambar kamera dan foto diproses di perangkatmu dan tidak pernah diunggah. Situs ini menghitung kunjungan dengan Cloudflare Web Analytics yang tidak memakai cookie. Di UE/EEA, Inggris, dan Swiss, Google Analytics hanya dimuat jika kamu menerimanya di spanduk; di tempat lain skrip itu dimuat tanpa spanduk dan dengan semua fitur iklan dimatikan. Dalam kedua kasus pilihan itu bisa diubah di footer.",
   "faq.optimal.q": "Apakah solusinya yang terpendek?",
   "faq.optimal.yes": "Ya. Solver memakai tabel lengkap untuk semua posisi, jadi setiap solusi memiliki jumlah langkah sesedikit mungkin.",
   "faq.optimal.cube3": "Posisi yang berjarak 8 langkah atau kurang diselesaikan secara optimal; selain itu algoritma dua fase memberi solusi mendekati optimal, biasanya {range} langkah.",

@@ -55,7 +55,7 @@
   "graph.root": "Cada pegatina es un nodo y cada movimiento es una permutación de las pegatinas. La permutación se divide en ciclos, dibujados como círculos, así que el grafo muestra la estructura del puzle: qué pegatinas pueden llegar a qué posiciones. Una solución es un camino en el grafo de estados desde tu mezcla hasta el estado resuelto, y el grafo anima ese camino movimiento a movimiento.",
   "faq.title": "Preguntas frecuentes",
   "faq.free.q": "¿El solucionador es gratuito? ¿Se suben mis fotos?",
-  "faq.free.a": "Es gratuito y funciona por completo en tu navegador. Las imágenes de la cámara y las fotos se procesan en tu dispositivo y nunca se suben. El sitio cuenta las visitas con Cloudflare Web Analytics, que no usa cookies; Google Analytics solo se carga si lo aceptas en el aviso, y puedes cambiar esa elección en el pie de página.",
+  "faq.free.a": "Es gratuito y funciona por completo en tu navegador. Las imágenes de la cámara y las fotos se procesan en tu dispositivo y nunca se suben. El sitio cuenta las visitas con Cloudflare Web Analytics, que no usa cookies. En la UE/EEE, el Reino Unido y Suiza, Google Analytics solo se carga si lo aceptas en el aviso; en el resto se carga sin aviso y con todas las funciones publicitarias desactivadas. En ambos casos puedes cambiar esa elección en el pie de página.",
   "faq.optimal.q": "¿La solución es la más corta posible?",
   "faq.optimal.yes": "Sí. El solucionador usa una tabla completa de todas las posiciones, así que cada solución tiene el mínimo de movimientos posible.",
   "faq.optimal.cube3": "Las posiciones a 8 movimientos o menos se resuelven de forma óptima; en los demás casos el algoritmo de dos fases da una solución casi óptima, normalmente de {range} movimientos.",
