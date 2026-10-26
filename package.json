@@ -22,7 +22,9 @@
     "test:analytics:live": "node tests/analytics.e2e.js https://cube-solver.org/",
     "test:seo:live": "node tests/seo.test.js https://cube-solver.org",
     "deploy": "npm run build && wrangler deploy -c deploy/wrangler.toml",
-    "test:features": "node tests/features.e2e.js http://localhost:8765/"
+    "test:features": "node tests/features.e2e.js http://localhost:8765/",
+    "build:three": "node tools/build-three.js",
+    "test:dist": "node tests/dist.e2e.js http://localhost:8766/"
   },
   "license": "MIT",
   "homepage": "https://cube-solver.org",
@@ -37,7 +39,9 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "esbuild": "^0.24.2",
     "playwright": "^1.64.1",
+    "three": "0.160.0",
     "wrangler": "^4.86.0"
   }
 }

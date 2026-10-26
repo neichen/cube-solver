@@ -7,7 +7,7 @@ included in `vendor/` and keep their own licenses.
 | --- | --- | --- | --- |
 | gullicube (Tomas Rokicki) | `vendor/gullicube/gullicube.js`, `gullicube.wasm`, `data/*.cls` | MPL-2.0 (used under the MPL-2.0 option of "MPL-2.0 OR GPL-3.0-or-later") | https://github.com/rokicki/gullicube, commit `48bd54b36a95888639f63df63a24d8639b84cd23` |
 | cubejs (Petri Lehtinen, Ludovic Fernandez) | `vendor/cube.js`, `vendor/solve.js` | MIT | https://github.com/ldez/cubejs |
-| three.js (three.js authors) | `vendor/three.min.js` (r160) | MIT | https://github.com/mrdoob/three.js |
+| three.js (three.js authors) | `vendor/three.min.js` (r160, tree-shaken bundle built from the `three` npm package by `tools/build-three.js`) | MIT | https://github.com/mrdoob/three.js |
 
 ## gullicube — Mozilla Public License 2.0
 
