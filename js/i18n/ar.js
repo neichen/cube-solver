@@ -186,6 +186,7 @@ CubeLab.i18n.register('ar', {
   'move.sliceHalf': '{slice}: ‏180°',
   'footer': 'يعمل بالكامل في متصفحك · لا حاجة إلى خادم · الحلّالات: كوسيمبا ذو المرحلتين (cubejs، MIT)، وgullicube لتوماس روكيكي (MPL-2.0، WebAssembly)، وحلّالات 2×2 / 4×4 خاصة بنا · ثلاثي الأبعاد: three.js (MIT)',
   'footer.source': 'الشيفرة المصدرية على GitHub (رخصة MIT)',
+  'footer.privacy': 'الخصوصية',
   'footer.tm': '‏Rubik’s Cube علامة تجارية مسجّلة لشركة Spin Master Ltd. هذا الموقع غير تابع لشركة Spin Master.',
   'consent.title': 'التحليلات',
   'consent.text': 'هل تسمح لنا باستخدام Google Analytics (ملفات تعريف الارتباط) لمعرفة كيفية استخدام الموقع؟ إحصاءات Cloudflare الخالية من ملفات تعريف الارتباط مفعّلة دائمًا. صور الكاميرا لا تغادر متصفحك أبدًا.',

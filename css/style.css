@@ -386,3 +386,4 @@ body.has-consent{padding-bottom:110px}
 .net-canvas-wrap{width:100%;margin:0 auto;touch-action:none}
 .net-canvas{display:block;cursor:crosshair;touch-action:none;border-radius:6px}
 .net-canvas:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.privacy-date{color:var(--muted);margin:0 0 4px}.privacy .seo a{word-break:break-word}

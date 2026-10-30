@@ -186,6 +186,7 @@ CubeLab.i18n.register('ms', {
   'move.sliceHalf': '{slice}: 180°',
   'footer': 'Berjalan sepenuhnya dalam pelayar · tanpa pelayan · Penyelesai: dua fasa Kociemba (cubejs, MIT), gullicube oleh Tomas Rokicki (MPL-2.0, WebAssembly), penyelesai 2×2 / 4×4 sendiri · 3D: three.js (MIT)',
   'footer.source': 'Kod sumber di GitHub (Lesen MIT)',
+  'footer.privacy': 'Privasi',
   'footer.tm': 'Rubik’s Cube ialah tanda dagangan berdaftar Spin Master Ltd. Laman ini tidak bergabung dengan Spin Master.',
   'consent.title': 'Analitik',
   'consent.text': 'Bolehkah kami menggunakan Google Analytics (kuki) untuk mengetahui cara laman ini digunakan? Statistik Cloudflare tanpa kuki sentiasa aktif. Imej kamera tidak pernah meninggalkan pelayar anda.',

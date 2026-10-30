@@ -191,11 +191,81 @@ function fill(tpl, pg) {
   s = s.replace(/(<([a-z][a-z0-9]*)\b[^>]*\sdata-i18n="([^"]+)"[^>]*>)([^<]*)(<\/\2>)/g, (m, open, tag, key, txt, close) =>
     /^consent\./.test(key) ? m : open + esc(APPT(pg.lang, key)) + close);
   s = rep(s, 'head', pg.head); s = rep(s, 'h1', pg.h1html); s = rep(s, 'body', pg.body); s = rep(s, 'noscript', pg.noscript); s = rep(s, 'home', pg.homeHtml); s = rep(s, 'picks', pg.picks);
+  s = s.replace(/(<a id="privacyLink" href=")[^"]*"/, `$1${privPath(pg.lang)}"`);
   s = rep(s, 'consent', pg.consent); s = rep(s, 'scripts', pg.scripts);
   // cache busting for the HTML-referenced scripts / styles (served with a 1 h max-age, see deploy/_headers)
   s = s.replace(/(src|href)="((?:js|css|vendor|puzzles)\/[^"?]+)(\?v=[0-9a-f]+)?"/g, (m, a, f) => `${a}="${f}?v=${hash(f)}"`);
   if (!/<base href="\/">/.test(s)) s = s.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">');
   return s;
+}
+
+// ---------- privacy policy: /privacy/ and /<lang>/privacy/ (texts: seo/privacy.json, accurate to js/analytics.js,
+// deploy/worker.js, tools/sw.template.js and the app's localStorage keys). The contact address appears on this page only.
+const PRIV = JSON.parse(fs.readFileSync(path.join(ROOT, 'seo/privacy.json'), 'utf8'));
+const PRIV_DATE = '2026-10-30', PRIV_EMAIL = 'hello@cube-solver.org', REPO = 'https://github.com/neichen/cube-solver';
+const privPath = lang => R.path(lang, null) + 'privacy/';
+function linkify(t) {
+  return esc(t).replace(/https:\/\/[^\s)（）]+[^\s)（）.,;:。、]/g, u => `<a href="${u}" rel="noopener">${u}</a>`)
+    .replace(PRIV_EMAIL, `<a href="mailto:${PRIV_EMAIL}">${PRIV_EMAIL}</a>`);
+}
+function privacyPage(lang) {
+  const P = PRIV[lang]; if (!P) throw new Error('missing privacy text ' + lang);
+  const date = new Intl.DateTimeFormat(lang === 'ar' ? 'ar-u-nu-latn' : LINFO[lang].html, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(PRIV_DATE + 'T00:00:00Z'));
+  const vars = { email: PRIV_EMAIL, repo: REPO, date, settings: APPT(lang, 'consent.settings'), accept: APPT(lang, 'consent.accept') };
+  const sub = t => t.replace(/\{(\w+)\}/g, (m, k) => { if (vars[k] == null) throw new Error(`privacy ${lang}: no {${k}}`); return vars[k]; });
+  const SITE = TXT[lang].site || CFG.siteName, url = abs(privPath(lang)), T = k => esc(APPT(lang, k));
+  const alts = R.LANGS.map(l => `<link rel="alternate" hreflang="${CFG.hreflang[l]}" href="${abs(privPath(l))}">`).join('\n')
+    + `\n<link rel="alternate" hreflang="x-default" href="${abs(privPath('en'))}">`;
+  const homeLabel = esc(`${SITE} – ${tr(lang, 'nav.home', {})}`);
+  const body = P.s.map(([h, ...ps], i) => `<section aria-labelledby="pv-${i}"><h2 id="pv-${i}">${esc(h)}</h2>${ps.map(x => `<p>${linkify(sub(x))}</p>`).join('')}</section>`).join('\n');
+  const html = `<!doctype html>
+<html lang="${LINFO[lang].html}" dir="${LINFO[lang].dir || 'ltr'}" data-page-lang="${lang}" data-privacy-page="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(P.title)}</title>
+<meta name="description" content="${esc(P.desc)}">
+<link rel="canonical" href="${url}">
+${alts}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${esc(CFG.siteName)}">
+<meta property="og:title" content="${esc(P.title)}">
+<meta property="og:description" content="${esc(P.desc)}">
+<meta property="og:url" content="${url}">
+<meta property="og:locale" content="${CFG.ogLocale[lang]}">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="manifest" href="${lang === 'en' ? '/manifest.webmanifest' : '/manifest/' + lang.toLowerCase() + '.webmanifest'}">
+<meta name="theme-color" content="${CFG.themeColor}">
+<link rel="stylesheet" href="/css/style.css?v=${hash('css/style.css')}">
+</head>
+<body class="privacy">
+<header class="topbar">
+  <div class="brand">
+<a class="logo" id="homeLink" href="${R.path(lang, null)}" aria-label="${homeLabel}" title="${homeLabel}">${'<i></i>'.repeat(9)}</a>
+    <div>
+<h1 id="pageTitle">${esc(P.h1)}</h1>
+      <p class="sub">${esc(SITE)}</p>
+    </div>
+  </div>
+</header>
+<main>
+<article id="privacy" class="seo card">
+<p class="privacy-date">${esc(sub(P.updated))}</p>
+${body}
+<p class="privacy-back"><a href="${R.path(lang, null)}">${esc(P.back)}</a></p>
+</article>
+</main>
+<footer><p class="footer-meta"><a href="${REPO}" rel="noopener">${T('footer.source')}</a> · <a id="privacyLink" href="${privPath(lang)}" aria-current="page">${T('footer.privacy')}</a> · <span>${T('footer.tm')}</span><span id="consentLinkWrap" hidden> · <button type="button" id="consentSettings" class="linkbtn">${T('consent.settings')}</button></span></p></footer>
+${consentHtml(lang)}
+<script defer src="/js/i18n/i18n.js?v=${hash('js/i18n/i18n.js')}"></script>
+<script defer src="/js/i18n/${lang}.js?v=${hash('js/i18n/' + lang + '.js')}"></script>
+<script defer src="/js/analytics.js?v=${hash('js/analytics.js')}"></script>
+</body>
+</html>
+`;
+  return { html, url, lang, path: privPath(lang), title: P.title };
 }
 
 function main() {
@@ -208,6 +278,8 @@ function main() {
     if (rel === '/') fs.writeFileSync(tplPath, html);
     else { const d = path.join(OUT, rel); fs.mkdirSync(d, { recursive: true }); fs.writeFileSync(path.join(d, 'index.html'), html); }
   }
+  const privs = R.LANGS.map(privacyPage);
+  for (const pv of privs) { const d = path.join(OUT, pv.path); fs.mkdirSync(d, { recursive: true }); fs.writeFileSync(path.join(d, 'index.html'), pv.html); }
   // sitemap with hreflang alternates
   const today = new Date().toISOString().slice(0, 10);
   const sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'];
@@ -215,6 +287,11 @@ function main() {
     sm.push(`<url><loc>${pg.url}</loc><lastmod>${today}</lastmod>`);
     for (const l of R.LANGS) sm.push(`  <xhtml:link rel="alternate" hreflang="${CFG.hreflang[l]}" href="${abs(R.path(l, pg.pz))}"/>`);
     sm.push(`  <xhtml:link rel="alternate" hreflang="x-default" href="${abs(R.path('en', pg.pz))}"/>`, '</url>');
+  }
+  for (const pv of privs) {
+    sm.push(`<url><loc>${pv.url}</loc><lastmod>${PRIV_DATE}</lastmod>`);
+    for (const l of R.LANGS) sm.push(`  <xhtml:link rel="alternate" hreflang="${CFG.hreflang[l]}" href="${abs(privPath(l))}"/>`);
+    sm.push(`  <xhtml:link rel="alternate" hreflang="x-default" href="${abs(privPath('en'))}"/>`, '</url>');
   }
   sm.push('</urlset>');
   fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sm.join('\n') + '\n');
@@ -233,4 +310,4 @@ function main() {
   console.log(`build-seo: ${pages.length} pages (${R.LANGS.length} languages × ${R.PUZZLES.length + 1}), base ${BASE}`);
 }
 if (require.main === module) main();
-module.exports = { page, kind, CONSENT_INLINE, scriptList };
+module.exports = { page, kind, CONSENT_INLINE, scriptList, privacyPage, privPath };

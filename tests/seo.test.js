@@ -104,8 +104,19 @@ async function staticMode() {
   ok(/^User-agent: \*$/m.test(robots) && robots.includes(`Sitemap: ${BASE}/sitemap.xml`) && !/Disallow: \/\s*$/m.test(robots), 'robots.txt');
   const sm = fs.readFileSync(path.join(OUT, 'sitemap.xml'), 'utf8'), locs = all(/<loc>([^<]+)<\/loc>/g, sm);
   ok(sm.startsWith('<?xml') && /<urlset [^>]*xmlns:xhtml=/.test(sm) && sm.trim().endsWith('</urlset>'), 'sitemap well-formed');
-  ok(locs.length === PAGES.length && PAGES.every(p => locs.includes(BASE + p.path)), `sitemap lists all ${PAGES.length} pages`);
-  ok((sm.match(/<xhtml:link /g) || []).length === PAGES.length * (R.LANGS.length + 1), 'sitemap hreflang alternates');
+  const PRIV = R.LANGS.map(l => R.path(l, null) + 'privacy/');
+  ok(locs.length === PAGES.length + PRIV.length && PAGES.every(p => locs.includes(BASE + p.path)) && PRIV.every(p => locs.includes(BASE + p)), `sitemap lists all ${PAGES.length} pages + ${PRIV.length} privacy pages`);
+  ok((sm.match(/<xhtml:link /g) || []).length === (PAGES.length + PRIV.length) * (R.LANGS.length + 1), 'sitemap hreflang alternates');
+  // privacy pages: one per language, prerendered, hreflang set, consent banner, contact address only here, no IDs
+  for (const l of R.LANGS) {
+    const p = PRIV[R.LANGS.indexOf(l)], f = path.join(OUT, p, 'index.html'); ok(fs.existsSync(f), `privacy page ${p}`); if (!fs.existsSync(f)) continue;
+    const h = fs.readFileSync(f, 'utf8'), alts = all(/<link rel="alternate" hreflang="[^"]+" href="([^"]+)">/g, h);
+    ok(one(/<link rel="canonical" href="([^"]*)"/, h) === BASE + p && alts.length === R.LANGS.length + 1 && PRIV.every(q => alts.includes(BASE + q)), `${p}: canonical + hreflang`);
+    ok(h.includes('mailto:hello@cube-solver.org') && h.includes('id="consentBanner"') && h.includes('id="consentSettings"') && /neichen/.test(h) && !/\{\w+\}/.test(h.replace(/<script[\s\S]*?<\/script>/g, '')), `${p}: content`);
+    ok(!/G-[A-Z0-9]{6,}/.test(h), `${p}: no analytics IDs`);
+  }
+  for (const pg of PAGES) { const h = fs.readFileSync(pg.path === '/' ? path.join(ROOT, 'index.html') : path.join(OUT, pg.path, 'index.html'), 'utf8');
+    ok(h.includes(`<a id="privacyLink" href="${R.path(pg.lang, null)}privacy/"`) && !h.includes('hello@cube-solver.org'), `${pg.path}: footer privacy link, no email`); }
   const man = JSON.parse(fs.readFileSync(path.join(OUT, 'manifest.webmanifest'), 'utf8'));
   ok(man.name && man.start_url === '/' && man.icons.length >= 3 && man.icons.every(i => fs.existsSync(path.join(ROOT, i.src))), 'manifest + icons exist');
   for (const [f, w] of [['img/icon-192.png', 192], ['img/icon-512.png', 512], ['img/apple-touch-icon.png', 180]]) { const s = pngSize(fs.readFileSync(path.join(ROOT, f))); ok(s && s[0] === w && s[1] === w, f + ' size'); }
@@ -174,7 +185,7 @@ async function liveMode() {
     checkPage(pg, await r.text(), titles, descs);
   }
   const rb = await get(LIVE + '/robots.txt'), rbt = await rb.text(); ok(rb.status === 200 && rbt.includes(`Sitemap: ${BASE}/sitemap.xml`), 'live robots.txt with Sitemap');
-  const sm = await get(LIVE + '/sitemap.xml'), smt = await sm.text(); ok(sm.status === 200 && /xml/.test(sm.headers.get('content-type')) && all(/<loc>([^<]+)<\/loc>/g, smt).length === PAGES.length, 'live sitemap.xml');
+  const sm = await get(LIVE + '/sitemap.xml'), smt = await sm.text(); ok(sm.status === 200 && /xml/.test(sm.headers.get('content-type')) && all(/<loc>([^<]+)<\/loc>/g, smt).length === PAGES.length + R.LANGS.length, 'live sitemap.xml');
   const mf = await get(LIVE + '/manifest.webmanifest'); ok(mf.status === 200 && JSON.parse(await mf.text()).name, 'live manifest');
   for (const u of ['/img/og/root.png', '/img/og/3x3-cube-solver.png', '/img/og/skewb-solver.png', '/img/favicon.svg', '/favicon.ico', '/img/apple-touch-icon.png']) {
     const r = await get(LIVE + u); ok(r.status === 200 && /image/.test(r.headers.get('content-type')), `live ${u} (${r.status} ${r.headers.get('content-type')})`);

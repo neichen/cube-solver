@@ -1,0 +1,602 @@
+{
+ "en": {
+  "footer": "Privacy",
+  "title": "Privacy policy · Cube Solver Lab",
+  "desc": "What Cube Solver Lab collects and why: cookieless Cloudflare Web Analytics, Google Analytics only with your consent in the EU/UK/CH, settings kept in your browser, no accounts and no ads.",
+  "h1": "Privacy policy",
+  "updated": "Last updated: {date}",
+  "back": "Back to the solver",
+  "s": [
+   [
+    "Who runs this site",
+    "Cube Solver Lab (cube-solver.org) is a free, open-source project run by neichen, an individual developer (location: Remote). For privacy questions or requests write to {email}."
+   ],
+   [
+    "In short",
+    "There are no accounts, no ads and no sign-up. Solving, camera scanning and photo uploads all happen inside your browser: images and puzzle states are never sent to us or anyone else. The only data that leaves your device is page-view statistics, described below."
+   ],
+   [
+    "Hosting",
+    "The site is served by Cloudflare. Like any web host, Cloudflare processes technical request data (IP address, browser, requested page) to deliver the pages and protect them from abuse; your country is used only to decide whether the analytics consent banner is shown. We do not run our own server logs. See Cloudflare’s privacy policy at https://www.cloudflare.com/privacypolicy/."
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Always on. It counts page views (page, referrer, country, browser and device type, page load speed) without cookies and without identifying you."
+   ],
+   [
+    "Google Analytics 4",
+    "In the EU/EEA, the United Kingdom and Switzerland (and when your country is unknown) Google Analytics loads only after you press “{accept}” in the banner. Elsewhere it loads without a banner. In every case advertising storage, ad user data, ad personalization and Google signals are switched off; only usage statistics are collected. When active, Google Analytics sets the cookies _ga and _ga_<id>. Google Analytics 4 does not log or store IP addresses. These are the only cookies the site uses."
+   ],
+   [
+    "Your choice and opt-out",
+    "Use “{settings}” in the footer of any page to accept or decline Google Analytics at any time; declining switches it off and deletes its cookies. You can also block the scripts with your browser or a content blocker, or use Google’s opt-out add-on (https://tools.google.com/dlpage/gaoptout). The solver works the same either way."
+   ],
+   [
+    "Stored in your browser",
+    "Local storage keeps your settings on your own device: language, color scheme, cube orientation, sticker letters, inspection time, sound and volume, your best times in Free play, and your analytics choice. A service worker caches the site’s files so it also works offline. None of this is sent to us; you can delete it by clearing this site’s data in your browser."
+   ],
+   [
+    "Share links",
+    "When you share a position, the puzzle state is written into the link after the # sign. Browsers do not send that part to the server; anyone you give the link to can see the position."
+   ],
+   [
+    "Open source",
+    "All of the code is public at {repo} (MIT License), so you can check every statement on this page."
+   ],
+   [
+    "Changes",
+    "If this policy changes, the new version is published on this page with a new date."
+   ]
+  ]
+ },
+ "zh-Hans": {
+  "footer": "隐私",
+  "title": "隐私政策 · 魔方求解实验室",
+  "desc": "本站收集什么、为什么收集：无 cookie 的 Cloudflare Web Analytics；在欧盟/英国/瑞士仅在你同意后才加载 Google Analytics；设置只保存在你的浏览器中；没有账号，没有广告。",
+  "h1": "隐私政策",
+  "updated": "最后更新：{date}",
+  "back": "返回求解器",
+  "s": [
+   [
+    "网站运营者",
+    "Cube Solver Lab（cube-solver.org）是一个免费的开源项目，由个人开发者 neichen 运营（所在地：Remote）。隐私相关的问题或请求请发邮件至 {email}。"
+   ],
+   [
+    "简要说明",
+    "本站没有账号、没有广告，也无需注册。求解、摄像头扫描和照片上传全部在你的浏览器中完成：图片和魔方状态不会发送给我们或任何第三方。离开你设备的只有下文所述的页面访问统计。"
+   ],
+   [
+    "托管",
+    "本站由 Cloudflare 提供服务。与任何网站托管一样，Cloudflare 会处理技术性请求数据（IP 地址、浏览器、所请求的页面），用于传送页面和防止滥用；你所在的国家/地区只用于决定是否显示统计同意横幅。我们不运行自己的服务器日志。Cloudflare 的隐私政策见 https://www.cloudflare.com/privacypolicy/。"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "始终开启。它统计页面访问（页面、来源、国家/地区、浏览器和设备类型、页面加载速度），不使用 cookie，也不识别你的身份。"
+   ],
+   [
+    "Google Analytics 4",
+    "在欧盟/欧洲经济区、英国和瑞士（以及无法判断国家/地区时），只有你在横幅中点击“{accept}”后才会加载 Google Analytics；其他地区无需横幅即会加载。无论哪种情况，广告存储、广告用户数据、广告个性化和 Google 信号都处于关闭状态，只收集使用统计。启用时，Google Analytics 会设置 cookie _ga 和 _ga_<id>。Google Analytics 4 不记录也不存储 IP 地址。这是本站使用的仅有的 cookie。"
+   ],
+   [
+    "你的选择与退出",
+    "你可以随时在任意页面底部点击“{settings}”来接受或拒绝 Google Analytics；拒绝会关闭它并删除其 cookie。你也可以用浏览器或内容拦截器屏蔽这些脚本，或使用 Google 的退出插件（https://tools.google.com/dlpage/gaoptout）。无论如何，求解器的功能都完全相同。"
+   ],
+   [
+    "保存在你浏览器中的数据",
+    "本地存储（localStorage）把你的设置保存在你自己的设备上：语言、配色方案、魔方朝向、贴纸字母、观察时间、音效和音量、“自己玩”模式的最好成绩，以及你的统计选择。Service Worker 会缓存网站文件，以便离线使用。这些都不会发送给我们；清除浏览器中本站的数据即可删除。"
+   ],
+   [
+    "分享链接",
+    "分享某个状态时，魔方状态会写在链接 # 号之后。浏览器不会把这一部分发送给服务器；拿到链接的人都能看到这个状态。"
+   ],
+   [
+    "开源",
+    "全部代码公开在 {repo}（MIT 许可证），你可以核实本页的每一条说明。"
+   ],
+   [
+    "变更",
+    "如果本政策有变更，新版本会以新的日期发布在本页。"
+   ]
+  ]
+ },
+ "zh-Hant": {
+  "footer": "隱私",
+  "title": "隱私權政策 · 魔術方塊求解實驗室",
+  "desc": "本站收集什麼、為什麼收集：無 cookie 的 Cloudflare Web Analytics；在歐盟/英國/瑞士僅在你同意後才載入 Google Analytics；設定只保存在你的瀏覽器中；沒有帳號，沒有廣告。",
+  "h1": "隱私權政策",
+  "updated": "最後更新：{date}",
+  "back": "返回求解器",
+  "s": [
+   [
+    "網站經營者",
+    "Cube Solver Lab（cube-solver.org）是一個免費的開源專案，由個人開發者 neichen 經營（所在地：Remote）。隱私相關的問題或請求請寄信至 {email}。"
+   ],
+   [
+    "簡要說明",
+    "本站沒有帳號、沒有廣告，也不需註冊。求解、相機掃描和照片上傳全部在你的瀏覽器中完成：圖片和方塊狀態不會傳送給我們或任何第三方。離開你裝置的只有下文所述的頁面瀏覽統計。"
+   ],
+   [
+    "主機代管",
+    "本站由 Cloudflare 提供服務。與任何網站主機一樣，Cloudflare 會處理技術性請求資料（IP 位址、瀏覽器、所請求的頁面），用於傳送頁面和防止濫用；你所在的國家/地區只用於決定是否顯示統計同意橫幅。我們不執行自己的伺服器日誌。Cloudflare 的隱私權政策見 https://www.cloudflare.com/privacypolicy/。"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "始終開啟。它統計頁面瀏覽（頁面、來源、國家/地區、瀏覽器和裝置類型、頁面載入速度），不使用 cookie，也不識別你的身分。"
+   ],
+   [
+    "Google Analytics 4",
+    "在歐盟/歐洲經濟區、英國和瑞士（以及無法判斷國家/地區時），只有你在橫幅中點選「{accept}」後才會載入 Google Analytics；其他地區不需橫幅即會載入。無論哪種情況，廣告儲存、廣告使用者資料、廣告個人化和 Google 信號都處於關閉狀態，只收集使用統計。啟用時，Google Analytics 會設定 cookie _ga 和 _ga_<id>。Google Analytics 4 不記錄也不儲存 IP 位址。這是本站使用的僅有的 cookie。"
+   ],
+   [
+    "你的選擇與退出",
+    "你可以隨時在任一頁面底部點選「{settings}」來接受或拒絕 Google Analytics；拒絕會關閉它並刪除其 cookie。你也可以用瀏覽器或內容封鎖工具封鎖這些指令碼，或使用 Google 的退出外掛程式（https://tools.google.com/dlpage/gaoptout）。無論如何，求解器的功能都完全相同。"
+   ],
+   [
+    "保存在你瀏覽器中的資料",
+    "本機儲存空間（localStorage）把你的設定保存在你自己的裝置上：語言、配色方案、方塊朝向、貼紙字母、觀察時間、音效和音量、「自由玩」模式的最佳成績，以及你的統計選擇。Service Worker 會快取網站檔案，以便離線使用。這些都不會傳送給我們；清除瀏覽器中本站的資料即可刪除。"
+   ],
+   [
+    "分享連結",
+    "分享某個狀態時，方塊狀態會寫在連結 # 號之後。瀏覽器不會把這一部分傳送給伺服器；拿到連結的人都能看到這個狀態。"
+   ],
+   [
+    "開放原始碼",
+    "全部程式碼公開在 {repo}（MIT 授權），你可以核實本頁的每一項說明。"
+   ],
+   [
+    "變更",
+    "如果本政策有變更，新版本會以新的日期發布在本頁。"
+   ]
+  ]
+ },
+ "es": {
+  "footer": "Privacidad",
+  "title": "Política de privacidad · Cube Solver Lab",
+  "desc": "Qué recoge Cube Solver Lab y por qué: Cloudflare Web Analytics sin cookies, Google Analytics en la UE/RU/CH solo con tu consentimiento, ajustes guardados en tu navegador, sin cuentas y sin anuncios.",
+  "h1": "Política de privacidad",
+  "updated": "Última actualización: {date}",
+  "back": "Volver al solucionador",
+  "s": [
+   [
+    "Quién gestiona este sitio",
+    "Cube Solver Lab (cube-solver.org) es un proyecto gratuito y de código abierto gestionado por neichen, desarrollador independiente (ubicación: Remote). Para preguntas o solicitudes sobre privacidad, escribe a {email}."
+   ],
+   [
+    "En resumen",
+    "No hay cuentas, ni anuncios, ni registro. La resolución, el escaneo con cámara y la subida de fotos ocurren dentro de tu navegador: las imágenes y los estados del rompecabezas nunca se envían ni a nosotros ni a nadie. Lo único que sale de tu dispositivo son las estadísticas de visitas descritas abajo."
+   ],
+   [
+    "Alojamiento",
+    "El sitio lo sirve Cloudflare. Como cualquier proveedor de alojamiento, Cloudflare procesa datos técnicos de la solicitud (dirección IP, navegador, página solicitada) para entregar las páginas y protegerlas de abusos; tu país solo se usa para decidir si se muestra el aviso de consentimiento. No mantenemos registros de servidor propios. Política de privacidad de Cloudflare: https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Siempre activo. Cuenta las visitas (página, sitio de procedencia, país, tipo de navegador y de dispositivo, velocidad de carga) sin cookies y sin identificarte."
+   ],
+   [
+    "Google Analytics 4",
+    "En la UE/EEE, el Reino Unido y Suiza (y cuando no se conoce tu país), Google Analytics solo se carga después de pulsar «{accept}» en el aviso. En el resto del mundo se carga sin aviso. En todos los casos están desactivados el almacenamiento publicitario, los datos de usuario para anuncios, la personalización de anuncios y Google Signals; solo se recogen estadísticas de uso. Cuando está activo, Google Analytics crea las cookies _ga y _ga_<id>. Google Analytics 4 no registra ni guarda direcciones IP. Son las únicas cookies del sitio."
+   ],
+   [
+    "Tu elección y exclusión",
+    "Con «{settings}» en el pie de cualquier página puedes aceptar o rechazar Google Analytics cuando quieras; al rechazarlo se desactiva y se borran sus cookies. También puedes bloquear los scripts con tu navegador o un bloqueador de contenido, o usar el complemento de inhabilitación de Google (https://tools.google.com/dlpage/gaoptout). El solucionador funciona igual en cualquier caso."
+   ],
+   [
+    "Guardado en tu navegador",
+    "El almacenamiento local guarda tus ajustes en tu propio dispositivo: idioma, esquema de colores, orientación del cubo, letras de las pegatinas, tiempo de inspección, sonido y volumen, tus mejores tiempos en juego libre y tu elección sobre la analítica. Un service worker guarda en caché los archivos del sitio para que también funcione sin conexión. Nada de esto se nos envía; puedes borrarlo eliminando los datos de este sitio en tu navegador."
+   ],
+   [
+    "Enlaces para compartir",
+    "Al compartir una posición, el estado del rompecabezas se escribe en el enlace después del signo #. Los navegadores no envían esa parte al servidor; cualquiera que reciba el enlace puede ver la posición."
+   ],
+   [
+    "Código abierto",
+    "Todo el código es público en {repo} (licencia MIT), así que puedes comprobar cada afirmación de esta página."
+   ],
+   [
+    "Cambios",
+    "Si esta política cambia, la nueva versión se publicará en esta página con una nueva fecha."
+   ]
+  ]
+ },
+ "ar": {
+  "footer": "الخصوصية",
+  "title": "سياسة الخصوصية · Cube Solver Lab",
+  "desc": "ما الذي يجمعه Cube Solver Lab ولماذا: Cloudflare Web Analytics بلا ملفات تعريف ارتباط، وGoogle Analytics في الاتحاد الأوروبي والمملكة المتحدة وسويسرا بموافقتك فقط، والإعدادات محفوظة في متصفحك، بلا حسابات ولا إعلانات.",
+  "h1": "سياسة الخصوصية",
+  "updated": "آخر تحديث: {date}",
+  "back": "العودة إلى أداة الحل",
+  "s": [
+   [
+    "من يدير الموقع",
+    "Cube Solver Lab (cube-solver.org) مشروع مجاني مفتوح المصدر يديره neichen، وهو مطوّر مستقل (الموقع: Remote). للأسئلة أو الطلبات المتعلقة بالخصوصية راسل {email}."
+   ],
+   [
+    "باختصار",
+    "لا توجد حسابات ولا إعلانات ولا تسجيل. يجري الحل والمسح بالكاميرا ورفع الصور داخل متصفحك بالكامل: لا تُرسل الصور ولا حالات اللغز إلينا ولا إلى أي جهة أخرى. الشيء الوحيد الذي يغادر جهازك هو إحصاءات مشاهدة الصفحات الموضحة أدناه."
+   ],
+   [
+    "الاستضافة",
+    "يُقدَّم الموقع عبر Cloudflare. ومثل أي مستضيف، تعالج Cloudflare بيانات الطلب التقنية (عنوان IP، المتصفح، الصفحة المطلوبة) لتقديم الصفحات وحمايتها من إساءة الاستخدام؛ ويُستخدم بلدك فقط لتحديد ما إذا كان شريط الموافقة سيظهر. لا نحتفظ بسجلات خادم خاصة بنا. سياسة خصوصية Cloudflare: https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "مفعّل دائمًا. يحصي مشاهدات الصفحات (الصفحة، المصدر، البلد، نوع المتصفح والجهاز، سرعة التحميل) دون ملفات تعريف ارتباط ودون التعرّف عليك."
+   ],
+   [
+    "Google Analytics 4",
+    "في الاتحاد الأوروبي/المنطقة الاقتصادية الأوروبية والمملكة المتحدة وسويسرا (وعندما يكون بلدك غير معروف) لا يُحمَّل Google Analytics إلا بعد الضغط على «{accept}» في الشريط. وفي غيرها يُحمَّل دون شريط. وفي كل الأحوال تكون تخزينات الإعلانات وبيانات المستخدم الإعلانية وتخصيص الإعلانات وإشارات Google متوقفة؛ ولا تُجمع سوى إحصاءات الاستخدام. عند تفعيله يضع Google Analytics ملفي تعريف الارتباط _ga و_ga_<id>. لا يسجّل Google Analytics 4 عناوين IP ولا يخزّنها. وهذه هي ملفات تعريف الارتباط الوحيدة في الموقع."
+   ],
+   [
+    "اختيارك وإلغاء الاشتراك",
+    "استخدم «{settings}» في تذييل أي صفحة لقبول Google Analytics أو رفضه في أي وقت؛ والرفض يوقفه ويحذف ملفاته. ويمكنك أيضًا حظر هذه البرامج النصية من متصفحك أو بأداة حظر المحتوى، أو استخدام إضافة إلغاء الاشتراك من Google (https://tools.google.com/dlpage/gaoptout). وتعمل أداة الحل بالطريقة نفسها في كل الحالات."
+   ],
+   [
+    "ما يُحفظ في متصفحك",
+    "يحفظ التخزين المحلي إعداداتك على جهازك: اللغة، ونظام الألوان، واتجاه المكعب، وحروف الملصقات، ووقت الفحص، والصوت ومستواه، وأفضل أوقاتك في اللعب الحر، واختيارك بشأن التحليلات. ويخزّن Service Worker ملفات الموقع مؤقتًا ليعمل دون اتصال أيضًا. لا يُرسل شيء من ذلك إلينا؛ ويمكنك حذفه بمسح بيانات هذا الموقع من متصفحك."
+   ],
+   [
+    "روابط المشاركة",
+    "عند مشاركة وضعية ما، تُكتب حالة اللغز في الرابط بعد العلامة #. لا ترسل المتصفحات هذا الجزء إلى الخادم؛ ويستطيع كل من يتلقى الرابط رؤية الوضعية."
+   ],
+   [
+    "مفتوح المصدر",
+    "الشيفرة كلها منشورة على {repo} (رخصة MIT)، لذا يمكنك التحقق من كل ما ورد في هذه الصفحة."
+   ],
+   [
+    "التغييرات",
+    "إذا تغيّرت هذه السياسة، ستُنشر النسخة الجديدة في هذه الصفحة بتاريخ جديد."
+   ]
+  ]
+ },
+ "pt": {
+  "footer": "Privacidade",
+  "title": "Política de privacidade · Cube Solver Lab",
+  "desc": "O que o Cube Solver Lab coleta e por quê: Cloudflare Web Analytics sem cookies, Google Analytics na UE/RU/CH só com o seu consentimento, configurações salvas no seu navegador, sem contas e sem anúncios.",
+  "h1": "Política de privacidade",
+  "updated": "Última atualização: {date}",
+  "back": "Voltar ao solucionador",
+  "s": [
+   [
+    "Quem mantém este site",
+    "O Cube Solver Lab (cube-solver.org) é um projeto gratuito e de código aberto mantido por neichen, desenvolvedor independente (local: Remote). Para dúvidas ou pedidos sobre privacidade, escreva para {email}."
+   ],
+   [
+    "Em resumo",
+    "Não há contas, anúncios nem cadastro. A resolução, a leitura pela câmera e o envio de fotos acontecem dentro do seu navegador: imagens e estados do quebra-cabeça nunca são enviados para nós nem para ninguém. Só saem do seu dispositivo as estatísticas de visualização descritas abaixo."
+   ],
+   [
+    "Hospedagem",
+    "O site é servido pela Cloudflare. Como qualquer serviço de hospedagem, a Cloudflare processa dados técnicos da requisição (endereço IP, navegador, página solicitada) para entregar as páginas e protegê-las contra abusos; o seu país é usado apenas para decidir se o aviso de consentimento aparece. Não mantemos registros de servidor próprios. Política de privacidade da Cloudflare: https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Sempre ativo. Conta visualizações de página (página, origem, país, tipo de navegador e de dispositivo, velocidade de carregamento) sem cookies e sem identificar você."
+   ],
+   [
+    "Google Analytics 4",
+    "Na UE/EEE, no Reino Unido e na Suíça (e quando o seu país é desconhecido), o Google Analytics só é carregado depois que você clica em “{accept}” no aviso. Nos demais lugares, ele é carregado sem aviso. Em todos os casos, o armazenamento de anúncios, os dados de usuário para anúncios, a personalização de anúncios e o Google Signals ficam desligados; só são coletadas estatísticas de uso. Quando ativo, o Google Analytics define os cookies _ga e _ga_<id>. O Google Analytics 4 não registra nem armazena endereços IP. São os únicos cookies do site."
+   ],
+   [
+    "Sua escolha e exclusão",
+    "Use “{settings}” no rodapé de qualquer página para aceitar ou recusar o Google Analytics a qualquer momento; recusar o desliga e apaga os cookies dele. Você também pode bloquear os scripts no navegador ou com um bloqueador de conteúdo, ou usar o complemento de desativação do Google (https://tools.google.com/dlpage/gaoptout). O solucionador funciona igual de qualquer forma."
+   ],
+   [
+    "Salvo no seu navegador",
+    "O armazenamento local guarda as suas configurações no seu próprio dispositivo: idioma, esquema de cores, orientação do cubo, letras dos adesivos, tempo de inspeção, som e volume, seus melhores tempos no modo livre e a sua escolha sobre a análise. Um service worker guarda os arquivos do site em cache para que ele funcione também offline. Nada disso é enviado para nós; para apagar, limpe os dados deste site no navegador."
+   ],
+   [
+    "Links de compartilhamento",
+    "Ao compartilhar uma posição, o estado do quebra-cabeça é escrito no link depois do sinal #. Os navegadores não enviam essa parte ao servidor; quem receber o link pode ver a posição."
+   ],
+   [
+    "Código aberto",
+    "Todo o código é público em {repo} (licença MIT), então você pode conferir cada afirmação desta página."
+   ],
+   [
+    "Alterações",
+    "Se esta política mudar, a nova versão será publicada nesta página com uma nova data."
+   ]
+  ]
+ },
+ "id": {
+  "footer": "Privasi",
+  "title": "Kebijakan privasi · Cube Solver Lab",
+  "desc": "Apa yang dikumpulkan Cube Solver Lab dan alasannya: Cloudflare Web Analytics tanpa cookie, Google Analytics di UE/Inggris/Swiss hanya dengan persetujuan Anda, pengaturan disimpan di browser Anda, tanpa akun dan tanpa iklan.",
+  "h1": "Kebijakan privasi",
+  "updated": "Terakhir diperbarui: {date}",
+  "back": "Kembali ke pemecah",
+  "s": [
+   [
+    "Pengelola situs",
+    "Cube Solver Lab (cube-solver.org) adalah proyek gratis dan sumber terbuka yang dikelola oleh neichen, pengembang perorangan (lokasi: Remote). Untuk pertanyaan atau permintaan terkait privasi, kirim email ke {email}."
+   ],
+   [
+    "Singkatnya",
+    "Tidak ada akun, iklan, atau pendaftaran. Penyelesaian, pemindaian kamera, dan unggah foto semuanya berlangsung di browser Anda: gambar dan keadaan puzzle tidak pernah dikirim ke kami atau siapa pun. Satu-satunya data yang keluar dari perangkat Anda adalah statistik kunjungan halaman yang dijelaskan di bawah."
+   ],
+   [
+    "Hosting",
+    "Situs ini disajikan oleh Cloudflare. Seperti penyedia hosting lainnya, Cloudflare memproses data teknis permintaan (alamat IP, browser, halaman yang diminta) untuk mengirimkan halaman dan melindunginya dari penyalahgunaan; negara Anda hanya dipakai untuk menentukan apakah banner persetujuan ditampilkan. Kami tidak menyimpan log server sendiri. Kebijakan privasi Cloudflare: https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Selalu aktif. Menghitung kunjungan halaman (halaman, perujuk, negara, jenis browser dan perangkat, kecepatan muat) tanpa cookie dan tanpa mengenali Anda."
+   ],
+   [
+    "Google Analytics 4",
+    "Di UE/EEA, Inggris, dan Swiss (serta jika negara Anda tidak diketahui), Google Analytics hanya dimuat setelah Anda menekan “{accept}” pada banner. Di tempat lain, ia dimuat tanpa banner. Dalam semua kasus, penyimpanan iklan, data pengguna iklan, personalisasi iklan, dan Google Signals dimatikan; hanya statistik penggunaan yang dikumpulkan. Saat aktif, Google Analytics memasang cookie _ga dan _ga_<id>. Google Analytics 4 tidak mencatat atau menyimpan alamat IP. Hanya cookie inilah yang dipakai situs ini."
+   ],
+   [
+    "Pilihan Anda dan cara menolak",
+    "Gunakan “{settings}” di footer halaman mana pun untuk menerima atau menolak Google Analytics kapan saja; menolak akan mematikannya dan menghapus cookie-nya. Anda juga dapat memblokir skripnya lewat browser atau pemblokir konten, atau memakai add-on penolakan dari Google (https://tools.google.com/dlpage/gaoptout). Pemecah tetap bekerja sama saja."
+   ],
+   [
+    "Disimpan di browser Anda",
+    "Penyimpanan lokal menyimpan pengaturan Anda di perangkat Anda sendiri: bahasa, skema warna, orientasi kubus, huruf stiker, waktu inspeksi, suara dan volume, waktu terbaik Anda di mode bebas, serta pilihan analitik Anda. Service worker menyimpan berkas situs dalam cache agar tetap bisa dipakai offline. Tidak ada yang dikirim ke kami; hapus dengan membersihkan data situs ini di browser Anda."
+   ],
+   [
+    "Tautan berbagi",
+    "Saat Anda membagikan posisi, keadaan puzzle ditulis di tautan setelah tanda #. Browser tidak mengirim bagian itu ke server; siapa pun yang menerima tautan dapat melihat posisinya."
+   ],
+   [
+    "Sumber terbuka",
+    "Seluruh kode tersedia publik di {repo} (Lisensi MIT), sehingga Anda dapat memeriksa setiap pernyataan di halaman ini."
+   ],
+   [
+    "Perubahan",
+    "Jika kebijakan ini berubah, versi baru akan diterbitkan di halaman ini dengan tanggal baru."
+   ]
+  ]
+ },
+ "ms": {
+  "footer": "Privasi",
+  "title": "Dasar privasi · Cube Solver Lab",
+  "desc": "Apa yang dikumpulkan Cube Solver Lab dan alasannya: Cloudflare Web Analytics tanpa cookie, Google Analytics di UE/Inggris/Swiss hanya dengan persetujuan anda, tetapan disimpan di pelayar anda, tanpa akaun dan tanpa iklan.",
+  "h1": "Dasar privasi",
+  "updated": "Kemas kini terakhir: {date}",
+  "back": "Kembali ke penyelesai",
+  "s": [
+   [
+    "Pengelola laman",
+    "Cube Solver Lab (cube-solver.org) adalah proyek gratis dan sumber terbuka yang dikelola oleh neichen, pembangun individu (lokasi: Remote). Untuk pertanyaan atau permintaan terkait privasi, kirim email ke {email}."
+   ],
+   [
+    "Ringkasnya",
+    "Tiada akaun, iklan atau pendaftaran. Penyelesaian, pemindaian kamera, dan unggah foto semuanya berlangsung di pelayar anda: gambar dan keadaan puzzle tidak pernah dikirim ke kami atau siapa pun. Satu-satunya data yang keluar dari perangkat anda adalah statistik kunjungan halaman yang dijelaskan di bawah."
+   ],
+   [
+    "Hosting",
+    "Laman ini disajikan oleh Cloudflare. Seperti penyedia hosting lainnya, Cloudflare memproses data teknis permintaan (alamat IP, pelayar, halaman yang diminta) untuk mengirimkan halaman dan melindunginya dari penyalahgunaan; negara anda hanya dipakai untuk menentukan apakah banner persetujuan ditampilkan. Kami tidak menyimpan log server sendiri. Dasar privasi Cloudflare: https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Selalu aktif. Menghitung kunjungan halaman (halaman, perujuk, negara, jenis pelayar dan perangkat, kecepatan muat) tanpa cookie dan tanpa mengenali anda."
+   ],
+   [
+    "Google Analytics 4",
+    "Di UE/EEA, Inggris, dan Swiss (serta jika negara anda tidak diketahui), Google Analytics hanya dimuat setelah anda menekan “{accept}” pada banner. Di tempat lain, ia dimuat tanpa banner. Dalam semua kasus, penyimpanan iklan, data pengguna iklan, personalisasi iklan, dan Google Signals dimatikan; hanya statistik penggunaan yang dikumpulkan. Saat aktif, Google Analytics memasang cookie _ga dan _ga_<id>. Google Analytics 4 tidak mencatat atau menyimpan alamat IP. Hanya cookie inilah yang dipakai laman ini."
+   ],
+   [
+    "Pilihan anda dan cara menolak",
+    "Gunakan “{settings}” di footer halaman mana pun untuk menerima atau menolak Google Analytics kapan saja; menolak akan mematikannya dan menghapus cookie-nya. anda juga dapat memblokir skripnya lewat pelayar atau pemblokir konten, atau memakai add-on penolakan dari Google (https://tools.google.com/dlpage/gaoptout). Penyelesai tetap bekerja sama saja."
+   ],
+   [
+    "Disimpan di pelayar anda",
+    "Penyimpanan lokal menyimpan tetapan anda di perangkat anda sendiri: bahasa, skema warna, orientasi kubus, huruf stiker, waktu inspeksi, suara dan volume, waktu terbaik anda di mode bebas, serta pilihan analitik anda. Service worker menyimpan berkas laman dalam cache agar tetap bisa dipakai offline. Tidak ada yang dikirim ke kami; hapus dengan membersihkan data laman ini di pelayar anda."
+   ],
+   [
+    "Pautan perkongsian",
+    "Saat anda membagikan posisi, keadaan puzzle ditulis di pautan setelah tanda #. Browser tidak mengirim bagian itu ke server; siapa pun yang menerima pautan dapat melihat posisinya."
+   ],
+   [
+    "Sumber terbuka",
+    "Seluruh kode tersedia publik di {repo} (Lisensi MIT), sehingga anda dapat memeriksa setiap pernyataan di halaman ini."
+   ],
+   [
+    "Perubahan",
+    "Jika kebijakan ini berubah, versi baru akan diterbitkan di halaman ini dengan tanggal baru."
+   ]
+  ]
+ },
+ "fr": {
+  "footer": "Confidentialité",
+  "title": "Politique de confidentialité · Cube Solver Lab",
+  "desc": "Ce que Cube Solver Lab collecte et pourquoi : Cloudflare Web Analytics sans cookies, Google Analytics dans l’UE/RU/CH seulement avec votre accord, réglages gardés dans votre navigateur, ni compte ni publicité.",
+  "h1": "Politique de confidentialité",
+  "updated": "Dernière mise à jour : {date}",
+  "back": "Retour au solveur",
+  "s": [
+   [
+    "Qui gère ce site",
+    "Cube Solver Lab (cube-solver.org) est un projet libre et gratuit géré par neichen, développeur indépendant (lieu : Remote). Pour toute question ou demande liée à la confidentialité, écrivez à {email}."
+   ],
+   [
+    "En bref",
+    "Pas de compte, pas de publicité, pas d’inscription. La résolution, la lecture par caméra et l’envoi de photos se font entièrement dans votre navigateur : les images et les états du casse-tête ne sont jamais envoyés, ni à nous ni à personne. Seules les statistiques de pages vues décrites ci-dessous quittent votre appareil."
+   ],
+   [
+    "Hébergement",
+    "Le site est servi par Cloudflare. Comme tout hébergeur, Cloudflare traite des données techniques de requête (adresse IP, navigateur, page demandée) pour livrer les pages et les protéger des abus ; votre pays sert uniquement à décider si la bannière de consentement s’affiche. Nous ne tenons pas nos propres journaux serveur. Politique de confidentialité de Cloudflare : https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Toujours actif. Compte les pages vues (page, site référent, pays, type de navigateur et d’appareil, vitesse de chargement) sans cookies et sans vous identifier."
+   ],
+   [
+    "Google Analytics 4",
+    "Dans l’UE/EEE, au Royaume-Uni et en Suisse (et quand votre pays est inconnu), Google Analytics n’est chargé qu’après un clic sur « {accept} » dans la bannière. Ailleurs, il est chargé sans bannière. Dans tous les cas, le stockage publicitaire, les données utilisateur publicitaires, la personnalisation des annonces et Google Signals sont désactivés ; seules des statistiques d’utilisation sont collectées. Lorsqu’il est actif, Google Analytics dépose les cookies _ga et _ga_<id>. Google Analytics 4 n’enregistre ni ne conserve les adresses IP. Ce sont les seuls cookies du site."
+   ],
+   [
+    "Votre choix et l’opposition",
+    "Le lien « {settings} » en pied de page permet à tout moment d’accepter ou de refuser Google Analytics ; refuser le désactive et supprime ses cookies. Vous pouvez aussi bloquer ces scripts avec votre navigateur ou un bloqueur de contenu, ou utiliser le module de désactivation de Google (https://tools.google.com/dlpage/gaoptout). Le solveur fonctionne de la même façon dans tous les cas."
+   ],
+   [
+    "Stocké dans votre navigateur",
+    "Le stockage local conserve vos réglages sur votre propre appareil : langue, jeu de couleurs, orientation du cube, lettres des stickers, temps d’inspection, sons et volume, vos meilleurs temps en jeu libre et votre choix concernant la mesure d’audience. Un service worker met en cache les fichiers du site pour qu’il fonctionne hors ligne. Rien de tout cela ne nous est envoyé ; effacez les données de ce site dans votre navigateur pour le supprimer."
+   ],
+   [
+    "Liens de partage",
+    "Quand vous partagez une position, l’état du casse-tête est écrit dans le lien après le signe #. Les navigateurs n’envoient pas cette partie au serveur ; toute personne qui reçoit le lien peut voir la position."
+   ],
+   [
+    "Open source",
+    "Tout le code est public sur {repo} (licence MIT) : vous pouvez vérifier chaque affirmation de cette page."
+   ],
+   [
+    "Modifications",
+    "Si cette politique change, la nouvelle version est publiée sur cette page avec une nouvelle date."
+   ]
+  ]
+ },
+ "ja": {
+  "footer": "プライバシー",
+  "title": "プライバシーポリシー · Cube Solver Lab",
+  "desc": "当サイトが収集する情報とその理由：Cookie を使わない Cloudflare Web Analytics、EU・英国・スイスでは同意後のみの Google Analytics、設定はブラウザ内に保存、アカウントも広告もありません。",
+  "h1": "プライバシーポリシー",
+  "updated": "最終更新：{date}",
+  "back": "ソルバーに戻る",
+  "s": [
+   [
+    "運営者",
+    "Cube Solver Lab（cube-solver.org）は、個人開発者 neichen が運営する無料のオープンソースプロジェクトです（所在地：Remote）。プライバシーに関するご質問やご依頼は {email} までご連絡ください。"
+   ],
+   [
+    "概要",
+    "アカウント、広告、登録はありません。解法の計算、カメラでの読み取り、写真のアップロードはすべてブラウザ内で行われ、画像やパズルの状態が当方や第三者に送信されることはありません。端末の外に出るのは、以下で説明するページビューの統計だけです。"
+   ],
+   [
+    "ホスティング",
+    "当サイトは Cloudflare から配信されています。一般的なホスティングと同様に、Cloudflare はページの配信と不正利用の防止のために技術的なリクエスト情報（IP アドレス、ブラウザ、要求されたページ）を処理します。国・地域の情報は、統計の同意バナーを表示するかどうかの判断にのみ使われます。当方は独自のサーバーログを取っていません。Cloudflare のプライバシーポリシー：https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "常に有効です。Cookie を使わず、個人を特定せずにページビュー（ページ、参照元、国・地域、ブラウザと端末の種類、読み込み速度）を数えます。"
+   ],
+   [
+    "Google Analytics 4",
+    "EU/EEA、英国、スイス（および国・地域が判別できない場合）では、バナーで「{accept}」を押したときだけ Google Analytics を読み込みます。それ以外の地域ではバナーなしで読み込みます。いずれの場合も、広告ストレージ、広告用ユーザーデータ、広告のパーソナライズ、Google シグナルはすべてオフで、利用状況の統計のみを収集します。有効なときは Cookie _ga と _ga_<id> が設定されます。Google Analytics 4 は IP アドレスを記録・保存しません。当サイトが使う Cookie はこれだけです。"
+   ],
+   [
+    "選択とオプトアウト",
+    "各ページのフッターにある「{settings}」から、いつでも Google Analytics を許可または拒否できます。拒否すると無効になり、Cookie も削除されます。ブラウザやコンテンツブロッカーでスクリプトをブロックしたり、Google のオプトアウトアドオン（https://tools.google.com/dlpage/gaoptout）を使うこともできます。どちらでもソルバーの機能は変わりません。"
+   ],
+   [
+    "ブラウザ内に保存されるもの",
+    "ローカルストレージには、言語、配色、キューブの持ち方、ステッカー文字、インスペクション時間、効果音と音量、フリープレイのベストタイム、統計の選択といった設定がお使いの端末上に保存されます。オフラインでも使えるよう、Service Worker がサイトのファイルをキャッシュします。これらが当方に送られることはなく、ブラウザで当サイトのデータを消去すれば削除できます。"
+   ],
+   [
+    "共有リンク",
+    "局面を共有すると、パズルの状態はリンクの # 以降に書き込まれます。ブラウザはこの部分をサーバーに送信しません。リンクを受け取った人はその局面を見ることができます。"
+   ],
+   [
+    "オープンソース",
+    "すべてのコードは {repo} で公開されています（MIT ライセンス）。このページの記述はすべてコードで確認できます。"
+   ],
+   [
+    "変更",
+    "このポリシーを変更した場合は、新しい日付とともにこのページで公開します。"
+   ]
+  ]
+ },
+ "ru": {
+  "footer": "Конфиденциальность",
+  "title": "Политика конфиденциальности · Cube Solver Lab",
+  "desc": "Что собирает Cube Solver Lab и зачем: Cloudflare Web Analytics без cookie, Google Analytics в ЕС/Великобритании/Швейцарии только с вашего согласия, настройки хранятся в вашем браузере, без аккаунтов и рекламы.",
+  "h1": "Политика конфиденциальности",
+  "updated": "Последнее обновление: {date}",
+  "back": "Вернуться к решателю",
+  "s": [
+   [
+    "Кто ведёт сайт",
+    "Cube Solver Lab (cube-solver.org) — бесплатный проект с открытым кодом, который ведёт neichen, независимый разработчик (местоположение: Remote). Вопросы и запросы о конфиденциальности направляйте на {email}."
+   ],
+   [
+    "Коротко",
+    "Здесь нет аккаунтов, рекламы и регистрации. Решение, сканирование камерой и загрузка фото выполняются в вашем браузере: изображения и состояния головоломки никогда не отправляются ни нам, ни кому-либо ещё. Ваше устройство покидает только статистика просмотров, описанная ниже."
+   ],
+   [
+    "Хостинг",
+    "Сайт обслуживается Cloudflare. Как и любой хостинг, Cloudflare обрабатывает технические данные запроса (IP-адрес, браузер, запрошенную страницу), чтобы доставлять страницы и защищать их от злоупотреблений; ваша страна используется только для того, чтобы решить, показывать ли баннер согласия. Собственных серверных журналов мы не ведём. Политика конфиденциальности Cloudflare: https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Включена всегда. Считает просмотры (страница, источник перехода, страна, тип браузера и устройства, скорость загрузки) без cookie и без вашей идентификации."
+   ],
+   [
+    "Google Analytics 4",
+    "В ЕС/ЕЭЗ, Великобритании и Швейцарии (а также если страна неизвестна) Google Analytics загружается только после нажатия «{accept}» в баннере. В остальных странах он загружается без баннера. В любом случае рекламное хранилище, рекламные данные пользователей, персонализация рекламы и Google Signals отключены; собирается только статистика использования. Когда он активен, Google Analytics устанавливает cookie _ga и _ga_<id>. Google Analytics 4 не записывает и не хранит IP-адреса. Других cookie сайт не использует."
+   ],
+   [
+    "Ваш выбор и отказ",
+    "Кнопкой «{settings}» в нижней части любой страницы можно в любой момент разрешить или запретить Google Analytics; при отказе он отключается, а его cookie удаляются. Также можно заблокировать скрипты в браузере или блокировщиком контента либо установить надстройку Google для отказа (https://tools.google.com/dlpage/gaoptout). Решатель в любом случае работает одинаково."
+   ],
+   [
+    "Хранится в вашем браузере",
+    "Локальное хранилище сохраняет ваши настройки на вашем устройстве: язык, цветовую схему, ориентацию кубика, буквы наклеек, время осмотра, звук и громкость, лучшие результаты в свободной игре и ваш выбор по аналитике. Service worker кэширует файлы сайта, чтобы он работал и офлайн. Ничего из этого нам не отправляется; удалить данные можно, очистив данные этого сайта в браузере."
+   ],
+   [
+    "Ссылки для обмена",
+    "Когда вы делитесь позицией, состояние головоломки записывается в ссылку после знака #. Браузеры не отправляют эту часть на сервер; любой, кто получит ссылку, увидит позицию."
+   ],
+   [
+    "Открытый код",
+    "Весь код опубликован на {repo} (лицензия MIT), поэтому каждое утверждение на этой странице можно проверить."
+   ],
+   [
+    "Изменения",
+    "Если политика изменится, новая версия будет опубликована на этой странице с новой датой."
+   ]
+  ]
+ },
+ "de": {
+  "footer": "Datenschutz",
+  "title": "Datenschutzerklärung · Cube Solver Lab",
+  "desc": "Was Cube Solver Lab erfasst und warum: cookielose Cloudflare Web Analytics, Google Analytics in EU/UK/CH nur mit Ihrer Einwilligung, Einstellungen nur in Ihrem Browser, keine Konten, keine Werbung.",
+  "h1": "Datenschutzerklärung",
+  "updated": "Zuletzt aktualisiert: {date}",
+  "back": "Zurück zum Löser",
+  "s": [
+   [
+    "Betreiber",
+    "Cube Solver Lab (cube-solver.org) ist ein kostenloses Open-Source-Projekt von neichen, einem einzelnen Entwickler (Standort: Remote). Fragen und Anfragen zum Datenschutz bitte an {email}."
+   ],
+   [
+    "Kurz gesagt",
+    "Es gibt keine Konten, keine Werbung und keine Registrierung. Lösen, Kamera-Scan und Foto-Upload laufen vollständig in Ihrem Browser: Bilder und Würfelzustände werden weder an uns noch an Dritte gesendet. Ihr Gerät verlassen nur die unten beschriebenen Seitenaufruf-Statistiken."
+   ],
+   [
+    "Hosting",
+    "Die Website wird über Cloudflare ausgeliefert. Wie jeder Webhoster verarbeitet Cloudflare technische Anfragedaten (IP-Adresse, Browser, aufgerufene Seite), um die Seiten auszuliefern und vor Missbrauch zu schützen; Ihr Land wird nur verwendet, um zu entscheiden, ob das Einwilligungsbanner angezeigt wird. Wir führen keine eigenen Server-Logs. Datenschutzerklärung von Cloudflare: https://www.cloudflare.com/privacypolicy/"
+   ],
+   [
+    "Cloudflare Web Analytics",
+    "Immer aktiv. Zählt Seitenaufrufe (Seite, Verweisquelle, Land, Browser- und Gerätetyp, Ladezeit) ohne Cookies und ohne Sie zu identifizieren."
+   ],
+   [
+    "Google Analytics 4",
+    "In der EU/im EWR, im Vereinigten Königreich und in der Schweiz (sowie wenn Ihr Land unbekannt ist) wird Google Analytics erst geladen, wenn Sie im Banner auf „{accept}“ klicken. Anderswo wird es ohne Banner geladen. In jedem Fall sind Werbespeicher, Werbe-Nutzerdaten, Werbe-Personalisierung und Google Signals ausgeschaltet; erfasst wird nur die Nutzungsstatistik. Wenn aktiv, setzt Google Analytics die Cookies _ga und _ga_<id>. Google Analytics 4 protokolliert und speichert keine IP-Adressen. Andere Cookies verwendet die Website nicht."
+   ],
+   [
+    "Ihre Wahl und Widerspruch",
+    "Über „{settings}“ in der Fußzeile jeder Seite können Sie Google Analytics jederzeit erlauben oder ablehnen; beim Ablehnen wird es abgeschaltet und seine Cookies werden gelöscht. Sie können die Skripte auch mit Ihrem Browser oder einem Inhaltsblocker sperren oder das Deaktivierungs-Add-on von Google nutzen (https://tools.google.com/dlpage/gaoptout). Der Löser funktioniert in beiden Fällen gleich."
+   ],
+   [
+    "In Ihrem Browser gespeichert",
+    "Im lokalen Speicher (localStorage) liegen Ihre Einstellungen auf Ihrem eigenen Gerät: Sprache, Farbschema, Würfelhaltung, Sticker-Buchstaben, Inspektionszeit, Ton und Lautstärke, Ihre Bestzeiten im freien Spiel und Ihre Analyse-Wahl. Ein Service Worker speichert die Dateien der Website zwischen, damit sie auch offline funktioniert. Nichts davon wird an uns gesendet; Sie löschen es, indem Sie die Website-Daten in Ihrem Browser entfernen."
+   ],
+   [
+    "Links zum Teilen",
+    "Wenn Sie eine Stellung teilen, steht der Würfelzustand im Link hinter dem #-Zeichen. Browser senden diesen Teil nicht an den Server; wer den Link erhält, kann die Stellung sehen."
+   ],
+   [
+    "Open Source",
+    "Der gesamte Code ist öffentlich unter {repo} (MIT-Lizenz), sodass Sie jede Aussage auf dieser Seite überprüfen können."
+   ],
+   [
+    "Änderungen",
+    "Ändert sich diese Erklärung, wird die neue Fassung mit neuem Datum auf dieser Seite veröffentlicht."
+   ]
+  ]
+ }
+}

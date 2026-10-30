@@ -186,6 +186,7 @@ CubeLab.i18n.register('ja', {
   'move.sliceHalf': '{slice}:180°',
   'footer': 'すべてブラウザ内で動作 · サーバー不要 · ソルバー:Kociemba 二段階法(cubejs、MIT)、Tomas Rokicki の gullicube(MPL-2.0、WebAssembly)、自作の 2×2 / 4×4 ソルバー · 3D:three.js(MIT)',
   'footer.source': 'GitHub のソースコード(MIT ライセンス)',
+  'footer.privacy': 'プライバシー',
   'footer.tm': 'ルービックキューブ(Rubik’s Cube)は Spin Master Ltd. の登録商標です。当サイトは Spin Master とは一切関係ありません。',
   'consent.title': 'アクセス解析',
   'consent.text': 'サイトの利用状況を知るために Google Analytics（Cookie を使用）を使ってもよろしいですか？Cookie を使わない Cloudflare の統計は常に有効です。カメラの画像がブラウザの外に送られることはありません。',

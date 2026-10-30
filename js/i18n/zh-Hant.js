@@ -186,6 +186,7 @@ CubeLab.i18n.register('zh-Hant', {
   'move.sliceHalf': '{slice}轉 180°',
   'footer': '完全在瀏覽器中執行 · 無需伺服器 · 求解器：Kociemba 兩階段（cubejs，MIT）、Tomas Rokicki 的 gullicube（MPL-2.0，WebAssembly）、自行開發 2×2 / 4×4 求解器 · 3D：three.js（MIT）',
   'footer.source': 'GitHub 原始碼（MIT 授權）',
+  'footer.privacy': '隱私',
   'footer.tm': 'Rubik’s Cube（魔術方塊）是 Spin Master Ltd. 的註冊商標。本站與 Spin Master 並無任何關聯。',
   'consent.title': '統計分析',
   'consent.text': '是否允許我們使用 Google Analytics（會設定 Cookie）了解網站的使用情況？無 Cookie 的 Cloudflare 統計始終開啟。相機影像不會離開你的瀏覽器。',

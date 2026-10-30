@@ -186,6 +186,7 @@ CubeLab.i18n.register('id', {
   'move.sliceHalf': '{slice}: 180°',
   'footer': 'Berjalan sepenuhnya di peramban · tanpa server · Pemecah: dua fase Kociemba (cubejs, MIT), gullicube karya Tomas Rokicki (MPL-2.0, WebAssembly), pemecah 2×2 / 4×4 buatan sendiri · 3D: three.js (MIT)',
   'footer.source': 'Kode sumber di GitHub (Lisensi MIT)',
+  'footer.privacy': 'Privasi',
   'footer.tm': 'Rubik’s Cube adalah merek dagang terdaftar milik Spin Master Ltd. Situs ini tidak berafiliasi dengan Spin Master.',
   'consent.title': 'Analitik',
   'consent.text': 'Bolehkah kami memakai Google Analytics (cookie) untuk mengetahui cara situs ini digunakan? Statistik Cloudflare tanpa cookie selalu aktif. Gambar kamera tidak pernah keluar dari peramban Anda.',

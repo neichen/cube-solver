@@ -29,6 +29,8 @@
     if (h1 && h1b) { h1.textContent = h1b.textContent; var s = h1.nextElementSibling, sb = h1b.nextElementSibling; if (s && sb) s.textContent = sb.textContent; }
     var hl = document.getElementById('homeLink'), hlb = doc.getElementById('homeLink');   // logo → this language's home
     if (hl && hlb) ['href', 'aria-label', 'title'].forEach(function (k) { hl.setAttribute(k, hlb.getAttribute(k)); });
+    var pl = document.getElementById('privacyLink'), plb = doc.getElementById('privacyLink');   // footer → this language's privacy page
+    if (pl && plb) pl.setAttribute('href', plb.getAttribute('href'));
     var a = document.getElementById('seo'), b = doc.getElementById('seo'); if (a && b) a.replaceWith(document.importNode(b, true));
     ['data-page-lang', 'data-page-puzzle'].forEach(function (k) { if (doc.documentElement.hasAttribute(k)) html.setAttribute(k, doc.documentElement.getAttribute(k)); else html.removeAttribute(k); });
   }

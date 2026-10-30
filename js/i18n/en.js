@@ -186,6 +186,7 @@ CubeLab.i18n.register('en', {
   'move.sliceHalf': '{slice}: 180°',
   'footer': 'Runs entirely in your browser · no server needed · Solvers: Kociemba two-phase (cubejs, MIT), gullicube by Tomas Rokicki (MPL-2.0, WebAssembly), own 2×2 / 4×4 solvers · 3D: three.js (MIT)',
   'footer.source': 'Source code on GitHub (MIT License)',
+  'footer.privacy': 'Privacy',
   'footer.tm': 'Rubik’s Cube is a registered trademark of Spin Master Ltd. This site is not affiliated with Spin Master.',
   'consent.title': 'Analytics',
   'consent.text': 'May we use Google Analytics (cookies) to learn how the site is used? Cookieless Cloudflare statistics are always on. Camera images never leave your browser.',
