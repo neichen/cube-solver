@@ -73,6 +73,8 @@ export default {
       url.pathname = '/' + (lang === 'en' ? '' : lang.toLowerCase() + '/') + (puzzle ? slug(puzzle) + '/' : '');
       vary = !hasLang && !!al;
     } else if (!moveHost) {
+      // page paths without the trailing slash: permanent 301 (the asset layer would answer 307)
+      if (!url.pathname.endsWith('/') && !/\.[A-Za-z0-9]+$/.test(url.pathname)) { url.pathname += '/'; return Response.redirect(url.toString(), 301); }
       return servePage(request, env);
     }
     if (moveHost) { url.protocol = 'https:'; url.hostname = CANONICAL_HOST; url.port = ''; }

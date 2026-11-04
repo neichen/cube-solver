@@ -2,6 +2,7 @@
   "baseUrl": "https://cube-solver.org",
   "siteName": "Cube Solver Lab",
   "themeColor": "#FBF9F5",
+  "indexNowKey": "581b270f913db5524d914600ea41cac8",
   "ogImageDir": "/img/og/",
   "hreflang": { "en": "en", "zh-Hans": "zh-Hans", "zh-Hant": "zh-Hant", "es": "es", "ar": "ar", "pt": "pt", "id": "id", "ms": "ms", "fr": "fr", "ja": "ja", "ru": "ru", "de": "de" },
   "ogLocale": { "en": "en_US", "zh-Hans": "zh_CN", "zh-Hant": "zh_TW", "es": "es_ES", "ar": "ar_AR", "pt": "pt_BR", "id": "id_ID", "ms": "ms_MY", "fr": "fr_FR", "ja": "ja_JP", "ru": "ru_RU", "de": "de_DE" },

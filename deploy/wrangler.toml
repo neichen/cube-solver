@@ -25,6 +25,8 @@ run_worker_first = [
   "!/favicon.ico",
   "!/sitemap.xml",
   "!/robots.txt",
+  "!/llms.txt",
+  "!/581b270f913db5524d914600ea41cac8.txt",
   "!/manifest.webmanifest",
   "!/manifest/*",
   "!/sw.js",

@@ -137,7 +137,9 @@ function page(lang, pz) {
     + `\n<link rel="alternate" hreflang="x-default" href="${abs(R.path('en', pz))}">`;
   const SITE = p.site, img = abs(ogImage(pz)), imgAlt = pz ? tr(lang, 'og.alt', p) : SITE;
   const ld = { '@context': 'https://schema.org', '@graph': [] }, G = ld['@graph'], inLang = CFG.hreflang[lang];
-  G.push({ '@type': 'WebSite', '@id': BASE + '/#website', url: BASE + '/', name: CFG.siteName, inLanguage: R.LANGS.map(l => CFG.hreflang[l]) });
+  G.push({ '@type': 'WebSite', '@id': BASE + '/#website', url: BASE + '/', name: CFG.siteName, inLanguage: R.LANGS.map(l => CFG.hreflang[l]), publisher: { '@id': BASE + '/#org' } });
+  G.push({ '@type': 'Organization', '@id': BASE + '/#org', name: CFG.siteName, url: BASE + '/', logo: BASE + '/img/icon-512.png',
+    sameAs: ['https://github.com/neichen/cube-solver'] });
   G.push({ '@type': 'WebApplication', '@id': url + '#app', name: pz ? h1 : SITE, alternateName: SITE === CFG.siteName ? undefined : CFG.siteName, url, description: desc, inLanguage: inLang,
     applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any (web browser)', browserRequirements: 'Requires JavaScript and WebAssembly',
     isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, image: img,
@@ -295,7 +297,23 @@ function main() {
   }
   sm.push('</urlset>');
   fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sm.join('\n') + '\n');
-  fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${BASE}/sitemap.xml\n`);
+  // robots.txt: everything is public; search and AI-assistant crawlers are named explicitly so a generic rule change can't drop them
+  const BOTS = ['Googlebot', 'Bingbot', 'OAI-SearchBot', 'ChatGPT-User', 'GPTBot', 'PerplexityBot', 'ClaudeBot', 'Claude-SearchBot', 'Google-Extended', 'Applebot', 'Applebot-Extended', 'DuckDuckBot', 'YandexBot', 'Baiduspider'];
+  fs.writeFileSync(path.join(OUT, 'robots.txt'), BOTS.map(b => `User-agent: ${b}`).join('\n') + '\nAllow: /\n\nUser-agent: *\nAllow: /\n\nSitemap: ' + BASE + '/sitemap.xml\n');
+  // llms.txt (https://llmstxt.org): a plain-text map of the site for AI assistants
+  const en = pages.filter(p => p.lang === 'en'), M = CFG.measured;
+  fs.writeFileSync(path.join(OUT, 'llms.txt'), [
+    `# ${CFG.siteName}`, '',
+    `> Free, open-source (MIT) online solver for 2x2 to 15x15 cubes, Pyraminx, Skewb and Megaminx. Enter the scrambled state by painting the net, scanning with the camera or typing notation; the solution is computed in the browser and shown move by move on a 3D model next to a permutation graph of every sticker.`, '',
+    `- 3x3: Kociemba two-phase solver, solutions usually ${M.cube3.range} moves (half-turn metric). 2x2: optimal, average ${M.cube2.avg} moves. 4x4: about ${M.cube4.avg} moves on average. 5x5-15x15: reduction method. Megaminx: average ${M.megaminx.avg} moves.`,
+    `- The permutation-graph visualization is inspired by jagarikin (@jagarikin); big cubes use Tomas Rokicki's gullicube.`,
+    `- Interface in 12 languages: ${R.LANGS.join(', ')} (paths /, /zh-hans/, /zh-hant/, /es/, ... ).`,
+    `- Source code: https://github.com/neichen/cube-solver · Contact: hello@cube-solver.org`, '',
+    '## Solvers', '',
+    ...en.map(p => `- [${p.title}](${p.url}): ${p.desc}`), '',
+    '## Optional', '', `- [Privacy policy](${BASE}/privacy/)`, `- [Sitemap](${BASE}/sitemap.xml)`, ''].join('\n'));
+  // IndexNow key file (Bing, Yandex, ...); the key is public by design
+  if (CFG.indexNowKey) fs.writeFileSync(path.join(OUT, CFG.indexNowKey + '.txt'), CFG.indexNowKey);
   // one web app manifest per language (/manifest.webmanifest for English, /manifest/<lang>.webmanifest otherwise)
   fs.mkdirSync(path.join(OUT, 'manifest'), { recursive: true });
   for (const l of R.LANGS) fs.writeFileSync(path.join(OUT, l === 'en' ? 'manifest.webmanifest' : 'manifest/' + l.toLowerCase() + '.webmanifest'), JSON.stringify({
