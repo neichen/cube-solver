@@ -108,10 +108,16 @@ console.log(`build-dist: versioned ${memo.size} assets, ${htmlFiles.length} page
 
 // ---------------------------------------------------------------- service worker (item 15)
 {
-  const shell = [];
-  for (const r of memo.keys()) if (/\.(js|css)$/.test(r) && !/^vendor\/gullicube\//.test(r) && !/\.worker\.js$/.test(r) || /^puzzles\/.*\.worker\.js$/.test(r)) shell.push('/' + r + '?v=' + version(r));
-  shell.push('/vendor/three.min.js?v=' + version('vendor/three.min.js'));
+  // App shell only: the versioned css/js the root page (/, default 3×3) loads, minus its language pack. Everything else –
+  // the page's own language, other puzzles' plugins / workers / tables, lazily loaded features (scan, audio, share) –
+  // is cached at runtime: by the fetch handler once the SW controls the page, and for what the page loaded before that,
+  // from the list the page posts to the SW after registration (js/app.js → 'cache-urls').
+  const root = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8'), shell = [];
+  for (const m of root.matchAll(/\s(?:src|href)="((?:js|css|puzzles|vendor)\/[^"?#]+)\?v=[0-9a-f]{8}"/g))
+    if (!/^js\/i18n\/(?!i18n\.js)/.test(m[1])) shell.push('/' + m[1] + '?v=' + version(m[1]));
   const pre = ['/'].concat([...new Set(shell)].sort());
+  { const zlib = require('zlib'); let gz = 0; for (const u of pre) gz += zlib.gzipSync(fs.readFileSync(u === '/' ? path.join(DIST, 'index.html') : rd(u.slice(1).split('?')[0]))).length;
+    console.log(`build-dist: precache ${pre.length} URLs, ${(gz / 1024).toFixed(0)} KB gzip`); }
   const sw = fs.readFileSync(path.join(ROOT, 'tools', 'sw.template.js'), 'utf8')
     .replace('__BUILD__', BUILD).replace('__PRECACHE__', JSON.stringify(pre));
   fs.writeFileSync(path.join(DIST, 'sw.js'), sw);

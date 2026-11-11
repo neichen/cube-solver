@@ -719,7 +719,18 @@
   else if (location.hash && /(^#|&)s=/.test(location.hash)) { clearHash(); TB.toast(t('share.bad')); }
   // 离线支持：dist 构建给 <html> 加 data-sw，本地源码服务器不注册 Service Worker
   if ('serviceWorker' in navigator && document.documentElement.hasAttribute('data-sw')) {
-    var regSW = function () { navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {}); };
+    // only the app shell is precached: report what this page has loaded so far (its language, puzzle, tables …) so the
+    // SW caches it too; later loads go through the SW's fetch handler once it controls the page
+    var reportSW = function () {
+      var c = navigator.serviceWorker.controller || (swReg && swReg.active); if (!c || !window.performance || !performance.getEntriesByType) return;
+      var urls = performance.getEntriesByType('resource').map(function (e) { return e.name; })
+        .filter(function (u) { return u.indexOf(location.origin + '/') === 0 && /[?&]v=[0-9a-f]{8}/.test(u); });
+      c.postMessage({ type: 'cache-urls', urls: urls, page: location.pathname });
+    }, swReg = null;
+    var regSW = function () {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function () { return navigator.serviceWorker.ready; })
+        .then(function (r) { swReg = r; reportSW(); navigator.serviceWorker.addEventListener('controllerchange', reportSW); }).catch(function () {});
+    };
     if (document.readyState === 'complete') setTimeout(regSW, 0); else window.addEventListener('load', regSW);
   }
   if (CL.seoNav && CL.seoNav.start) CL.seoNav.start();
