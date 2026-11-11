@@ -42,10 +42,29 @@
   window.dataLayer = window.dataLayer || [];
   function gtag() { window.dataLayer.push(arguments); }
 
-  function loadGA() {
+  // Outside the consent region gtag.js (~180 KB) is not fetched during page load: the commands below are queued at once (so the
+  // page view is kept), the script itself is added after the load event once the main thread is idle (at most 3 s later), or
+  // at the first interaction / when the page is hidden, whichever comes first.
+  var gaScript = false;
+  function addGAScript() { if (gaScript) return; gaScript = true; addScript('https://www.googletagmanager.com/gtag/js?id=' + GA_ID, {}); }
+  function whenSettled(fn) {
+    var done = false, evs = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+    var go = function () {
+      if (done) return; done = true;
+      evs.forEach(function (ev) { window.removeEventListener(ev, go, true); });
+      document.removeEventListener('visibilitychange', onHide);
+      fn();
+    };
+    var onHide = function () { if (document.visibilityState === 'hidden') go(); };
+    evs.forEach(function (ev) { window.addEventListener(ev, go, { capture: true, passive: true }); });
+    document.addEventListener('visibilitychange', onHide);
+    var idle = function () { if (window.requestIdleCallback) window.requestIdleCallback(go, { timeout: 3000 }); else setTimeout(go, 1500); };
+    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+  }
+  function loadGA(deferScript) {
     if (!GA_ID) return;
     window['ga-disable-' + GA_ID] = false;
-    if (gaLoaded) { gtag('consent', 'update', { analytics_storage: 'granted' }); return; }
+    if (gaLoaded) { gtag('consent', 'update', { analytics_storage: 'granted' }); if (!deferScript) addGAScript(); return; }
     gaLoaded = true;
     window.gtag = gtag;
     gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
@@ -53,7 +72,7 @@
     gtag('set', 'ads_data_redaction', true);
     gtag('js', new Date());
     gtag('config', GA_ID, { allow_google_signals: false, allow_ad_personalization_signals: false });
-    addScript('https://www.googletagmanager.com/gtag/js?id=' + GA_ID, {});
+    if (deferScript) whenSettled(function () { if (!window['ga-disable-' + GA_ID]) addGAScript(); }); else addGAScript();
   }
 
   function stopGA() {
@@ -94,7 +113,7 @@
 
   function choose(v) {
     setChoice(v); hideBanner();
-    if (v === 'granted') loadGA(); else stopGA();
+    if (v === 'granted') loadGA(false); else stopGA();
   }
 
   CL.analytics = { enabled: enabled, choice: getChoice, choose: choose, showBanner: showBanner };
@@ -110,6 +129,7 @@
   // the footer link still opens the banner, and "Decline" there switches GA off and deletes its cookies.
   var noBanner = document.documentElement.getAttribute('data-consent') === '0';
   CL.analytics.region = noBanner ? 'notice' : 'consent';
-  if (c === 'granted' || (!c && noBanner)) loadGA();
+  if (noBanner && c !== 'denied') loadGA(true);       // no banner here: gtag.js waits until the page has settled
+  else if (c === 'granted') loadGA();
   else { window['ga-disable-' + GA_ID] = true; if (!c) showBanner(); }
 })();

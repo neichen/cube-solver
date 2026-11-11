@@ -15,10 +15,16 @@ function run(code, host, opt) {
   const document = { head: { appendChild: s => added.push(s.src) }, body: { appendChild: e => added.push('#' + e.id), classList: { add() {}, remove() {} } },
     documentElement: { getAttribute: k => k === 'data-consent' ? (opt.consent == null ? null : opt.consent) : null },
     createElement: () => ({ setAttribute() {}, appendChild() {}, addEventListener() {}, querySelector() {} }), getElementById: el, cookie: '' };
-  const w = { location: { hostname: host, protocol: 'https:' }, document, localStorage: { getItem: () => opt.stored || null, setItem() {} } };
+  const L = {}, on = (t, f) => { (L[t] = L[t] || []).push(f); }, fire = t => (L[t] || []).slice().forEach(f => f());
+  document.readyState = 'interactive'; document.addEventListener = on; document.removeEventListener = () => {};
+  let idleCb = null;
+  const w = { location: { hostname: host, protocol: 'https:' }, document, localStorage: { getItem: () => opt.stored || null, setItem() {} },
+    addEventListener: on, removeEventListener() {}, requestIdleCallback: f => { idleCb = f; }, setTimeout };
   w.window = w; vm.runInNewContext(code, w);
+  const atStart = added.slice();
+  if (opt.interact) fire('pointerdown'); else { fire('load'); if (idleCb) idleCb(); }
   const consent = (w.dataLayer || []).filter(a => a[0] === 'consent').map(a => a[1] + ':' + JSON.stringify(a[2]));
-  return { added, consent, link: !!els.consentLinkWrap && els.consentLinkWrap.hidden === false, enabled: w.CubeLab.analytics.enabled, region: w.CubeLab.analytics.region };
+  return { added, atStart, consent, link: !!els.consentLinkWrap && els.consentLinkWrap.hidden === false, enabled: w.CubeLab.analytics.enabled, region: w.CubeLab.analytics.region };
 }
 let r = run(src, 'cube-solver.org');
 ok(!r.enabled && !r.added.length && !r.link, 'placeholders on cube-solver.org: no scripts, no banner, footer link stays hidden');
@@ -32,6 +38,10 @@ ok(r.added.length === 1 && /cloudflareinsights/.test(r.added[0]), 'only CF token
 // geo (deploy/worker.js sets <html data-consent="0"> outside the EU/EEA/UK/CH): no banner, GA with analytics granted, ads denied
 r = run(filled, 'cube-solver.org', { consent: '0' });
 ok(r.region === 'notice' && !r.added.includes('#consentBanner') && r.added.some(s => /googletagmanager/.test(s)) && r.link, 'data-consent="0": no banner, gtag.js loads, footer link visible');
+ok(!r.atStart.some(s => /googletagmanager/.test(s)) && r.atStart.some(s => /cloudflareinsights/.test(s)), 'data-consent="0": gtag.js deferred until load + idle (Cloudflare beacon not deferred)');
+ok(r.consent.length >= 2, 'data-consent="0": consent / config commands queued at once (page view kept)');
+r = run(filled, 'cube-solver.org', { consent: '0', interact: true });
+ok(r.added.some(s => /googletagmanager/.test(s)), 'data-consent="0": first interaction loads gtag.js before idle');
 ok(r.consent.some(c => /^default:.*"ad_storage":"denied".*"ad_user_data":"denied".*"ad_personalization":"denied"/.test(c)) && r.consent.some(c => c === 'update:{"analytics_storage":"granted"}') && !r.consent.some(c => /ad_\w+":"granted/.test(c)), 'data-consent="0": analytics_storage granted, every ad_* signal denied');
 r = run(filled, 'cube-solver.org', { consent: '0', stored: 'denied' });
 ok(!r.added.some(s => /googletagmanager/.test(s)) && !r.added.includes('#consentBanner'), 'data-consent="0" but stored Decline: GA stays off, no banner');
