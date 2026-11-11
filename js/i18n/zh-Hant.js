@@ -1,7 +1,7 @@
 CubeLab.i18n.register('zh-Hant', {
-  'meta.title': '魔術方塊求解實驗室 · 2×2–15×15 魔術方塊求解器（圖論視覺化）',
+  'meta.title': 'Cube Solver Lab · 2×2–15×15 魔術方塊求解器（圖論視覺化）',
   'meta.description': '完全在瀏覽器中執行的 2×2 至 15×15 魔術方塊求解器：手動塗色或用攝影機掃描辨識，一鍵求解，3D 動畫與貼紙置換圖同步展示。',
-  'app.name': '魔術方塊求解實驗室',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': '用圖論的眼光看魔術方塊：每塊貼紙都是沿軌道流動的節點',
   'lang.label': '語言',
   'puzzle.label': '益智玩具',

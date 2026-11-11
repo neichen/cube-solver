@@ -1,7 +1,7 @@
 CubeLab.i18n.register('ms', {
   'meta.title': 'Cube Solver Lab · penyelesai kiub Rubik 2×2–15×15 dengan visualisasi graf',
   'meta.description': 'Penyelesai kiub Rubik 2×2 hingga 15×15 yang berjalan sepenuhnya dalam pelayar: warnakan pelekat atau imbas dengan kamera, selesaikan, kemudian tonton animasi 3D yang selari dengan graf pilih atur pelekat.',
-  'app.name': 'Makmal Penyelesai Kiub',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': 'Lihat kiub sebagai graf: setiap pelekat ialah nod yang mengalir di orbitnya',
   'lang.label': 'Bahasa',
   'puzzle.label': 'Teka-teki',

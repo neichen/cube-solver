@@ -1,6 +1,6 @@
 [English](DEVELOPMENT.md) · [简体中文](DEVELOPMENT.zh-Hans.md) · **繁體中文** · [日本語](DEVELOPMENT.ja.md) · [Español](DEVELOPMENT.es.md) · [Português](DEVELOPMENT.pt.md) · [Français](DEVELOPMENT.fr.md) · [Deutsch](DEVELOPMENT.de.md) · [Русский](DEVELOPMENT.ru.md) · [العربية](DEVELOPMENT.ar.md) · [Bahasa Indonesia](DEVELOPMENT.id.md) · [Bahasa Melayu](DEVELOPMENT.ms.md)
 
-# 魔方求解實驗室（CubeLab）· 開發說明
+# Cube Solver Lab（CubeLab）· 開發說明
 
 > 面向開發者的詳細說明。英文版（[DEVELOPMENT.md](DEVELOPMENT.md)）為權威版本，本譯文與其內容一致。專案介紹、執行、測試、部署、許可與隱私見 [README](../README.zh-Hant.md)。
 > 文中提到的 `ref/`（參考影片幀）與 `screenshots/`（測試截圖輸出）不在倉庫中；測試執行時會自動生成截圖目錄。

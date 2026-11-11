@@ -1,7 +1,7 @@
 CubeLab.i18n.register('id', {
   'meta.title': 'Cube Solver Lab · pemecah kubus Rubik 2×2–15×15 dengan visualisasi graf',
   'meta.description': 'Pemecah kubus Rubik 2×2 hingga 15×15 yang berjalan sepenuhnya di peramban: warnai stiker atau pindai dengan kamera, pecahkan, lalu tonton animasi 3D yang selaras dengan graf permutasi stiker.',
-  'app.name': 'Lab Pemecah Kubus',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': 'Lihat kubus sebagai graf: setiap stiker adalah simpul yang mengalir di orbitnya',
   'lang.label': 'Bahasa',
   'puzzle.label': 'Teka-teki',

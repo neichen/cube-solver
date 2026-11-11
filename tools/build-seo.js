@@ -318,7 +318,7 @@ function main() {
   // one web app manifest per language (/manifest.webmanifest for English, /manifest/<lang>.webmanifest otherwise)
   fs.mkdirSync(path.join(OUT, 'manifest'), { recursive: true });
   for (const l of R.LANGS) fs.writeFileSync(path.join(OUT, l === 'en' ? 'manifest.webmanifest' : 'manifest/' + l.toLowerCase() + '.webmanifest'), JSON.stringify({
-    id: '/', name: TXT[l].site || CFG.siteName, short_name: 'CubeLab', description: TXT[l]['desc.root'].replace('{site}', TXT[l].site || CFG.siteName),
+    id: '/', name: TXT[l].site || CFG.siteName, short_name: CFG.siteName, description: TXT[l]['desc.root'].replace('{site}', TXT[l].site || CFG.siteName),
     start_url: R.path(l, null), scope: '/', display: 'standalone',
     background_color: CFG.themeColor, theme_color: CFG.themeColor, lang: LINFO[l].html, dir: LINFO[l].dir || 'ltr',
     icons: [{ src: '/img/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/img/icon-512.png', sizes: '512x512', type: 'image/png' },

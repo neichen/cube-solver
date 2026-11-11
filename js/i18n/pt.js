@@ -1,7 +1,7 @@
 CubeLab.i18n.register('pt', {
   'meta.title': 'Cube Solver Lab · solucionador de cubo mágico de 2×2 a 15×15 com visualização em grafo',
   'meta.description': 'Um solucionador de cubo mágico de 2×2 a 15×15 que roda inteiramente no navegador: pinte as cores ou escaneie com a câmera, resolva e veja uma animação 3D sincronizada com um grafo de permutação dos adesivos.',
-  'app.name': 'Laboratório do Cubo Mágico',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': 'Veja o cubo como um grafo: cada adesivo é um nó que percorre a sua órbita',
   'lang.label': 'Idioma',
   'puzzle.label': 'Quebra-cabeça',

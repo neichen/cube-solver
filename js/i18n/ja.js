@@ -1,7 +1,7 @@
 CubeLab.i18n.register('ja', {
-  'meta.title': 'キューブソルバー・ラボ · 2×2〜15×15 ルービックキューブ解法(グラフ可視化)',
+  'meta.title': 'Cube Solver Lab · 2×2〜15×15 ルービックキューブ解法(グラフ可視化)',
   'meta.description': 'ブラウザだけで動く 2×2〜15×15 のルービックキューブ解法ツール。色を塗るかカメラで読み取り、解いて、3D アニメーションとステッカー置換グラフを同期して見られます。',
-  'app.name': 'キューブソルバー・ラボ',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': 'キューブをグラフとして見る:すべてのステッカーが軌道を流れるノード',
   'lang.label': '言語',
   'puzzle.label': 'パズル',

@@ -1,7 +1,7 @@
 CubeLab.i18n.register('es', {
   'meta.title': 'Cube Solver Lab · solucionador de cubos de Rubik de 2×2 a 15×15 con visualización en grafo',
   'meta.description': 'Un solucionador del cubo de Rubik, de 2×2 a 15×15, que funciona por completo en tu navegador: pinta los colores o escanéalos con la cámara, resuelve y mira una animación 3D sincronizada con un grafo de permutación de pegatinas.',
-  'app.name': 'Laboratorio del cubo mágico',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': 'Ve el cubo como un grafo: cada pegatina es un nodo que fluye por su órbita',
   'lang.label': 'Idioma',
   'puzzle.label': 'Rompecabezas',

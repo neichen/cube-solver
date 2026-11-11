@@ -1,7 +1,7 @@
 CubeLab.i18n.register('de', {
   'meta.title': 'Cube Solver Lab · Zauberwürfel-Löser für 2×2 bis 15×15 mit Graphen-Visualisierung',
   'meta.description': 'Ein Zauberwürfel-Löser für 2×2 bis 15×15, der komplett im Browser läuft: Farben einmalen oder mit der Kamera scannen, lösen und eine 3D-Animation synchron zu einem Sticker-Permutationsgraphen ansehen.',
-  'app.name': 'CubeLab · Zauberwürfel-Löser',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': 'Den Würfel als Graphen sehen: Jeder Sticker ist ein Knoten, der entlang seiner Bahn fließt',
   'lang.label': 'Sprache',
   'puzzle.label': 'Puzzle',

@@ -1,7 +1,7 @@
 CubeLab.i18n.register('fr', {
   'meta.title': 'Cube Solver Lab · solveur de Rubik’s Cube du 2×2 au 15×15 avec visualisation en graphe',
   'meta.description': 'Un solveur de Rubik’s Cube du 2×2 au 15×15 qui fonctionne entièrement dans votre navigateur : coloriez les facettes ou scannez-les avec la caméra, résolvez, puis regardez une animation 3D synchronisée avec un graphe de permutation des facettes.',
-  'app.name': 'CubeLab · Solveur de cubes',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': 'Voir le cube comme un graphe : chaque facette est un nœud qui circule sur son orbite',
   'lang.label': 'Langue',
   'puzzle.label': 'Casse-tête',

@@ -1,7 +1,7 @@
 CubeLab.i18n.register('zh-Hans', {
-  'meta.title': '魔方求解实验室 · 2×2–15×15 魔方求解器（图论可视化）',
+  'meta.title': 'Cube Solver Lab · 2×2–15×15 魔方求解器（图论可视化）',
   'meta.description': '完全在浏览器中运行的 2×2 至 15×15 魔方求解器：手动涂色或用摄像头扫描识别，一键求解，3D 动画与贴纸置换图同步演示。',
-  'app.name': '魔方求解实验室',
+  'app.name': 'Cube Solver Lab',
   'app.tagline': '用图论的眼光看魔方：每块贴纸都是沿轨道流动的节点',
   'lang.label': '语言',
   'puzzle.label': '谜题',
