@@ -123,10 +123,10 @@ async function playToEnd(p) {
     await p.waitForTimeout(1500);
     const sway = await p.evaluate(() => ({ amt: app.view.swayAmt, w: app.view.spin.quaternion.w }));
     ok(sway.amt > 0.5 && sway.w < 0.99999, `播放时自动轻微旋转（强度 ${sway.amt.toFixed(2)}）`);
-    await p.click('label.toggle:has(#autoRotate)'); await p.waitForTimeout(1500);
+    await p.evaluate(() => app.settings.open()); await p.click('label.toggle:has(#autoRotate)'); await p.waitForTimeout(1500);
     const off = await p.evaluate(() => ({ on: app.view.autoRotate, amt: app.view.swayAmt, sc: app.view.showcase() }));
     ok(!off.on && off.amt === 0 && off.sc === false, '关闭「自动旋转」后停止摆动且不做展示');
-    await p.click('label.toggle:has(#autoRotate)'); await p.evaluate(() => app.player.pause());
+    await p.evaluate(() => app.settings.open()); await p.click('label.toggle:has(#autoRotate)'); await p.evaluate(() => { app.player.pause(); app.settings.close(); });
     ok(await p.evaluate(() => app.view.autoRotate === true), '重新打开自动旋转');
     await p.click('#btnDemo'); await p.waitForTimeout(200);
     const d = await p.evaluate(() => ({ ph: app.player.tl.phases, start: app.P.isSolved(app.player.tl.start), n: app.player.length() }));
@@ -294,7 +294,7 @@ async function playToEnd(p) {
     await a.click('.swatch[data-color="R"]'); await a.click('#net .cell[data-i="0"]');
     ok(await a.evaluate(() => app.audio.stats.paint) >= 1, '涂色时播放轻点音效');
     // 音乐 + 音量 + 关闭音效 → 刷新后保持
-    await a.click('label:has(#musicToggle)');
+    await a.evaluate(() => app.settings.open()); await a.click('label:has(#musicToggle)');   // settings panel (gear button)
     await a.waitForTimeout(400);
     ok(await a.evaluate(() => app.audio.musicPlaying() && app.audio.stats.musicNotes > 0), '打开「音乐」：程序生成的背景音乐开始调度');
     await a.evaluate(() => { const v = document.getElementById('volume'); v.value = 30; v.dispatchEvent(new Event('input')); });
@@ -309,8 +309,8 @@ async function playToEnd(p) {
     await a.waitForFunction(() => app.audio.musicPlaying(), null, { timeout: 5000 }).then(() => ok(true, '手势后背景音乐自动开始'), () => ok(false, '手势后背景音乐开始'));
     await a.evaluate(() => app.player.next()); await a.waitForTimeout(800);
     ok(await a.evaluate(() => app.audio.stats.click === 0), '音效关闭时转动不发声');
-    await a.click('label:has(#musicToggle)'); ok(await a.evaluate(() => !app.audio.musicPlaying()), '关闭音乐');
-    await a.screenshot({ path: path.join(SHOTS, 'desktop-sound-controls.png'), clip: await a.locator('.controls').boundingBox() });
+    await a.evaluate(() => app.settings.open()); await a.click('label:has(#musicToggle)'); ok(await a.evaluate(() => !app.audio.musicPlaying()), '关闭音乐');
+    await a.screenshot({ path: path.join(SHOTS, 'desktop-sound-controls.png'), clip: await a.locator('#settingsPanel').boundingBox() });
     ok(await a.evaluate(() => app.audio.stats.errors === 0), '声音模块无内部错误');
     ok(aerr.length === 0, '声音测试无控制台错误 / 页面异常 ' + aerr.join('; '));
     await sctx.close();

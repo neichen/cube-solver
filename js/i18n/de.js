@@ -121,6 +121,8 @@ CubeLab.i18n.register('de', {
   'settings.lettersTip': 'Farbbuchstaben (W Y R O G B) auf den Aufklebern anzeigen – hilfreich bei Farbsehschwäche',
   'settings.scheme': 'Farben',
   'settings.schemeTip': 'Farbschema deines Würfels: westlich (Weiß gegenüber Gelb) oder japanisch (Weiß gegenüber Blau)',
+  'settings.title': 'Einstellungen',
+  'settings.close': 'Einstellungen schließen',
   'scheme.western': 'Westlich',
   'scheme.japanese': 'Japanisch',
   'hold.blueTop': 'Blau oben, Grün vorne',

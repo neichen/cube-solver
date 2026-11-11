@@ -486,6 +486,22 @@
   sfxT.addEventListener('change', function () { audio.setSfx(sfxT.checked); });
   musT.addEventListener('change', function () { audio.setMusic(musT.checked); });
   volR.addEventListener('input', function () { audio.setVolume(volR.value / 100); });
+  // 设置面板：齿轮按钮打开 / 关闭（Esc、点面板外、焦点离开都会关闭；打开时焦点移到第一项，Esc 关闭后回到按钮）
+  var settingsUI = (function () {
+    var btn = $('settingsBtn'), panel = $('settingsPanel'); if (!btn || !panel) return null;
+    function isOpen() { return !panel.hidden; }
+    function open() {
+      panel.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      var f = panel.querySelector('.options input:not([disabled]), .options select'); if (f) f.focus({ preventScroll: true });
+    }
+    function close(refocus) { if (!isOpen()) return; panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (refocus) btn.focus(); }
+    btn.addEventListener('click', function () { if (isOpen()) close(false); else open(); });
+    $('settingsClose').addEventListener('click', function () { close(true); });
+    panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(true); } });
+    document.addEventListener('pointerdown', function (e) { if (isOpen() && !panel.contains(e.target) && !btn.contains(e.target)) close(false); }, true);
+    panel.addEventListener('focusout', function (e) { var to = e.relatedTarget; if (to && !panel.contains(to) && to !== btn) close(false); });
+    return { open: open, close: close, isOpen: isOpen };
+  })();
   $('autoRotate').addEventListener('change', function () { view.setAutoRotate($('autoRotate').checked); });
   // 配色方案（西方 / 日本：蓝黄互换）+ 贴纸上的颜色字母
   var schemeSel = $('colorScheme'), lettersCb = $('colorLetters');
@@ -817,6 +833,7 @@
   // audio: the SoundEngine once js/core/audio.js is loaded, the settings proxy before that
   Object.defineProperty(window.app, 'audio', { get: function () { return audio.engine() || audio; } });
   window.app.loadScan = function () { return startScan(); };
+  window.app.settings = settingsUI;
   ['P', 'editor', 'player', 'graph', 'view', 'scan'].forEach(function (k) {
     Object.defineProperty(window.app, k, { get: function () { return { P: P, editor: editor, player: player, graph: graph, view: view, scan: scan }[k]; } });
   });

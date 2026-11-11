@@ -121,6 +121,8 @@ CubeLab.i18n.register('zh-Hans', {
   'settings.lettersTip': '在贴纸上显示颜色字母（W Y R O G B），方便色觉障碍用户',
   'settings.scheme': '配色',
   'settings.schemeTip': '你的魔方配色：西方配色（白对黄）或日本配色（白对蓝）',
+  'settings.title': '设置',
+  'settings.close': '关闭设置',
   'scheme.western': '西方配色',
   'scheme.japanese': '日本配色',
   'hold.blueTop': '蓝色朝上，绿色朝前',

@@ -121,6 +121,8 @@ CubeLab.i18n.register('id', {
   'settings.lettersTip': 'Tampilkan huruf warna (W Y R O G B) pada stiker, berguna bagi pengguna buta warna',
   'settings.scheme': 'Warna',
   'settings.schemeTip': 'Skema warna kubus Anda: Barat (putih berseberangan dengan kuning) atau Jepang (putih berseberangan dengan biru)',
+  'settings.title': 'Pengaturan',
+  'settings.close': 'Tutup pengaturan',
   'scheme.western': 'Barat',
   'scheme.japanese': 'Jepang',
   'hold.blueTop': 'Biru di atas, hijau di depan',

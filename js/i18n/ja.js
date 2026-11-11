@@ -121,6 +121,8 @@ CubeLab.i18n.register('ja', {
   'settings.lettersTip': 'ステッカーに色の頭文字(W Y R O G B)を表示します。色覚に配慮した表示です',
   'settings.scheme': '配色',
   'settings.schemeTip': 'キューブの配色:西洋配色(白の反対が黄)または日本配色(白の反対が青)',
+  'settings.title': '設定',
+  'settings.close': '設定を閉じる',
   'scheme.western': '西洋配色',
   'scheme.japanese': '日本配色',
   'hold.blueTop': '青が上、緑が前',

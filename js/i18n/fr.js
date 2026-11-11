@@ -121,6 +121,8 @@ CubeLab.i18n.register('fr', {
   'settings.lettersTip': 'Affiche les lettres des couleurs (W Y R O G B) sur les autocollants, utile en cas de daltonisme',
   'settings.scheme': 'Couleurs',
   'settings.schemeTip': 'Schéma de couleurs de votre cube : occidental (blanc opposé au jaune) ou japonais (blanc opposé au bleu)',
+  'settings.title': 'Paramètres',
+  'settings.close': 'Fermer les paramètres',
   'scheme.western': 'Occidental',
   'scheme.japanese': 'Japonais',
   'hold.blueTop': 'Bleu en haut, vert devant',

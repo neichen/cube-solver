@@ -121,6 +121,8 @@ CubeLab.i18n.register('ar', {
   'settings.lettersTip': 'إظهار حروف الألوان (W Y R O G B) على الملصقات، مفيد لمن لديهم عمى ألوان',
   'settings.scheme': 'الألوان',
   'settings.schemeTip': 'نظام ألوان مكعبك: غربي (الأبيض مقابل الأصفر) أو ياباني (الأبيض مقابل الأزرق)',
+  'settings.title': 'الإعدادات',
+  'settings.close': 'إغلاق الإعدادات',
   'scheme.western': 'غربي',
   'scheme.japanese': 'ياباني',
   'hold.blueTop': 'الأزرق للأعلى، الأخضر للأمام',

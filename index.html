@@ -54,7 +54,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://cube-solver.org/#website","url":"https://cube-solver.org/","name":"Cube Solver Lab","inLanguage":["en","zh-Hans","zh-Hant","es","ar","pt","id","ms","fr","ja","ru","de"],"publisher":{"@id":"https://cube-solver.org/#org"}},{"@type":"Organization","@id":"https://cube-solver.org/#org","name":"Cube Solver Lab","url":"https://cube-solver.org/","logo":"https://cube-solver.org/img/icon-512.png","sameAs":["https://github.com/neichen/cube-solver"]},{"@type":"WebApplication","@id":"https://cube-solver.org/#app","name":"Cube Solver Lab","url":"https://cube-solver.org/","description":"Free online Rubik's Cube solver for 2x2–15x15 cubes, Pyraminx, Skewb and Megaminx. Paint or scan your puzzle and follow the solution step by step in 3D.","inLanguage":"en","applicationCategory":"UtilitiesApplication","operatingSystem":"Any (web browser)","browserRequirements":"Requires JavaScript and WebAssembly","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://cube-solver.org/img/og/root.png","featureList":["Enter the scrambled state: paint the stickers on the net, scan every face with your camera or upload photos, or type the scramble in standard notation.","2×2, Pyraminx and Skewb solutions are proven optimal. 3×3 solutions are near-optimal (usually 19–21 moves). From 4×4 up the solvers use reduction methods, so solutions are longer but are found in seconds.","See the cube as a graph"],"isPartOf":{"@id":"https://cube-solver.org/#website"}},{"@type":"WebPage","@id":"https://cube-solver.org/","url":"https://cube-solver.org/","name":"Rubik's Cube Solver: 2x2–15x15, Pyraminx, Skewb, Megaminx","description":"Free online Rubik's Cube solver for 2x2–15x15 cubes, Pyraminx, Skewb and Megaminx. Paint or scan your puzzle and follow the solution step by step in 3D.","inLanguage":"en","isPartOf":{"@id":"https://cube-solver.org/#website"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://cube-solver.org/img/og/root.png","width":1200,"height":630},"mainEntity":{"@id":"https://cube-solver.org/#app"}},{"@type":"HowTo","@id":"https://cube-solver.org/#howto","name":"How to use the solver","inLanguage":"en","tool":[{"@type":"HowToTool","name":"Cube Solver Lab"}],"step":[{"@type":"HowToStep","position":1,"text":"Choose your puzzle in the menu at the top: 2×2 to 15×15, Pyraminx, Skewb or Megaminx."},{"@type":"HowToStep","position":2,"text":"Enter the scrambled state: paint the stickers on the net, scan every face with your camera or upload photos, or type the scramble in standard notation."},{"@type":"HowToStep","position":3,"text":"Press Solve. The solver runs inside your browser; nothing is uploaded."},{"@type":"HowToStep","position":4,"text":"Follow the solution: the 3D model turns step by step while the permutation graph shows every sticker moving. In Free play mode you can scramble and turn the puzzle yourself, with a timer."}]},{"@type":"FAQPage","@id":"https://cube-solver.org/#faq","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Which puzzles are supported?","acceptedAnswer":{"@type":"Answer","text":"Cubes from 2×2 to 15×15, the Pyraminx, the Skewb and the Megaminx. Each one has its own page with notation and measured move counts."}},{"@type":"Question","name":"Is the solver free, and are my photos uploaded?","acceptedAnswer":{"@type":"Answer","text":"It is free and runs entirely in your browser. Camera images and photos are processed on your device and never uploaded. The site counts visits with Cloudflare Web Analytics, which uses no cookies. In the EU/EEA, the UK and Switzerland, Google Analytics is loaded only if you accept it in the banner; elsewhere it loads without a banner and with all ad features off. Either way you can change the choice in the footer."}},{"@type":"Question","name":"Is the solution the shortest possible?","acceptedAnswer":{"@type":"Answer","text":"2×2, Pyraminx and Skewb solutions are proven optimal. 3×3 solutions are near-optimal (usually 19–21 moves). From 4×4 up the solvers use reduction methods, so solutions are longer but are found in seconds."}},{"@type":"Question","name":"Can I scan my cube with the camera?","acceptedAnswer":{"@type":"Answer","text":"Yes, for cubes from 2×2 to 15×15: show each face to the camera or upload photos, then check the colors on the net. The Pyraminx, Skewb and Megaminx are entered by painting."}}]}]}</script>
 <!--/seo:head-->
 <meta name="theme-color" content="#FBF9F5">
-<link rel="stylesheet" href="css/style.css?v=37c9a761">
+<link rel="stylesheet" href="css/style.css?v=fb4b3bd5">
 </head>
 <body>
 <header class="topbar">
@@ -131,6 +131,31 @@
           <div class="now-meta" id="nowMeta"></div>
         </div>
         <div class="badge" id="solvedBadge" hidden data-i18n="player.solved">Solved ✔</div>
+        <!-- playback / display settings: a panel behind the gear button (first screen = input + Solve) -->
+        <div class="settings-mb">
+          <button type="button" class="btn icon settings-btn" id="settingsBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="settingsPanel" data-i18n-title="settings.title" data-i18n-aria="settings.title" title="Settings" aria-label="Settings"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.80 10.34 L21.49 10.57 L21.49 13.43 L18.80 13.66 L17.98 15.63 L19.73 17.70 L17.70 19.73 L15.63 17.98 L13.66 18.80 L13.43 21.49 L10.57 21.49 L10.34 18.80 L8.37 17.98 L6.30 19.73 L4.27 17.70 L6.02 15.63 L5.20 13.66 L2.51 13.43 L2.51 10.57 L5.20 10.34 L6.02 8.37 L4.27 6.30 L6.30 4.27 L8.37 6.02 L10.34 5.20 L10.57 2.51 L13.43 2.51 L13.66 5.20 L15.63 6.02 L17.70 4.27 L19.73 6.30 L17.98 8.37Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <div class="settings-panel" id="settingsPanel" role="dialog" aria-labelledby="settingsTitle" hidden>
+            <div class="settings-head"><h2 id="settingsTitle" data-i18n="settings.title">Settings</h2><button type="button" class="btn icon ghost settings-close" id="settingsClose" data-i18n-title="settings.close" data-i18n-aria="settings.close" title="Close settings" aria-label="Close settings"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+            <div class="options">
+              <label class="toggle" data-i18n-title="player.autoRotateTip"><input type="checkbox" id="autoRotate" checked><span></span><b data-i18n="player.autoRotate">Auto-rotate</b></label>
+              <label class="toggle" data-i18n-title="settings.lettersTip"><input type="checkbox" id="colorLetters"><span></span><b data-i18n="settings.letters">Letters</b></label>
+              <span class="audio-ctl" role="group" data-i18n-aria="audio.group">
+                <label class="toggle" data-i18n-title="audio.sfxTip"><input type="checkbox" id="sfxToggle"><span></span><b data-i18n="audio.sfx">Effects</b></label>
+                <label class="toggle" data-i18n-title="audio.musicTip"><input type="checkbox" id="musicToggle"><span></span><b data-i18n="audio.music">Music</b></label>
+                <label class="vol" data-i18n-title="audio.volume"><b data-i18n="audio.volume">Volume</b><input type="range" id="volume" min="0" max="100" step="1" data-i18n-aria="audio.volume"></label>
+              </span>
+              <label class="speed" data-i18n-title="player.holdTip"><b data-i18n="player.hold">Grip</b>
+                <select id="holdSelect"></select>
+              </label>
+              <label class="speed" data-i18n-title="settings.schemeTip"><b data-i18n="settings.scheme">Colors</b>
+                <select id="colorScheme"><option value="western" data-i18n="scheme.western">Western</option><option value="japanese" data-i18n="scheme.japanese">Japanese</option></select>
+              </label>
+              <label class="speed"><b data-i18n="player.speed">Speed</b>
+                <select id="speed" dir="ltr"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.6">1.6×</option><option value="2.5">2.5×</option><option value="4">4×</option><option value="8">8×</option><option value="16">16×</option><option value="32">32×</option><option value="64">64×</option></select>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="controls">
         <div class="transport" dir="ltr">
@@ -141,24 +166,6 @@
           <button class="btn icon" id="btnEnd" data-i18n-title="player.end" data-i18n-aria="player.end"><svg viewBox="0 0 24 24"><path d="M3 5v14l9-7zM12 5v14l9-7z"/></svg></button>
           <input type="range" id="timeline" min="0" max="0" value="0" data-i18n-aria="player.timeline">
           <span class="counter" id="counter">0 / 0</span>
-        </div>
-        <div class="options">
-          <label class="toggle" data-i18n-title="player.autoRotateTip"><input type="checkbox" id="autoRotate" checked><span></span><b data-i18n="player.autoRotate">Auto-rotate</b></label>
-          <label class="toggle" data-i18n-title="settings.lettersTip"><input type="checkbox" id="colorLetters"><span></span><b data-i18n="settings.letters">Letters</b></label>
-          <span class="audio-ctl" role="group" data-i18n-aria="audio.group">
-            <label class="toggle" data-i18n-title="audio.sfxTip"><input type="checkbox" id="sfxToggle"><span></span><b data-i18n="audio.sfx">Effects</b></label>
-            <label class="toggle" data-i18n-title="audio.musicTip"><input type="checkbox" id="musicToggle"><span></span><b data-i18n="audio.music">Music</b></label>
-            <label class="vol" data-i18n-title="audio.volume"><b data-i18n="audio.volume">Volume</b><input type="range" id="volume" min="0" max="100" step="1" data-i18n-aria="audio.volume"></label>
-          </span>
-          <label class="speed" data-i18n-title="player.holdTip"><b data-i18n="player.hold">Grip</b>
-            <select id="holdSelect"></select>
-          </label>
-          <label class="speed" data-i18n-title="settings.schemeTip"><b data-i18n="settings.scheme">Colors</b>
-            <select id="colorScheme"><option value="western" data-i18n="scheme.western">Western</option><option value="japanese" data-i18n="scheme.japanese">Japanese</option></select>
-          </label>
-          <label class="speed"><b data-i18n="player.speed">Speed</b>
-            <select id="speed" dir="ltr"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.6">1.6×</option><option value="2.5">2.5×</option><option value="4">4×</option><option value="8">8×</option><option value="16">16×</option><option value="32">32×</option><option value="64">64×</option></select>
-          </label>
         </div>
       </div>
       <div class="moves" id="moves" dir="ltr" data-i18n-aria="player.movesAria"></div>
@@ -255,7 +262,7 @@
 <!--seo:scripts-->
 <script defer src="js/i18n/i18n.js?v=873539e8"></script>
 <script defer src="js/seo-routes.js?v=625d7e97"></script>
-<script defer src="js/i18n/en.js?v=fff0b177"></script>
+<script defer src="js/i18n/en.js?v=f62ec1a0"></script>
 <script defer src="js/core/registry.js?v=bceb7299"></script>
 <script defer src="puzzles/nxn/nxn-model.js?v=d563c745"></script>
 <script defer src="puzzles/cube3/model.js?v=35e89d39"></script>
@@ -268,7 +275,7 @@
 <script defer src="js/core/solver-client.js?v=2ab34bce"></script>
 <script defer src="js/core/net-editor.js?v=4c3c3fa1"></script>
 <script defer src="js/topbar.js?v=f0d6640d"></script>
-<script defer src="js/app.js?v=d648c564"></script>
+<script defer src="js/app.js?v=a264e1b2"></script>
 <script defer src="js/seo-nav.js?v=39069e67"></script>
 <script defer src="js/analytics.js?v=d99f6298"></script>
 <!--/seo:scripts-->

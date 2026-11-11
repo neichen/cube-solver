@@ -103,7 +103,7 @@ function visibleStrings() {
       const foreign = strs.filter(s => (!/^(zh|ja)/.test(lang) && /[\u3040-\u30ff\u4e00-\u9fff]/.test(s)) || (lang !== 'ru' && /[\u0400-\u04ff]/.test(s)) || (lang !== 'ar' && /[\u0600-\u06ff]/.test(s)));
       ok(foreign.length === 0, `${tag} no strings left in another script: ${foreign.slice(0, 3).join(' | ')}`);
       if (lang !== 'en') {
-        const enSame = await p.evaluate(() => { const en = app.i18n.dicts.en; return ['tab.paint', 'btn.scramble', 'solve.button', 'player.speed'].filter(k => new RegExp('(^|[^\\p{L}])' + en[k].replace(/^\S+ /, '') + '($|[^\\p{L}])', 'u').test(document.body.innerText) && en[k] !== app.i18n.t(k)); });
+        const enSame = await p.evaluate(() => { const en = app.i18n.dicts.en; return ['tab.paint', 'btn.scramble', 'solve.button', 'player.speed'].filter(k => new RegExp('(^|[^\\p{L}])' + en[k].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|[^\\p{L}])', 'u').test(document.body.innerText) && en[k] !== app.i18n.t(k)); });
         ok(enSame.length === 0, `${tag} no English fallbacks visible: ${enSame}`);
       }
       // move notation stays standard letters
@@ -114,7 +114,9 @@ function visibleStrings() {
         const rtl = await p.evaluate(() => {
           const d = s => getComputedStyle(document.querySelector(s)).direction;
           const brand = document.querySelector('.brand').getBoundingClientRect(), picks = document.querySelector('.top-picks').getBoundingClientRect();
+          app.settings.open();   // the toggles live in the settings panel
           const tg = document.querySelector('#autoRotate + span').getBoundingClientRect(), tgl = document.querySelector('.toggle b').getBoundingClientRect();
+          app.settings.close();
           return { body: d('body'), views: d('.views'), transport: d('.transport'), timeline: d('#timeline'), moves: d('#moves'), now: d('#nowMove'), sol: d('#solText'), formula: d('#formula'), net: d('#net'), canvas: d('.scan-canvas'), counter: d('.counter'),
             mirrored: brand.left > picks.left || brand.top !== picks.top, toggleMirrored: tg.left > tgl.left, hint: d('.hint') };
         });

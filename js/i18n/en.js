@@ -121,6 +121,8 @@ CubeLab.i18n.register('en', {
   'settings.lettersTip': 'Show color letters (W Y R O G B) on the stickers, useful for color-blind users',
   'settings.scheme': 'Colors',
   'settings.schemeTip': 'Color scheme of your cube: Western (white opposite yellow) or Japanese (white opposite blue)',
+  'settings.title': 'Settings',
+  'settings.close': 'Close settings',
   'scheme.western': 'Western',
   'scheme.japanese': 'Japanese',
   'hold.blueTop': 'Blue top, green front',

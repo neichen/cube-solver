@@ -124,6 +124,8 @@ CubeLab.i18n.register('ru', {
   'settings.lettersTip': 'Показывать буквы цветов (W Y R O G B) на наклейках — удобно при нарушениях цветового зрения',
   'settings.scheme': 'Цвета',
   'settings.schemeTip': 'Цветовая схема вашего кубика: западная (белый напротив жёлтого) или японская (белый напротив синего)',
+  'settings.title': 'Настройки',
+  'settings.close': 'Закрыть настройки',
   'scheme.western': 'Западная',
   'scheme.japanese': 'Японская',
   'hold.blueTop': 'Синий сверху, зелёный спереди',

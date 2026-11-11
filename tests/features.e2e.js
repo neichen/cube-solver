@@ -31,6 +31,7 @@ async function ready(p) { await p.waitForFunction(() => window.app && document.b
   await p.click('#btnReset');
 
   // 2) 颜色字母
+  await p.evaluate(() => app.settings.open());   // playback / display settings live in the gear panel
   await p.click('label:has(#colorLetters)');
   ok(await p.evaluate(() => document.body.classList.contains('letters-on')), 'letters toggle sets body.letters-on');
   ok(await p.evaluate(() => localStorage.getItem('cubelab.letters') === '1'), 'letters persisted');
@@ -38,6 +39,7 @@ async function ready(p) { await p.waitForFunction(() => window.app && document.b
   ok(await p.evaluate(() => !!(app.view.letterMeshes && app.view.letterMeshes.filter(Boolean).length === 54)), '3D letter planes created (54)');
 
   // 3) 日本配色：U 中心显示为白、D 中心（逻辑 Y）显示为蓝；校验 + 求解仍然正常
+  await p.evaluate(() => app.settings.open());
   ok(await p.isVisible('#colorScheme'), 'scheme select visible on cube');
   await p.selectOption('#colorScheme', 'japanese');
   const jp = await p.evaluate(() => ({ Y: app.P.colors.Y.hex, B: app.P.colors.B.hex, Yl: app.P.colors.Y.letter, Bl: app.P.colors.B.letter, sw: getComputedStyle(document.querySelector('#palette .swatch[data-color="Y"] .dot') || document.body).backgroundColor }));
@@ -48,13 +50,16 @@ async function ready(p) { await p.waitForFunction(() => window.app && document.b
   ok(await p.evaluate(() => JSON.stringify(app.P.apply(app.player.states[0], app.player.tl.moves || [])) !== null), 'japanese: solve produced a solution');
   await p.reload(); await ready(p);
   ok(await p.$eval('#colorScheme', s => s.value) === 'japanese', 'scheme persisted across reload');
+  await p.evaluate(() => app.settings.open());
   await p.selectOption('#colorScheme', 'western');
   ok(await p.evaluate(() => app.P.colors.Y.letter === 'Y'), 'western restored');
   await p.click('label:has(#colorLetters)');
 
   // 4) 非立方体：配色选项隐藏
   await p.evaluate(() => app.mount('pyraminx')); await ready(p);
-  ok(!(await p.isVisible('#colorScheme')), 'scheme select hidden on pyraminx');
+  await p.evaluate(() => app.settings.open());
+  ok(await p.isVisible('#speed') && !(await p.isVisible('#colorScheme')), 'scheme select hidden on pyraminx');
+  await p.evaluate(() => app.settings.close());
 
   // 5) 7×7：canvas 展开图 + 缩放 + 键盘 + DOM 精简
   await p.evaluate(() => app.mount('cube7')); await ready(p);

@@ -121,6 +121,8 @@ CubeLab.i18n.register('ms', {
   'settings.lettersTip': 'Paparkan huruf warna (W Y R O G B) pada pelekat, berguna bagi pengguna buta warna',
   'settings.scheme': 'Warna',
   'settings.schemeTip': 'Skema warna kiub anda: Barat (putih bertentangan dengan kuning) atau Jepun (putih bertentangan dengan biru)',
+  'settings.title': 'Tetapan',
+  'settings.close': 'Tutup tetapan',
   'scheme.western': 'Barat',
   'scheme.japanese': 'Jepun',
   'hold.blueTop': 'Biru di atas, hijau di hadapan',

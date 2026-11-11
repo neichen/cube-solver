@@ -246,6 +246,21 @@ footer p{margin:0 0 4px}footer a{color:inherit}
   .stage{padding:10px}
 }
 
+/* 设置面板（齿轮按钮）：播放 / 显示 / 声音设置 */
+.settings-mb{position:relative;flex:none;margin-inline-start:auto}
+.btn.icon svg.bi{fill:none;width:22px;height:22px}
+.settings-btn[aria-expanded=true]{background:var(--ink);color:#fff}
+.settings-panel{position:absolute;top:calc(100% + 8px);inset-inline-end:0;z-index:45;width:min(340px,calc(100vw - 32px));background:var(--paper);border:2px solid var(--ink);border-radius:14px;box-shadow:4px 4px 0 var(--ink);padding:10px 14px 14px}
+.settings-panel[hidden]{display:none!important}
+.settings-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.settings-head h2{margin:0;font-size:16px}
+.settings-close.btn.icon{width:36px;height:36px;box-shadow:none;border-color:transparent}
+.settings-close.btn.icon svg.bi{width:18px;height:18px}
+.settings-panel .options,.settings-panel .audio-ctl{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.settings-panel .toggle,.settings-panel .vol,.settings-panel .speed{font-size:14px;color:var(--ink)}
+.settings-panel .vol,.settings-panel .speed{display:flex;justify-content:space-between;gap:10px}
+.settings-panel .vol input{width:min(160px,55%)}
+.settings-panel .speed select{flex:0 1 auto;max-width:62%}
 /* 声音控件 */
 .audio-ctl{display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap}
 .vol{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}

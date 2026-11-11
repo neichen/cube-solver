@@ -121,6 +121,8 @@ CubeLab.i18n.register('zh-Hant', {
   'settings.lettersTip': '在貼紙上顯示顏色字母（W Y R O G B），方便色覺障礙使用者',
   'settings.scheme': '配色',
   'settings.schemeTip': '你的魔術方塊配色：西方配色（白對黃）或日本配色（白對藍）',
+  'settings.title': '設定',
+  'settings.close': '關閉設定',
   'scheme.western': '西方配色',
   'scheme.japanese': '日本配色',
   'hold.blueTop': '藍色朝上，綠色朝前',

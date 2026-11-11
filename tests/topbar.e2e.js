@@ -89,7 +89,7 @@ async function headerShot(p, name, extra) {
 
   // ---------------------------------------------------------------- share popover
   await p.evaluate(() => app.mount('cube3')); await ready(p);
-  await p.click('#shareBtn');
+  await p.click('#shareBtn'); await p.waitForSelector('#shareUrl');   // share-code.js loads on the first open
   const sp = await p.evaluate(() => {
     const q = s => document.querySelector(s);
     return { open: !q('#sharePanel').hidden, url: q('#shareUrl').value, nets: [...document.querySelectorAll('.share-net')].map(a => [a.dataset.net, a.href, a.target, a.rel]),
@@ -111,7 +111,7 @@ async function headerShot(p, name, extra) {
   await p.click('.share-state'); ok(await p.isChecked('#shareWithState'), 're-check'); await p.keyboard.press('Escape');
   ok(await focused(p) === 'shareBtn', 'Esc closes the share panel, focus back');
   // PNG
-  await p.click('#shareBtn');
+  await p.click('#shareBtn'); await p.waitForSelector('#sharePanel:not([hidden])');
   const [dl] = await Promise.all([p.waitForEvent('download', { timeout: 10000 }).catch(() => null), p.click('#shareImage')]);
   ok(dl && dl.suggestedFilename() === 'cube-solver-cube3.png', 'PNG download ' + (dl && dl.suggestedFilename()));
   if (dl) { const fp = await dl.path(); const buf = fs.readFileSync(fp); ok(buf.slice(1, 4).toString() === 'PNG' && buf.length > 5000, 'PNG data ' + buf.length); }
@@ -168,7 +168,7 @@ async function headerShot(p, name, extra) {
     await p.waitForFunction(() => app.play.timer().state === 'done');
     const ss = await p.evaluate(() => app.shareState());
     ok(ss.m === 'play' && ss.t != null && JSON.stringify(ss.s) !== 'null', id + ': play share carries scramble + time ' + JSON.stringify(ss).slice(0, 120));
-    await p.click('#shareBtn');
+    await p.click('#shareBtn'); await p.waitForSelector('#sharePanel:not([hidden])');
     const url = await p.inputValue('#shareUrl');
     const txt = await p.evaluate(() => decodeURIComponent(new URL(document.querySelector('[data-net=x]').href).searchParams.get('text')));
     ok(/&m=play&t=\d+$/.test(url) && /^I solved this .* scramble in [\d.:]+s?\. Can you beat it\?$/.test(txt), id + ': play share text "' + txt + '"');
@@ -207,7 +207,7 @@ async function headerShot(p, name, extra) {
     if (tag !== 'ar-desktop') ok(m.label === 'none', tag + ': puzzle button is icon-only on phones');
     await headerShot(p, tag + '-header');
     for (const [btn, menu] of [['#puzzleBtn', '#puzzleMenu'], ['#langBtn', '#langMenu'], ['#shareBtn', '#sharePanel']]) {
-      await p.click(btn);
+      await p.click(btn); if (btn === '#shareBtn') await p.waitForSelector('#sharePanel:not([hidden])');
       const r = await p.evaluate(s => { const e = document.querySelector(s).getBoundingClientRect(); return { l: e.left, r: e.right, vw: innerWidth }; }, menu);
       ok(r.l >= 0 && r.r <= r.vw + 0.5, tag + ' ' + menu + ' inside the viewport ' + JSON.stringify(r));
       await headerShot(p, tag + '-' + menu.slice(1).replace(/[A-Z].*/, '') + '-menu', menu);

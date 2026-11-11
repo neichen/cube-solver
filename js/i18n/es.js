@@ -121,6 +121,8 @@ CubeLab.i18n.register('es', {
   'settings.lettersTip': 'Muestra letras de color (W Y R O G B) en las pegatinas, útil para personas con daltonismo',
   'settings.scheme': 'Colores',
   'settings.schemeTip': 'Esquema de color de tu cubo: occidental (blanco opuesto al amarillo) o japonés (blanco opuesto al azul)',
+  'settings.title': 'Ajustes',
+  'settings.close': 'Cerrar ajustes',
   'scheme.western': 'Occidental',
   'scheme.japanese': 'Japonés',
   'hold.blueTop': 'Azul arriba, verde al frente',
