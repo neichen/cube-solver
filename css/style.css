@@ -113,6 +113,8 @@ main{max-width:1440px;margin:0 auto;padding:10px clamp(10px,3vw,36px) 24px;displ
 @keyframes spin{to{transform:rotate(360deg)}}
 .btn.icon{width:44px;height:44px;padding:0}
 .btn.icon svg{width:20px;height:20px;fill:currentColor}
+.bi{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn.big .bi{width:20px;height:20px}
 .btn.play{width:52px;height:52px;border-radius:50%}
 .btn.play .i-pause{display:none}
 body.is-playing .btn.play .i-play{display:none}
@@ -145,7 +147,7 @@ body.is-playing .btn.play .i-pause{display:block}
 .solve-card{display:flex;flex-direction:column;gap:12px}
 .solve-card h2{font-size:20px}
 .tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.tab{border:2px solid var(--ink);background:transparent;border-radius:999px;padding-block:6px;padding-inline:14px;cursor:pointer;font-weight:650;max-width:100%;overflow-wrap:anywhere;hyphens:auto}
+.tab{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--ink);background:transparent;border-radius:999px;padding-block:6px;padding-inline:14px;cursor:pointer;font-weight:650;max-width:100%;overflow-wrap:anywhere;hyphens:auto}
 .tab.active{background:var(--ink);color:#fff}
 .tabpane{display:none}
 .tabpane.active{display:block;animation:fade .2s ease}
