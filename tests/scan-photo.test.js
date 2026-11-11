@@ -20,7 +20,7 @@ const URL = process.argv[2] || 'http://localhost:8765/', K = +process.argv[3] ||
         const dir = require('path').join(require('os').tmpdir(), 'scan-photo', `${n}-${light}-${k}`); fs.mkdirSync(dir, { recursive: true });
         fs.writeFileSync(dir + '/state.json', JSON.stringify({ state: target, plan }));
         execSync(`python3 ${__dirname}/make_face_images_nxn.py ${dir}/state.json ${dir} ${n} ${light} ${n * 100 + k}`);
-        await p.click('#btnReset'); await p.click('.tab[data-tab="scan"]');
+        await p.click('#btnReset'); await p.click('.tab[data-tab="scan"]'); await p.waitForFunction(() => app.scan && app.scan.plan);   // scan module loads on demand
         if (await p.$('.btn-scan-reset')) await p.click('.btn-scan-reset').catch(() => {});
         for (let s = 0; s < plan.length; s++) {
           const face = await p.evaluate(() => app.scan.plan[app.scan.step].face);

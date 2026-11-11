@@ -17,7 +17,9 @@ const APPT = (lang, key, params) => { CubeLab.i18n._setLangSilently(lang); retur
 // top-bar controls (puzzle menu, language menu, share, GitHub), prerendered so nothing shifts when the app starts
 const TOPBAR = require(path.join(ROOT, 'js/topbar.js'));
 // Per-page scripts, all deferred (parsing never blocks): only the page's language pack and the page's puzzle plugin;
-// other languages / puzzles are loaded on demand (js/i18n/i18n.js loadPack, js/core/registry.js loadPuzzle).
+// other languages / puzzles are loaded on demand (js/i18n/i18n.js loadPack, js/core/registry.js loadPuzzle), and so are
+// features not needed for the first paint: camera scan (js/core/color-cluster.js + camera-scan.js, on opening the
+// Camera tab), sound (js/core/audio.js, after load / first gesture), share codes (js/core/share-code.js, on share).
 const GROUP_SCRIPTS = {
   cube3: ['puzzles/cube3/model.js', 'puzzles/cube3/cube3.js'], nxn: ['puzzles/nxn/nxn.js'],
   twisty: ['puzzles/twisty/twisty-model.js', 'puzzles/twisty/twisty.js'], megaminx: ['puzzles/megaminx/megaminx-model.js', 'puzzles/megaminx/megaminx.js']
@@ -26,8 +28,7 @@ const groupOf = pz => !pz || pz === 'cube3' ? 'cube3' : pz.startsWith('cube') ? 
 function scriptList(lang, pz) {
   return ['js/i18n/i18n.js', 'js/seo-routes.js', 'js/i18n/' + lang + '.js', 'js/core/registry.js', 'puzzles/nxn/nxn-model.js']
     .concat(GROUP_SCRIPTS[groupOf(pz)], ['vendor/three.min.js', 'js/core/graph-view.js', 'js/core/view3d.js', 'js/core/player.js', 'js/core/play-core.js',
-      'js/core/solver-client.js', 'js/core/net-editor.js', 'js/core/color-cluster.js', 'js/core/camera-scan.js', 'js/core/audio.js',
-      'js/core/share-code.js', 'js/topbar.js', 'js/app.js', 'js/seo-nav.js', 'js/analytics.js']);
+      'js/core/solver-client.js', 'js/core/net-editor.js', 'js/topbar.js', 'js/app.js', 'js/seo-nav.js', 'js/analytics.js']);
 }
 // Consent banner, prerendered in the page language (no layout shift, not the LCP element). It stays hidden unless the
 // inline script below shows it: production host, GA configured (data-ga="1", set by tools/build-dist.js), consent region

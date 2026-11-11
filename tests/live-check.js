@@ -33,7 +33,7 @@ let fails = 0; const ok = (c, m) => { console.log((c ? '  ✔ ' : '  ✘ FAIL: '
       ok(r.solved && r.clusters && r.m3d && r.badge, `打乱 #${k + 1} → ${info.count}（${info.txt}）→ 播放到结尾：已还原，图 6 簇同色，3D 各面同色，显示「已还原」`);
     }
     // 摄像头：通过界面按钮
-    await p.click('.tab[data-tab="scan"]');
+    await p.click('.tab[data-tab="scan"]'); await p.waitForFunction(() => app.scan && app.scan.plan);   // scan module loads on demand
     await p.click('.btn-cam');
     await p.waitForFunction(() => !!app.scan.stream, null, { timeout: 15000 });
     const vid = await p.evaluate(async () => { const v = app.scan.video; await new Promise(r => setTimeout(r, 800)); return v ? [v.videoWidth, v.videoHeight] : null; });

@@ -67,6 +67,8 @@ function finalContent(r) {
         .replace("fetch(BASE + 'data/' + f)", "fetch(BASE + 'data/' + f + '?v=' + (" + JSON.stringify(V) + ")[f])");
       if (!/gullicube\.js\?v=/.test(txt) || !/'\?v=' \+ \(/.test(txt)) throw new Error('build-dist: gullicube.worker.js patterns changed');
     }
+    // first-party scripts are minified in dist/ only (the repository keeps the readable source); vendor/ is left as is
+    if (/^(js|puzzles)\/.*\.js$/.test(r)) txt = require('esbuild').transformSync(txt, { minify: true, charset: 'utf8', legalComments: 'inline', loader: 'js' }).code;
     out = Buffer.from(txt, 'utf8');
     fs.writeFileSync(rd(r), out);
   }

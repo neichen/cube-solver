@@ -151,6 +151,12 @@
   }
 
   function open(btn, menu, focus) {
+    // share codes (js/core/share-code.js) are loaded the first time the share panel opens
+    // (offline and not cached yet: the panel still opens, sharing the page without the position)
+    if (menu.id === 'sharePanel' && !CL.shareCode && CL.loadScript && !shareTried) {
+      shareTried = true; var again = function () { open(btn, menu, focus); };
+      CL.loadScript('js/core/share-code.js').then(again, again); return;
+    }
     if (openEl && openEl !== menu) close(false);
     if (menu.id === 'langMenu') $('langMenu').innerHTML = langItems(I.lang(), pagePuzzle(), I.LANGS, R);   // hrefs follow the address
     if (menu.id === 'sharePanel') fillShare();
@@ -216,7 +222,7 @@
     el.textContent = msg; el.classList.add('show');
     clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove('show'); }, 3200);
   }
-  var withState = true;
+  var withState = true, shareTried = false;
   function shareData() {
     var s = opts.shareState ? opts.shareState() : null, lang = I.lang(), pz = (s && s.p) || curPz || 'cube3';
     var url = location.origin + R.path(lang, pz), name = puzzleName(pz, t), text;

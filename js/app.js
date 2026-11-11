@@ -7,14 +7,25 @@
   var q0 = /[?&]n=(\d+)/.exec(location.search), qp0 = /[?&]puzzle=(\w+)/.exec(location.search);
   try { localStorage.removeItem('cubelab.puzzle'); } catch (e) {}
   var pagePz = document.documentElement.getAttribute('data-page-puzzle');   // prerendered puzzle page
+  // Features that are not needed for the first paint are loaded on demand (literal URLs: tools/build-dist.js versions them)
+  var lazy = {
+    share: function () { return CL.loadScript('js/core/share-code.js'); },
+    audio: function () { return CL.loadScript('js/core/audio.js'); },
+    scan: function () { return CL.loadScript('js/core/color-cluster.js').then(function () { return CL.loadScript('js/core/camera-scan.js'); }); }
+  };
+  var SHARE_RE = /(^#|&)s=/;
   // shared position (#p=cube4&s=…, js/core/share-code.js): the fragment's puzzle wins, the position is applied after boot
-  var share0 = CL.shareCode ? CL.shareCode.parseHash(location.hash) : null;
-  var first = share0 ? share0.p : qp0 ? qp0[1] : q0 ? 'cube' + q0[1] : pagePz;
-  if (!first || !CL.puzzleMeta().some(function (m) { return m.id === first; })) first = 'cube3';
+  var share0 = null, first = null;
+  function pickFirst() {
+    first = share0 ? share0.p : qp0 ? qp0[1] : q0 ? 'cube' + q0[1] : pagePz;
+    if (!first || !CL.puzzleMeta().some(function (m) { return m.id === first; })) first = 'cube3';
+    return first;
+  }
+  var share0Ready = SHARE_RE.test(location.hash) ? lazy.share().then(function () { share0 = CL.shareCode.parseHash(location.hash); }, function () {}) : Promise.resolve();
   // 语言包与谜题插件按需加载（每页只带自己的语言和谜题）：两者就绪后再装配
   var booted = false;
-  function go() { if (!booted) { booted = true; boot(first); } }
-  Promise.all([CL.i18n.init(), CL.loadPuzzle(first)]).then(go, function (e) { if (window.console) console.error(e); go(); });
+  function go() { if (!booted) { booted = true; boot(first || pickFirst()); } }
+  Promise.all([CL.i18n.init(), share0Ready.then(function () { return CL.loadPuzzle(pickFirst()); })]).then(go, function (e) { if (window.console) console.error(e); go(); });
 
   function boot(first) {
   var $ = function (id) { return document.getElementById(id); };
@@ -33,12 +44,53 @@
     return t('puzzle.cubeN', { n: String(m.meta ? m.meta.n : m.puzzle.n) });
   }
 
-  // 声音（全局，与谜题无关）
-  var audio = new CL.SoundEngine();
+  // 声音（全局，与谜题无关）：js/core/audio.js 不在首屏加载。代理对象先按 localStorage 显示设置，
+  // 音效 / 音乐开着时在页面加载完的空闲时刻或第一次手势时加载引擎，否则在用户打开音效 / 音乐时才加载。
+  var audio = (function () {
+    var LS = { sfx: 'cubelab.sfx', music: 'cubelab.music', vol: 'cubelab.vol' }, eng = null, loading = null, fns = [];
+    function get(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }
+    var st = { supported: !!(window.AudioContext || window.webkitAudioContext), sfxOn: get(LS.sfx, '1') === '1', musicOn: get(LS.music, '0') === '1',
+      volume: Math.max(0, Math.min(1, parseFloat(get(LS.vol, '0.7')) || 0)), stats: {} };
+    var gestured = false;
+    function load() {
+      if (loading) return loading;
+      return (loading = lazy.audio().then(function () {
+        eng = new CL.SoundEngine();
+        ['sfxOn', 'musicOn', 'volume'].forEach(function (k) { if (eng[k] !== st[k]) eng[k === 'sfxOn' ? 'setSfx' : k === 'musicOn' ? 'setMusic' : 'setVolume'](st[k]); });
+        fns.forEach(function (f) { eng.on(f); });
+        // loaded during / after a user gesture: unlock now (later gestures also unlock, see SoundEngine)
+        if (gestured) eng.unlock();
+        eng._emit();
+        return eng;
+      }, function (e) { loading = null; throw e; }));
+    }
+    function want() { return st.sfxOn || st.musicOn; }
+    function onGesture() { gestured = true; ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) { document.removeEventListener(ev, onGesture, true); }); if (want()) load().catch(function () {}); }
+    ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) { document.addEventListener(ev, onGesture, { capture: true, passive: true }); });
+    var idle = function () { if (want()) (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(function () { load().catch(function () {}); }, { timeout: 3000 }); };
+    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle);
+    var A = {
+      on: function (f) { fns.push(f); if (eng) eng.on(f); },
+      engine: function () { return eng; }, load: load, musicPlaying: function () { return !!(eng && eng.musicPlaying()); }
+    };
+    ['supported', 'sfxOn', 'musicOn', 'volume', 'stats'].forEach(function (k) { Object.defineProperty(A, k, { get: function () { return eng ? eng[k] : st[k]; } }); });
+    [['setSfx', 'sfxOn'], ['setMusic', 'musicOn'], ['setVolume', 'volume']].forEach(function (x) {
+      A[x[0]] = function (v) {
+        if (eng) return eng[x[0]](v);
+        st[x[1]] = x[1] === 'volume' ? Math.max(0, Math.min(1, +v || 0)) : !!v;
+        try { localStorage.setItem(LS[x[1] === 'sfxOn' ? 'sfx' : x[1] === 'musicOn' ? 'music' : 'vol'], x[1] === 'volume' ? st.volume.toFixed(2) : st[x[1]] ? '1' : '0'); } catch (e) {}
+        fns.forEach(function (f) { f(A); });
+        if (want()) load().catch(function () {});
+      };
+    });
+    ['move', 'solved', 'sweep', 'paint', 'capture'].forEach(function (m) { A[m] = function () { if (eng) return eng[m].apply(eng, arguments); }; });
+    return A;
+  })();
   // 当前谜题上下文
   var P, graph, view, player, editor, scan, holds, hold, editorState, lastScramble = null, solution = null, solMeta = null;
   var solverCache = {}, speedTouched = false, mode = 'solve';
   var scanTemplate = $('scan').cloneNode(true);
+  var NO_SCAN = { destroy: function () {}, stopCamera: function () {}, stream: null };
 
   function vt(tk) { return (hold.toView && hold.toView[tk]) || tk; }
   var hs = $('holdSelect'), ss = $('solverSelect');
@@ -84,15 +136,9 @@
     var scanTab = document.querySelector('.tab[data-tab="scan"]');
     scanTab.hidden = !P.cameraPlan;
     if (!P.cameraPlan && scanTab.classList.contains('active')) document.querySelector('.tab[data-tab="paint"]').click();
-    if (!P.cameraPlan) scan = { destroy: function () {}, stopCamera: function () {}, stream: null };
-    else scan = new CL.CameraScan($('scan'), P, {
-      onResult: function (res, allDone) {
-        audio.capture(allDone);
-        var s = editor.getState();
-        Object.keys(res).forEach(function (i) { s[i] = res[i]; });
-        setEditor(s);
-      }
-    });
+    // camera scan (js/core/color-cluster.js + camera-scan.js) is loaded when the Camera / photo tab is opened
+    scan = NO_SCAN;
+    if (P.cameraPlan && scanTab.classList.contains('active')) startScan();
     var warn = $('scan').querySelector('.scan-warn');
     if (warn) { var keys = [P.scanWarn, P.scanEven ? 'scan.evenNote' : null].filter(Boolean); warn.hidden = !keys.length; bind(warn, function () { return keys.map(function (k) { return t(k, { n: String(P.n || 3) }); }).join(' '); }); }
     // 握法
@@ -330,13 +376,33 @@
     } catch (e) { m.className = 'formula-msg bad'; bind(m, function () { return errText(e); }); }
   });
 
+  // 摄像头扫描：按需加载并创建（每个谜题一次）
+  function startScan() {
+    if (scan !== NO_SCAN || !P.cameraPlan) return Promise.resolve(scan);
+    var myP = P;
+    return lazy.scan().then(function () {
+      if (P !== myP || scan !== NO_SCAN) return scan;
+      scan = new CL.CameraScan($('scan'), P, {
+        onResult: function (res, allDone) {
+          audio.capture(allDone);
+          var s = editor.getState();
+          Object.keys(res).forEach(function (i) { s[i] = res[i]; });
+          setEditor(s);
+        }
+      });
+      return scan;
+    }, function (e) { if (window.console) console.error(e); return scan; });
+  }
   // 选项卡
   document.querySelectorAll('.tab').forEach(function (tb) {
     tb.addEventListener('click', function () {
       document.querySelectorAll('.tab').forEach(function (x) { x.classList.toggle('active', x === tb); });
       document.querySelectorAll('.tabpane').forEach(function (p) { p.classList.toggle('active', p.dataset.pane === tb.dataset.tab); });
-      if (tb.dataset.tab !== 'scan' && scan.stream) scan.stopCamera();
+      if (tb.dataset.tab === 'scan') startScan();
+      else if (scan.stream) scan.stopCamera();
     });
+    // warm the scan module as soon as the visitor heads for the tab
+    if (tb.dataset.tab === 'scan') ['pointerenter', 'focus', 'touchstart'].forEach(function (ev) { tb.addEventListener(ev, function () { lazy.scan().catch(function () {}); }, { passive: true }); });
   });
 
   // 符号说明 / 提示（随阶数变化）
@@ -642,7 +708,7 @@
   }
 
   // ---------------------------------------------------------------- 分享（位置写在 URL 片段里，不发给服务器）
-  var SC = CL.shareCode;
+  var SC = { encode: function (P, st) { return CL.shareCode.encode(P, st); }, decode: function (Q, s) { return CL.shareCode.decode(Q, s); } };
   function secs(ms) { var f = PL.formatTime(ms); return /:/.test(f) ? f : f + 's'; }   // 23.41s · 1:02.33
   /** what the share link carries: solve mode → the entered position; free play → the scramble (+ time once solved) */
   function shareState() {
@@ -654,7 +720,7 @@
         if (play.tstate === 'done' && play.result != null && !play.assisted) { tm = play.result; tt = secs(play.result); }
       } else { st = playState(); m = P.isSolved(st) ? 'solve' : 'play'; }
     } else st = editorState;
-    if (!st || P.isSolved(st) && !st.some(function (c) { return c == null; })) return { p: P.id, s: null };
+    if (!st || P.isSolved(st) && !st.some(function (c) { return c == null; }) || !CL.shareCode) return { p: P.id, s: null };
     try { return { p: P.id, s: SC.encode(P, st), m: m, t: tm, tText: tt }; } catch (e) { return { p: P.id, s: null }; }
   }
   function snapshot() {
@@ -699,7 +765,10 @@
       if (P && P.id === h.p) go(); else switchPuzzle(h.p).then(go);
     }, bad);
   }
-  window.addEventListener('hashchange', function () { var h = SC.parseHash(location.hash); if (h) applyShare(h); });
+  window.addEventListener('hashchange', function () {
+    if (!SHARE_RE.test(location.hash)) return;
+    lazy.share().then(function () { var h = CL.shareCode.parseHash(location.hash); if (h) applyShare(h); }, function () {});
+  });
   TB.init({ onPuzzle: function (id) { switchPuzzle(id); }, onLang: function (code) { I.setLang(code); }, shareState: shareState, snapshot: snapshot });
 
   // 切换语言：静态文字由 I.apply() 处理；这里重画动态部分（选项、校验、播放器、记号表、解法）
@@ -716,7 +785,7 @@
   if (/[?&]mode=play/.test(location.search)) { mode = 'play'; syncModeUI(); }
   mount(first);
   if (share0) applyShare(share0);
-  else if (location.hash && /(^#|&)s=/.test(location.hash)) { clearHash(); TB.toast(t('share.bad')); }
+  else if (location.hash && SHARE_RE.test(location.hash)) { clearHash(); TB.toast(t('share.bad')); }
   // 离线支持：dist 构建给 <html> 加 data-sw，本地源码服务器不注册 Service Worker
   if ('serviceWorker' in navigator && document.documentElement.hasAttribute('data-sw')) {
     // only the app shell is precached: report what this page has loaded so far (its language, puzzle, tables …) so the
@@ -738,13 +807,16 @@
 
   // 供测试 / 控制台调试（getter：切换谜题后仍指向当前对象）
   window.app = {
-    i18n: I, audio: audio, setHold: function (id) { setHold(id); }, hold: function () { return hold; }, vt: vt, solve: solve, setEditor: setEditor,
+    i18n: I, setHold: function (id) { setHold(id); }, hold: function () { return hold; }, vt: vt, solve: solve, setEditor: setEditor,
     mount: function (id) { return switchPuzzle(id, true); }, getState: function () { return editorState.slice(); },
     setMode: function (m) { setMode(m); }, mode: function () { return mode; }, shareState: function () { return shareState(); },
     play: { turn: function (tok) { doTurn(tok); }, history: function () { return player.tl.moves.slice(); }, state: function () { return playState(); },
       undo: function () { undo(); }, redo: function () { redo(); }, scramble: function () { playScramble(); }, timer: function () { return play && { state: play.tstate, ms: play.result, penalty: play.penalty }; },
       idle: function () { return player.idle(); }, start: function (st, scrambled) { startPlay(st, !!scrambled); } }
   };
+  // audio: the SoundEngine once js/core/audio.js is loaded, the settings proxy before that
+  Object.defineProperty(window.app, 'audio', { get: function () { return audio.engine() || audio; } });
+  window.app.loadScan = function () { return startScan(); };
   ['P', 'editor', 'player', 'graph', 'view', 'scan'].forEach(function (k) {
     Object.defineProperty(window.app, k, { get: function () { return { P: P, editor: editor, player: player, graph: graph, view: view, scan: scan }[k]; } });
   });

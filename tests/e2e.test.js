@@ -192,7 +192,7 @@ async function playToEnd(p) {
     const dir = require('path').join(require('os').tmpdir(), 'cube-faces'); fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(dir + '/state.json', JSON.stringify({ state: target, plan }));
     execSync(`python3 ${__dirname}/make_face_images.py ${dir}/state.json ${dir}`);
-    await p.click('#btnReset'); await p.click('.tab[data-tab="scan"]');
+    await p.click('#btnReset'); await p.click('.tab[data-tab="scan"]'); await p.waitForFunction(() => app.scan && app.scan.plan);   // scan module loads on demand
     for (let k = 0; k < plan.length; k++) {
       const step = await p.evaluate(() => app.scan.plan[app.scan.step].face);
       await p.setInputFiles('.scan-file', `${dir}/face_${step}.jpg`);
