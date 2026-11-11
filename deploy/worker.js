@@ -4,6 +4,7 @@
 //  1. Canonical host: *.workers.dev and www.cube-solver.org → 301 to https://cube-solver.org (same path and query).
 //  2. Old query URLs from before the SEO pages – /?puzzle=pyraminx, /?n=7, /?lang=fr – get a 301 to the clean path
 //     (/fr/7x7-cube-solver/); every other parameter (mode, hold, start …) is kept. Both are done in a single hop.
+//     Paths without the trailing slash get a 301 to the slash URL when that page exists, otherwise a 404 directly.
 //  3. Pages (text/html) get <html data-consent="1"> in the consent region – EU/EEA, UK, Switzerland, and whenever the
 //     country is unknown (missing, XX, Tor T1) – and data-consent="0" elsewhere. js/analytics.js shows the opt-in banner
 //     only in the consent region; elsewhere GA4 runs with analytics_storage granted and every ads signal denied.
@@ -73,8 +74,16 @@ export default {
       url.pathname = '/' + (lang === 'en' ? '' : lang.toLowerCase() + '/') + (puzzle ? slug(puzzle) + '/' : '');
       vary = !hasLang && !!al;
     } else if (!moveHost) {
-      // page paths without the trailing slash: permanent 301 (the asset layer would answer 307)
-      if (!url.pathname.endsWith('/') && !/\.[A-Za-z0-9]+$/.test(url.pathname)) { url.pathname += '/'; return Response.redirect(url.toString(), 301); }
+      // page paths without the trailing slash: a permanent 301 (the asset layer would answer 307) – but only when that page
+      // exists; anything else is a 404 right away instead of a redirect to a 404 (one asset lookup, no Worker subrequest)
+      if (!url.pathname.endsWith('/') && !/\.[A-Za-z0-9]+$/.test(url.pathname)) {
+        url.pathname += '/';
+        const probe = await env.ASSETS.fetch(url.toString());
+        const st = probe && probe.status;
+        if (probe && probe.body && probe.body.cancel) probe.body.cancel().catch(() => {});
+        if (st === 200 || st === 304) return Response.redirect(url.toString(), 301);
+        return new Response('404 Not Found', { status: 404, headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=300' } });
+      }
       return servePage(request, env);
     }
     if (moveHost) { url.protocol = 'https:'; url.hostname = CANONICAL_HOST; url.port = ''; }

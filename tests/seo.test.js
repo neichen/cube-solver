@@ -141,6 +141,13 @@ async function staticMode() {
     const r = await at(u); ok(r.status === 301 && r.redirect === want, `worker host redirect ${u} → ${r.redirect}`);
   }
   ok((await at('https://cube-solver.org/fr/')).asset, 'worker serves the canonical host from assets');
+  { // no trailing slash: 301 only when the page exists, otherwise a direct 404 (no redirect hop)
+    const known = new Set([BASE + '/ja/', BASE + '/7x7-cube-solver/', BASE + '/de/privacy/']);
+    const envS = { ASSETS: { fetch: u => ({ status: known.has(String(u)) ? 200 : 404 }) } };
+    const slash = u => W.fetch({ url: BASE + u, headers: { get: () => null } }, envS);
+    for (const u of ['/ja', '/7x7-cube-solver', '/de/privacy']) { const r = await slash(u); ok(r.status === 301 && r.redirect === BASE + u + '/', `worker: ${u} → 301 ${u}/`); }
+    for (const u of ['/nonexistent-xyz', '/ja/nope', '/8x8']) { const r = await slash(u); ok(r.status === 404 && !r.redirect, `worker: ${u} → 404 without a redirect`); }
+  }
   { // geo consent flag (mocked request.cf.country) + region-specific ETag
     const X = W._internals;
     for (const c of ['DE', 'FR', 'IE', 'NO', 'IS', 'LI', 'GB', 'CH', 'XX', 'T1', '', undefined, 'zz9']) ok(X.consentRequired(c), `consent region: ${JSON.stringify(c)}`);
